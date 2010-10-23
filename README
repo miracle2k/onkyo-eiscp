@@ -6,8 +6,9 @@ Library to control Onkyo TX-NR708 Receivers over Ethernet
 
 Status:
 ======
-Mostly feature complete. Full command set probably isn't here -- I haven't been
-able to track down a comprehensive guide online anywhere.
+- Mostly feature complete. Full command set probably isn't here -- I haven't 
+  been able to track down a comprehensive guide online anywhere.
+- Discrete volume control isn't here yet.
 
 
 Requirements:
