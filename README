@@ -1,0 +1,15 @@
+Onkyo TX-NR708 Control
+=================================
+
+Library to control Onkyo TX-NR708 Receivers over Ethernet
+
+
+Status:
+======
+Mostly feature complete. Full command set probably isn't here -- I haven't been
+able to track down a comprehensive guide online anywhere.
+
+
+Requirements:
+============-
+- Python 2.4+
