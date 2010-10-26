@@ -12,5 +12,22 @@ Status:
 
 
 Requirements:
-============-
+=============
 - Python 2.4+
+
+References:
+===========
+I poked around on the net and found other people who had tried to write similar
+control software.
+
+-- This code in PHP was really helpful in figuring out what I wanted to do in
+python. 
+ http://www.avforums.com/forums/onkyo-products/1107346-onkyo-tx-nr-1007-webinterface-programming.html
+
+-- This was a pre-built utility that I didn't get a ton of useful information
+out of.
+ http://www.avsforum.com/avs-vb/showthread.php?t=1031993
+
+License:
+========
+see LICENSE
