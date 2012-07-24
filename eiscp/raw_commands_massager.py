@@ -6,7 +6,7 @@ f = open(sys.argv[1])
 
 print '#!/usr/bin/python'
 print
-print '"""Command set for the Onkyo TX-NR708.'
+print '"""Command set for Onkyo eiscp.'
 print
 print 'This file was automatically created by %s' % sys.argv[0]
 print 'from the source file: %s' % sys.argv[1]

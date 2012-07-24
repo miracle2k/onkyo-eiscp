@@ -1,12 +1,5 @@
 #!/usr/bin/python
-"""Commands and control for the Onkyo TX-NR708 eISCP interface.
-
-Model website:
-  http://www.us.onkyo.com/model.cfm?m=TX-NR708&class=Receiver&p=i
-
-Manual for the reciever:
-  http://63.148.251.135/redirect_service.cfm?type=own_manuals
-  &file=SN29400317_TX-NR708_En_web.pdf
+"""Commands and control for the Onkyo eISCP interface.
 """
 
 __author__ = 'Will Nowak <wan@ccs.neu.edu>'

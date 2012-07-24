@@ -1,7 +1,7 @@
-Onkyo TX-NR708 Control
-=================================
+Onkyo eISCP Control
+===================
 
-Library to control Onkyo TX-NR708 Receivers over Ethernet
+Python library to control Onkyo receivers over Ethernet.
 
 
 Status:
