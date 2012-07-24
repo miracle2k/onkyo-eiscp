@@ -51,7 +51,7 @@ class eISCP(object):
 
     def __init__(self, hostname, port=60128):
         self.hostname = hostname
-        self.eiscp_port = port
+        self.port = port
 
         self.command_socket = None
         self.command_dict = None
@@ -66,14 +66,14 @@ class eISCP(object):
     def _connect_socket(self):
         if self.command_socket is None:
             self.command_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.command_socket.connect((self.hostname, self.eiscp_port))
+            self.command_socket.connect((self.hostname, self.port))
 
     def _disconnect_socket(self):
         if self.command_socket is not None:
             try:
                 self.command_socket.close()
             except:
-                logging.exception('Could not close serial port %s' % self.serial_port)
+                logging.exception('Could not close serial port %s' % self.port)
             self.command_socket = None
 
     def command(self, command):
