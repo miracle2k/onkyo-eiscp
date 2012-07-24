@@ -18,27 +18,27 @@ print
 
 sections = []
 for x in f:
-  x = x.strip()
-  if not x:
-    continue
-  if x[0] == '#':
-    continue
-  elif x[0] == '=':
-    x = x.replace('=', '')
     x = x.strip()
-    if sections:
-      print ']'
-    print '######################'
-    print '### %s' % x
-    print '######################'
-    n = x.upper().replace(' ', '_')
-    sections.append(n)
-    print '%s = [' % n
-  else:
-    name, command = x.split(':')
-    name = name.strip()
-    command = command.strip().replace(' ', '')
-    print '  ("%s", "%s"),' % (name, command)
+    if not x:
+        continue
+    if x[0] == '#':
+        continue
+    elif x[0] == '=':
+        x = x.replace('=', '')
+        x = x.strip()
+        if sections:
+            print ']'
+        print '######################'
+        print '### %s' % x
+        print '######################'
+        n = x.upper().replace(' ', '_')
+        sections.append(n)
+        print '%s = [' % n
+    else:
+        name, command = x.split(':')
+        name = name.strip()
+        command = command.strip().replace(' ', '')
+        print '  ("%s", "%s"),' % (name, command)
 print ']'
 print
 print 'ALL = %s' % ' + '.join(sections)
