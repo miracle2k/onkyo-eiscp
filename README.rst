@@ -3,31 +3,23 @@ Onkyo eISCP Control
 
 Python library to control Onkyo receivers over Ethernet.
 
+Originally based on `compbrain/Onkyo-TX-NR708-Control
+<https://github.com/compbrain/Onkyo-TX-NR708-Control>`_.
 
-Status:
-======
-- Mostly feature complete. Full command set probably isn't here -- I haven't 
-  been able to track down a comprehensive guide online anywhere.
-- Discrete volume control isn't here yet.
+Usage::
+
+    import eiscp
+
+    # Create a receiver object attached to the host 192.168.1.124
+    receiver = eiscp.eISCP('192.168.1.125')
+
+    # Turn the receiver on
+    receiver.command('Power ON')
+
+    # Select the PC input
+    receiver.command('Computer/PC')
+
+    # Done watching a movie, shut it off.
+    receiver.command('Power OFF')
 
 
-Requirements:
-=============
-- Python 2.4+
-
-References:
-===========
-I poked around on the net and found other people who had tried to write similar
-control software.
-
--- This code in PHP was really helpful in figuring out what I wanted to do in
-python. 
- http://www.avforums.com/forums/onkyo-products/1107346-onkyo-tx-nr-1007-webinterface-programming.html
-
--- This was a pre-built utility that I didn't get a ton of useful information
-out of.
- http://www.avsforum.com/avs-vb/showthread.php?t=1031993
-
-License:
-========
-see LICENSE
