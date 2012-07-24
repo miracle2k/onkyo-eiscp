@@ -22,4 +22,20 @@ Usage::
     # Done watching a movie, shut it off.
     receiver.command('Power OFF')
 
+The ``command`` method supports different styles. These also work::
 
+    receiver.command('internet-radio')
+    receiver.command('volume_Down')
+
+Specifically, case is ignored, and ``-``, ``_`` and a space all mean the
+same thing.
+
+You can also send the internal command names::
+
+    receiver.command('SLI26')   # Selects the "Tuner" source.
+
+
+Limitations
+-----------
+
+Receiving status information is not yet supported.

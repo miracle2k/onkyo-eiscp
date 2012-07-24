@@ -47,6 +47,14 @@ def ascii_command_to_hex(command):
     return cmd
 
 
+def normalize_command(command):
+    """Ensures that various ways to refer to a command can be used."""
+    command = command.lower()
+    command = command.replace('_', ' ')
+    command = command.replace('-', ' ')
+    return command
+
+
 class eISCP(object):
 
     def __init__(self, hostname, port=60128):
@@ -60,8 +68,8 @@ class eISCP(object):
     def _build_command_dict(self):
         if self.command_dict is None:
             self.command_dict = {}
-            for x in commands.ALL:
-                self.command_dict[x[0].lower()] = x[1]
+            for readable, internal in commands.ALL:
+                self.command_dict[normalize_command(readable)] = internal
 
     def _connect_socket(self):
         if self.command_socket is None:
@@ -82,6 +90,7 @@ class eISCP(object):
         Args:
            command: (string) ascii characters to be hexified for writing to serial
         """
+        command = normalize_command(command)
         if command in self.command_dict:
             command = self.command_dict[command]
 
