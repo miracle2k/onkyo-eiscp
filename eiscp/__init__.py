@@ -71,18 +71,24 @@ class eISCP(object):
             for readable, internal in commands.ALL:
                 self.command_dict[normalize_command(readable)] = internal
 
-    def _connect_socket(self):
+    def _ensure_socket_connected(self):
         if self.command_socket is None:
             self.command_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.command_socket.connect((self.hostname, self.port))
 
-    def _disconnect_socket(self):
-        if self.command_socket is not None:
-            try:
-                self.command_socket.close()
-            except:
-                logging.exception('Could not close serial port %s' % self.port)
-            self.command_socket = None
+    def disconnect(self):
+        try:
+            self.command_socket.close()
+        except:
+            logging.exception('Could not close serial port %s' % self.port)
+        self.command_socket = None
+
+    def __enter__(self):
+        self._ensure_socket_connected()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.disconnect()
 
     def command(self, command):
         """Write a command as an ascii string, will be converted to hex.
@@ -97,11 +103,8 @@ class eISCP(object):
         if not command in self.command_dict.values():
             raise InvalidCommandException("Not a valid command %s" % command)
 
-        try:
-            self._connect_socket()
-            self.command_socket.send(ascii_command_to_hex(command))
-        finally:
-            self._disconnect_socket()
+        self._ensure_socket_connected()
+        self.command_socket.send(ascii_command_to_hex(command))
 
     def power_on(self):
         """Turn the receiver power on."""

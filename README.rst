@@ -10,17 +10,21 @@ Usage::
 
     import eiscp
 
-    # Create a receiver object attached to the host 192.168.1.124
+    # Create a receiver object, connecting to the host 192.168.1.124
     receiver = eiscp.eISCP('192.168.1.125')
 
-    # Turn the receiver on
+    # Turn the receiver on, select PC input
     receiver.command('Power ON')
-
-    # Select the PC input
     receiver.command('Computer/PC')
 
-    # Done watching a movie, shut it off.
-    receiver.command('Power OFF')
+    receiver.disconnect()
+
+Don't forget to call ``disconnect`` to close the socket. You can also use a
+``with`` statement:
+
+    with eiscp.eISCP('192.168.1.125') as receiver:
+        receiver.command('all-ch-stereo')
+
 
 The ``command`` method supports different styles. These also work::
 
