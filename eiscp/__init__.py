@@ -32,6 +32,21 @@ class InvalidCommandException(Exception):
   """Raised when an invalid command is provided."""
 
 
+def asciiCommandToHex(command):
+  """Convert an ascii command to it's hex equivalent.
+
+  Args:
+     command: (string) ascii characters to be hexified for writing to serial
+  """
+  if '!1' != command[:2]:
+      command = '!1%s' % command
+  command_length = len(command)
+  pad = chr(command_length + 1 + 16)
+  cmd = ('ISCP\x00\x00\x00\x10\x00\x00\x00%s\x01\x00\x00\x00%s\x0D'
+         % (pad, command))
+  return cmd
+
+
 class eISCP(object):
   def __init__(self, hostname, port=60128):
     self.hostname = hostname
@@ -45,7 +60,7 @@ class eISCP(object):
     if self.command_dict is None:
       self.command_dict = {}
       for x in commands.ALL:
-        self.command_dict[x[0]] = x[1]
+        self.command_dict[x[0].lower()] = x[1]
 
   def connectSocket(self):
     if self.command_socket is None:
@@ -60,58 +75,28 @@ class eISCP(object):
         logging.exception('Could not close serial port %s' % self.serial_port)
       self.command_socket = None
 
-  def asciiCommandToHex(self, command):
-    """Convert an ascii command to it's hex equivalent.
-
-    Args:
-       command: (string) ascii characters to be hexified for writing to serial
-    """
-    if '!1' != command[:2]:
-      command = '!1%s' % command
-    command_length = len(command)
-    pad = chr(command_length + 1 + 16)
-    cmd = ('ISCP\x00\x00\x00\x10\x00\x00\x00%s\x01\x00\x00\x00%s\x0D'
-           % (pad, command))
-    return cmd
-
-  def verifyCommand(self, command):
-    """Verify that a command is known and valid.
-
-    Args:
-       command: (string) ascii characters to be hexified for writing to serial
-    """
-    if command not in self.command_dict.values():
-      raise InvalidCommandException("Specified command not in commands.py") 
-
-  def writeCommand(self, command):
+  def command(self, command):
     """Write a command as an ascii string, will be converted to hex.
 
     Args:
        command: (string) ascii characters to be hexified for writing to serial
     """
-    self.verifyCommand(command)
-    hex_command = self.asciiCommandToHex(command)
+    if command in self.command_dict:
+        command = self.command_dict[command]
+
+    if not command in self.command_dict.values():
+        raise InvalidCommandException("Not a valid command %s" % command)
 
     try:
       self.connectSocket()
-      self.command_socket.send(hex_command)
+      self.command_socket.send(asciiCommandToHex(command))
     finally:
       self.disconnectSocket()
 
-  def writeCommandFromName(self, command_name):
-    """Write a command based on it's named entry in commands.py.
-
-    Args:
-       command: (string) command name from commands.py
-    """
-    if command_name not in self.command_dict:
-      raise InvalidCommandException("Given command name not in commands.py")
-    self.writeCommand(self.command_dict[command_name])
-
   def powerOn(self):
     """Turn the receiver power on."""
-    self.writeCommandFromName('Power ON')
+    self.command('Power ON')
 
   def powerOff(self):
     """Turn the receiver power off."""
-    self.writeCommandFromName('Power OFF')
+    self.command('Power OFF')
