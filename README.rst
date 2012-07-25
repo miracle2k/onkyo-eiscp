@@ -3,8 +3,6 @@ Onkyo eISCP Control
 
 Python library to control Onkyo receivers over Ethernet.
 
-Originally based on `compbrain/Onkyo-TX-NR708-Control
-<https://github.com/compbrain/Onkyo-TX-NR708-Control>`_.
 
 Usage
 -----
@@ -72,3 +70,24 @@ Limitations
 -----------
 
 - Receiving status information is not yet supported.
+
+
+Related Links
+-------------
+
+http://michael.elsdoerfer.name/onkyo/ISCP-V1.21_2011.xls
+    Document from Onkyo describing the protocol, including a full list
+    of supported commands.
+
+https://github.com/compbrain/Onkyo-TX-NR708-Control
+    Repository on which this was originally based.
+
+https://github.com/beanz/device-onkyo-perl
+    Perl implementation.
+
+http://code.google.com/p/onkyo-eiscp-remote-windows/
+    C# implementation.
+
+https://sites.google.com/a/webarts.ca/toms-blog/Blog/new-blog-items/javaeiscp-integraserialcontrolprotocol
+    Some Java code. Also deserves credit for providing the official Onkyo
+    protocol documentation linked above.
