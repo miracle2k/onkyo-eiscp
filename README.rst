@@ -52,6 +52,21 @@ You can have it find the receivers on your local network::
 
 This will turn off all the Onkyo receivers on your network.
 
+A discovered device has an ``info`` attribute that gives you some data::
+
+    {'iscp_port': '60128', 'identifier': '0009B04448E0',
+     'area_code': 'XX', 'model_name': 'TX-NR709', 'device_category': '1'}
+
+
+Notes on Power On
+~~~~~~~~~~~~~~~~~
+
+For the ``power on`` command to work while the device is in standby, make
+sure you turn on the ``Setup -> Hardware -> Network -> Network Control``.
+
+Without it, you can only connect to your receiver while it is already
+turned on.
+
 
 Limitations
 -----------
