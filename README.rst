@@ -3,6 +3,20 @@ Onkyo eISCP Control
 
 Python library to control Onkyo receivers over Ethernet.
 
+Installation
+------------
+
+Most recent released version::
+
+    $ easy_install onkyo-eiscp
+
+Latest development version::
+
+    $ easy_install onkyo-eiscp==dev
+
+__ http://github.com/miracle2k/onkyo-eiscp/tarball/master#egg=onkyo-eiscp-dev
+
+
 
 Usage
 -----
