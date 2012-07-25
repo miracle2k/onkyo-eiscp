@@ -4,7 +4,9 @@
 
 __author__ = 'Will Nowak <wan@ccs.neu.edu>'
 
-import socket
+import re
+import struct
+import socket, select
 import logging
 
 import commands
@@ -32,19 +34,47 @@ class InvalidCommandException(Exception):
     """Raised when an invalid command is provided."""
 
 
-def ascii_command_to_hex(command):
-    """Convert an ascii command to it's hex equivalent.
-
-    Args:
-       command: (string) ascii characters to be hexified for writing to serial
+def eiscp_packet(data):
+    """Convert ``data`` into an eISCP packet as expected by
+    Onkyo receivers.
     """
+    # We attach data separately, because Python's struct module does
+    # not support variable length strings,
+    header = struct.pack(
+        '! 4s I I b 3b',
+        'ISCP',           # magic
+        16,                # header size (16 bytes)
+        len(data),      # data size
+        0x01,              # version
+        0x00, 0x00, 0x00   # reserved
+    )
+
+    return "%s%s" % (header, data)
+
+
+def parse_packet(bytes):
+    """Reverse of :meth:`eiscp_packet`.
+    """
+    magic, header_size, data_size, version, reserved = \
+        struct.unpack('! 4s I I b 3s', bytes[:16])
+    assert magic == 'ISCP'
+    assert header_size == 16
+
+    data = bytes[header_size:header_size+data_size]
+    assert len(data) == data_size
+    return data
+
+
+def command_to_packet(command):
+    """Convert an ascii command like (PVR00) to the binary data we need
+    to send to the receiver.
+    """
+    # ! = start character
+    # 1 = destination unit type, 1 means receiver
     if '!1' != command[:2]:
         command = '!1%s' % command
-    command_length = len(command)
-    pad = chr(command_length + 1 + 16)
-    cmd = ('ISCP\x00\x00\x00\x10\x00\x00\x00%s\x01\x00\x00\x00%s\x0D'
-           % (pad, command))
-    return cmd
+    command = '%s\r' % command
+    return eiscp_packet(command)
 
 
 def normalize_command(command):
@@ -57,13 +87,68 @@ def normalize_command(command):
 
 class eISCP(object):
 
-    def __init__(self, hostname, port=60128):
-        self.hostname = hostname
+    @classmethod
+    def discover(cls, timeout=5):
+        """Try to find ISCP devices on network.
+
+        Waits for ``timeout`` seconds, then returns all devices found,
+        in form of a list of dicts.
+        """
+        onkyo_port = 60128
+        onkyo_magic = eiscp_packet('!xECNQSTN')
+
+        # Broadcast magic
+        sock = socket.socket(
+            socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+        sock.setblocking(0)   # So we can use select()
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+        sock.bind(('0.0.0.0', 0))
+        sock.sendto(onkyo_magic, ('255.255.255.255', onkyo_port))
+
+        found_receivers = []
+        while True:
+            ready = select.select([sock], [], [], timeout)
+            if not ready[0]:
+                break
+            data, addr = sock.recvfrom(1024)
+
+            response = parse_packet(data)
+            # Return string looks something like this:
+            # !1ECNTX-NR609/60128/DX
+            info = re.match(r'''
+                !
+                (?P<device_category>\d)
+                ECN
+                (?P<model_name>[^/]*)/
+                (?P<iscp_port>\d{5})/
+                (?P<area_code>\w{2})/
+                (?P<identifier>.{0,12})
+            ''', response.strip(), re.VERBOSE).groupdict()
+
+            # Give the user a ready-made receiver instance. It will only
+            # connect on demand, when actually used.
+            receiver = eISCP(addr[0], info['iscp_port'])
+            receiver.info = info
+            found_receivers.append(receiver)
+
+        return found_receivers
+
+    def __init__(self, host, port=60128):
+        self.host = host
         self.port = port
 
         self.command_socket = None
         self.command_dict = None
         self._build_command_dict()
+
+    def __repr__(self):
+        if getattr(self, 'info', False) and self.info.get('model_name'):
+            model = self.info['model_name']
+        else:
+            model = 'unknown'
+        string = "<%s(%s) %s:%s>" % (
+            self.__class__.__name__, model, self.host, self.port)
+        return string
 
     def _build_command_dict(self):
         if self.command_dict is None:
@@ -74,7 +159,7 @@ class eISCP(object):
     def _ensure_socket_connected(self):
         if self.command_socket is None:
             self.command_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.command_socket.connect((self.hostname, self.port))
+            self.command_socket.connect((self.host, self.port))
 
     def disconnect(self):
         try:
@@ -104,7 +189,7 @@ class eISCP(object):
             raise InvalidCommandException("Not a valid command %s" % command)
 
         self._ensure_socket_connected()
-        self.command_socket.send(ascii_command_to_hex(command))
+        self.command_socket.send(command_to_packet(command))
 
     def power_on(self):
         """Turn the receiver power on."""

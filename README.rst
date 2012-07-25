@@ -42,7 +42,18 @@ You can also send the internal command names::
     receiver.command('SLI26')   # Selects the "Tuner" source.
 
 
+Device discovery
+~~~~~~~~~~~~~~~~
+
+You can have it find the receivers on your local network::
+
+    for receiver in eiscp.eISCP.discover(timeout=5):
+        receiver.command('power off')
+
+This will turn off all the Onkyo receivers on your network.
+
+
 Limitations
 -----------
 
-Receiving status information is not yet supported.
+- Receiving status information is not yet supported.
