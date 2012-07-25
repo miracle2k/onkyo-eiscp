@@ -127,10 +127,11 @@ class eISCP(object):
 
             # Give the user a ready-made receiver instance. It will only
             # connect on demand, when actually used.
-            receiver = eISCP(addr[0], info['iscp_port'])
+            receiver = eISCP(addr[0], int(info['iscp_port']))
             receiver.info = info
             found_receivers.append(receiver)
 
+        sock.close()
         return found_receivers
 
     def __init__(self, host, port=60128):
