@@ -1,3 +1,6 @@
 *.pyc
 
 /LOCAL_TODO
+
+/dist
+*.egg-info/
