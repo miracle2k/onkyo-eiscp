@@ -21,7 +21,7 @@ __ http://github.com/miracle2k/onkyo-eiscp/tarball/master#egg=onkyo-eiscp-dev
 Usage
 -----
 
-::
+.. code:: python
 
     import eiscp
 
@@ -35,13 +35,17 @@ Usage
     receiver.disconnect()
 
 Don't forget to call ``disconnect()`` to close the socket. You can also use a
-``with`` statement::
+``with`` statement:
+
+.. code:: python
 
     with eiscp.eISCP('192.168.1.125') as receiver:
         receiver.command('all-ch-stereo')
 
 
-The ``command()`` method supports different styles. These also work::
+The ``command()`` method supports different styles. These also work:
+
+.. code:: python
 
     receiver.command('internet-radio')
     receiver.command('volume_Down')
@@ -49,7 +53,9 @@ The ``command()`` method supports different styles. These also work::
 Specifically, case is ignored, and ``-``, ``_`` and `` `` (a space character)
 all mean the same thing.
 
-You can also send the internal command names::
+You can also send the internal command names:
+
+.. code:: python
 
     receiver.command('SLI26')   # Selects the "Tuner" source.
 
@@ -57,14 +63,18 @@ You can also send the internal command names::
 Device discovery
 ~~~~~~~~~~~~~~~~
 
-You can have it find the receivers on your local network::
+You can have it find the receivers on your local network:
+
+.. code:: python
 
     for receiver in eiscp.eISCP.discover(timeout=5):
         receiver.command('power off')
 
 This will turn off all the Onkyo receivers on your network.
 
-A discovered device has an ``info`` attribute that gives you some data::
+A discovered device has an ``info`` attribute that gives you some data:
+
+.. code:: python
 
     {'iscp_port': '60128', 'identifier': '0009B04448E0',
      'area_code': 'XX', 'model_name': 'TX-NR709', 'device_category': '1'}
