@@ -112,6 +112,9 @@ https://github.com/beanz/device-onkyo-perl
 http://code.google.com/p/onkyo-eiscp-remote-windows/
     C# implementation.
 
+https://github.com/janten/onkyo-eiscp-remote-mac
+    Object-C implementation.
+
 https://sites.google.com/a/webarts.ca/toms-blog/Blog/new-blog-items/javaeiscp-integraserialcontrolprotocol
     Some Java code. Also deserves credit for providing the official Onkyo
     protocol documentation linked above.
