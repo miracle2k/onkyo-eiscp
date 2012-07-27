@@ -12,6 +12,7 @@ setup(
     author_email='michael@elsdoerfer.com',
     description='Control Onkyo receivers over ethernet.',
     packages = find_packages(),
+    install_requires=['docopt==0.4.1'],
     platforms='any',
     classifiers=[
         'Topic :: System :: Networking',
