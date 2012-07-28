@@ -180,7 +180,9 @@ def import_sheet(groupname, sheet, modelsets):
                 # have a value power-on, when really only "on" is needed.
                 # Remove parts from name that are already in the command.
                 command_parts = data[prefix]['name'].split('-')
-                return '-'.join([p for p in name.split('-') if not p in command_parts])
+                return '-'.join(
+                    [p for p in name.split('-')
+                     if not p in command_parts and not p == groupname.lower()])
 
             name = None
             if range == 'QSTN':
