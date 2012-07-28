@@ -1,7 +1,7 @@
 # Last generated
 #   by import_protocol_doc.py
 #   from ISCP-V1.21_2011.xls
-#   at 2012-07-27 20:19:21.490110
+#   at 2012-07-28 15:33:54.974690
 #
 # This file can and should be manually changed to fix things the
 # automatic import didn't and often can't do right. These changes
@@ -897,7 +897,7 @@ main:
         description: sets No, Analog
         models: set63
       '01':
-        name: ['yes', out-main, main]
+        name: ['yes', out]
         description: sets Yes/Out Main, HDMI Main
         models: set64
       '02':
@@ -3585,11 +3585,11 @@ zone2:
     description: Zone2 Power Command
     values:
       '00':
-        name: zone2-standby
+        name: standby
         description: sets Zone2 Standby
         models: set140
       '01':
-        name: zone2-on
+        name: 'on'
         description: sets Zone2 On
         models: set141
       QSTN:
@@ -3601,11 +3601,11 @@ zone2:
     description: Zone2 Muting Command
     values:
       '00':
-        name: zone2-off
+        name: 'off'
         description: sets Zone2 Muting Off
         models: set141
       '01':
-        name: zone2-on
+        name: 'on'
         description: sets Zone2 Muting On
         models: set142
       TG:
@@ -3645,11 +3645,11 @@ zone2:
     description: Zone2 Tone Command
     values:
       B{xx}:
-        name: zone2-bass-xx-is-a-00-a-10-0-10-2-step
+        name: bass-xx-is-a-00-a-10-0-10-2-step
         description: sets Zone2 Bass (xx is "-A"..."00"..."+A"[-10...0...+10 2 step]
         models: set145
       T{xx}:
-        name: zone2-treble-xx-is-a-00-a-10-0-10-2-step
+        name: treble-xx-is-a-00-a-10-0-10-2-step
         description: sets Zone2 Treble (xx is "-A"..."00"..."+A"[-10...0...+10 2 step]
         models: set146
       BUP:
@@ -3677,7 +3677,7 @@ zone2:
     description: Zone2 Balance Command
     values:
       '{xx}':
-        name: zone2-xx-is-a-00-a-l-10-0-r-10-2-step
+        name: xx-is-a-00-a-l-10-0-r-10-2-step
         description: sets Zone2 Balance (xx is "-A"..."00"..."+A"[L+10...0...R+10
           2 step]
         models: set146
@@ -4156,11 +4156,11 @@ zone3:
     description: Zone3 Power Command
     values:
       '00':
-        name: zone3-standby
+        name: standby
         description: sets Zone3 Standby
         models: set169
       '01':
-        name: zone3-on
+        name: 'on'
         description: sets Zone3 On
         models: set170
       QSTN:
@@ -4172,11 +4172,11 @@ zone3:
     description: Zone3 Muting Command
     values:
       '00':
-        name: zone3-off
+        name: 'off'
         description: sets Zone3 Muting Off
         models: set170
       '01':
-        name: zone3-on
+        name: 'on'
         description: sets Zone3 Muting On
         models: set170
       TG:
@@ -4645,11 +4645,11 @@ zone4:
     description: Zone4 Power Command
     values:
       '00':
-        name: zone4-standby
+        name: standby
         description: sets Zone4 Standby
         models: set184
       '01':
-        name: zone4-on
+        name: 'on'
         description: sets Zone4 On
         models: set185
       QSTN:
@@ -4661,11 +4661,11 @@ zone4:
     description: Zone4 Muting Command
     values:
       '00':
-        name: zone4-off
+        name: 'off'
         description: sets Zone4 Muting Off
         models: set185
       '01':
-        name: zone4-on
+        name: 'on'
         description: sets Zone4 Muting On
         models: set185
       TG:
@@ -5073,11 +5073,11 @@ dock:
     description: Command for Docking Station via RI
     values:
       PWRON:
-        name: dock-on
+        name: 'on'
         description: sets Dock On
         models: set188
       PWROFF:
-        name: dock-standby
+        name: standby
         description: sets Dock Standby
         models: set189
       PLY/RES:
