@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # coding: utf8
 """Script to extract the list of commands from the Onkyo protocol
 documentation, which is an Excel file.
@@ -273,9 +274,14 @@ yaml.SafeDumper.add_representer(FlowStyleTuple,
     lambda dumper, value: yaml.SafeDumper.represent_sequence(dumper, u'tag:yaml.org,2002:seq', value, flow_style=True))
 
 
-print """# Generated
-#  by %s
-#  from %s
-#  at %s
+print """# Last generated
+#   by %s
+#   from %s
+#   at %s
+#
+# This file can and should be manually changed to fix things the
+# automatic import didn't and often can't do right. These changes
+# should be tracked in source control, so they can be merged with
+# new generated versions of the file.
 """ % (os.path.basename(sys.argv[0]), os.path.basename(sys.argv[1]), datetime.now())
 print yaml.safe_dump(data, default_flow_style=False)
