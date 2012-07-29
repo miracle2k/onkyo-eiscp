@@ -6,24 +6,6 @@ import logging
 import commands
 
 
-ALL_COMMANDS = commands.ALL
-
-
-def CommandDictionary():
-    outset = [('Power Control', commands.POWER),
-        ('Basic Audio', commands.AUDIO),
-        ('Source Selection', commands.SOURCE_SELECT),
-        ('Sound Modes', commands.SOUND_MODES)]
-    outdict = []
-
-    for x in outset:
-        a = {}
-        for y in x[1]:
-            a[y[0]] = y[1]
-        outdict.append((x[0], a))
-    return outdict
-
-
 class InvalidCommandException(Exception):
     """Raised when an invalid command is provided."""
 
@@ -133,8 +115,6 @@ class eISCP(object):
         self.port = port
 
         self.command_socket = None
-        self.command_dict = None
-        self._build_command_dict()
 
     def __repr__(self):
         if getattr(self, 'info', False) and self.info.get('model_name'):
@@ -144,12 +124,6 @@ class eISCP(object):
         string = "<%s(%s) %s:%s>" % (
             self.__class__.__name__, model, self.host, self.port)
         return string
-
-    def _build_command_dict(self):
-        if self.command_dict is None:
-            self.command_dict = {}
-            for readable, internal in commands.ALL:
-                self.command_dict[normalize_command(readable)] = internal
 
     def _ensure_socket_connected(self):
         if self.command_socket is None:
@@ -170,26 +144,97 @@ class eISCP(object):
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.disconnect()
 
-    def command(self, command):
-        """Write a command as an ascii string, will be converted to hex.
+    def command(self, command, arguments=None, zone=None):
+        """Execute a command.
 
-        Args:
-           command: (string) ascii characters to be hexified for writing to serial
+        This supports many different modes. For starters, you can send
+        an arbitrary low-level eISCP command::
+
+            command('PWR00')
+
+        On top of these there is a system of human-readable, "pretty"
+        commands, which is organized into three parts: the zone, the
+        command, and arguments. For example::
+
+            command('power', 'on')
+            command('power', 'on', zone='main')
+            command('volume', 66, zone='zone2')
+
+        As you can see, if no zone is given, the main zone is assumed.
+
+        Instead of passing three different parameters, you may put the
+        whole thing in a single string, which is helpful when taking
+        input from users::
+
+            command('power on')
+            command('zone2 volume 66')
+
+        To further simplify things, for example when taking user input
+        from a command line, where whitespace needs escaping, the
+        following is also supported:
+
+            command('power=on')
+            command('zone2.volume=66')
+
         """
-        #command = normalize_command(command)
-        if command in self.command_dict:
-            command = self.command_dict[command]
+        default_zone = 'main'
+        command_sep = r'[. ]'
+        norm = lambda s: s.strip().lower()
 
-        #if not command in self.command_dict.values():
-        #    raise InvalidCommandException("Not a valid command %s" % command)
+        # If parts are not explicitly given, parse the command
+        if arguments is None and zone is None:
+            # Separating command and args with colon allows multiple args
+            if ':' in command or '=' in command:
+                base, arguments = re.split(r'[:=]', command, 1)
+                parts = [norm(c) for c in re.split(command_sep, base)]
+                if len(parts) == 2:
+                    zone, command = parts
+                else:
+                    zone = default_zone
+                    command = parts[0]
+                # Split arguments by comma or space
+                arguments = [norm(a) for a in re.split(r'[ ,]', arguments)]
+            else:
+                # Split command part by space or dot
+                parts = [norm(c) for c in re.split(command_sep, command)]
+                if len(parts) >= 3:
+                    zone, command = parts[:2]
+                    arguments = parts[3:]
+                elif len(parts) == 2:
+                    zone = default_zone
+                    command = parts[0]
+                    arguments = parts[1:]
+                else:
+                    raise ValueError('Need at least command and argument')
+
+        # Find the command in our database, resolve to internal eISCP command
+        group = commands.ZONE_MAPPINGS.get(zone, zone)
+        if not zone in commands.COMMANDS:
+            raise ValueError('"%s" is not a valid zone' % zone)
+
+        prefix = commands.COMMAND_MAPPINGS[group].get(command, command)
+        if not prefix in commands.COMMANDS[group]:
+            raise ValueError('"%s" is not a valid command in zone "%s"'
+                    % (command, zone))
+
+        # TODO: For now, only support one; though some rare commands would
+        # need multiple.
+        argument = arguments[0]
+        value = commands.VALUE_MAPPINGS[group][prefix].get(argument, argument)
+        if not value in commands.COMMANDS[group][prefix]['values']:
+            raise ValueError('"%s" is not a valid argument for command '
+                             '"%s" in zone "%s"' % (argument, command, zone))
+
+
+        eiscp_command = '%s%s' % (prefix, value)
 
         self._ensure_socket_connected()
-        self.command_socket.send(command_to_packet(command))
+        self.command_socket.send(command_to_packet(eiscp_command))
 
     def power_on(self):
         """Turn the receiver power on."""
-        self.command('Power ON')
+        self.command('power', 'on')
 
     def power_off(self):
         """Turn the receiver power off."""
-        self.command('Power OFF')
+        self.command('power', 'off')

@@ -1,41 +1,41 @@
 """Control Onkyo A/V receivers.
 
 Usage:
-  onkyo [options] <command>...
+  onkyo [--host <host>] [--host <port>] [--all] [--name <name>] <command>...
   onkyo --discover
-  onkyo --list-commands
+  onkyo --help-commands [<zone> <command>]
   onkyo -h | --help
-
 
 Selecting the receiver:
 
-  --host <host>         Connect to this host
+  --host, -t <host>     Connect to this host
   --port, -p <port>     Connect to this port [default: 60128]
-  --all                 Discover receivers, send to all found
+  --all, -a             Discover receivers, send to all found
   --name, -n <name>     Discover receivers, send to those matching name.
 
 If none of these options is given, the program searches for receivers,
 and uses the first one found.
 
   --discover            List all discoverable receivers
-  --list-commands       List available commands.
+  --help-commands       List available commands.
 
 Examples:
-  onkyo "power on" "source pc", "volume 75"
+  onkyo power:on source:pc volume:75
     Turn receiver on, select "PC" source, set volume to 75.
-  onkyo muting off
-    If only a single command is sent, it is not necessary to wrap it in
-    quotes.
+  onkyo zone2.power:standby
+    To execute a command for zone that isn't the main one.
 """
 
 import sys
+import os
 import docopt
 
 from core import eISCP
-from commands import ALL as ALL_COMMANDS
+import commands
 
 
 def main(argv=sys.argv):
+    basename = os.path.basename(argv[0])
     options = docopt.docopt(__doc__, help=True)
 
     # List commands
@@ -46,9 +46,38 @@ def main(argv=sys.argv):
         return
 
     # List available commands
-    if options['--list-commands']:
-        for command, _ in ALL_COMMANDS:
-            print command
+    if options['--help-commands']:
+        # List the zones
+        if not options['<zone>']:
+            print "Available zones:"
+            for zone in commands.COMMANDS:
+                print "  %s" % zone
+            print "Use %s --help-commands <zone> to see a list of "\
+                  "commands for that zone." % basename
+            return
+        # List the commands
+        selected_zone = options['<zone>']
+        if not selected_zone in commands.COMMANDS:
+            print 'No such zone: %s' % selected_zone
+            return 1
+        if not options['<command>']:
+            print 'Available commands for this zone:'
+            for _, command in commands.COMMANDS[selected_zone].items():
+                print "  %s - %s" % (command['name'], command['description'])
+            print "Use %s --help-commands %s <command> to see a list "\
+                  "of possible values." % (basename, selected_zone)
+            return
+        # List values
+        selected_command = options['<command>'][0]
+        selected_command = commands.COMMAND_MAPPINGS[selected_zone].get(
+            selected_command, selected_command)
+        if not selected_command in commands.COMMANDS[selected_zone]:
+            print 'No such command in zone: %s' % selected_command
+            return 1
+        print 'Possible values for this command:'
+        cmddata = commands.COMMANDS[selected_zone][selected_command]
+        for range, value in cmddata['values'].items():
+            print "  %s - %s" % (value['name'], value['description'])
         return
 
     # Determine the receivers the command should run on
@@ -67,19 +96,23 @@ def main(argv=sys.argv):
             return 1
 
     # List of commands to execute - deal with special shortcut case
-    commands = options['<command>']
-    if len(commands) == 2 and not any([c for c in commands if not ' ' in c]):
-        commands = ["%s %s" % tuple(commands)]
+    to_execute = options['<command>']
 
     # Execute commands
     for receiver in receivers:
         with receiver:
-            for command in commands:
+            for command in to_execute:
                 print '%s: %s' % (receiver, command)
-                receiver.command(command)
+                try:
+                    receiver.command(command)
+                except ValueError, e:
+                    # TODO: We should validate commands before send them.
+                    print "Error:", e
+                    return 2
 
 
-
+def run():
+    sys.exit(main() or 0)
 
 if __name__ == '__main__':
-    sys.exit(main() or 0)
+    run()

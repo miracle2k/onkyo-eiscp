@@ -1,7 +1,10 @@
 Onkyo eISCP Control
 ===================
 
-Python library to control Onkyo receivers over Ethernet.
+Script to control Onkyo receivers over Ethernet.
+
+Also usable as a Python library.
+
 
 Installation
 ------------
@@ -17,9 +20,92 @@ Latest development version::
 __ http://github.com/miracle2k/onkyo-eiscp/tarball/master#egg=onkyo-eiscp-dev
 
 
-
 Usage
 -----
+
+The package installs a script called ``onkyo``, that can be used from the
+command line::
+
+    $ onkyo power=off
+
+This will turn your receiver off. You may notice that you haven't given any
+information as to where in the network your receiver is. The script should
+in fact be able to find your Onkyo device by itself.
+
+To see which receivers the script is able to find, you can use::
+
+    $ onkyo --discover
+
+If you have multiple receivers on your network, then by default, it will
+simply connect to the first device found (which may be a different one
+every time).
+
+You can select a specific one by filtering by name::
+
+    $ onkyo --discover
+    TX-NR709 192.168.178.200:60128
+    TX-NR609 192.168.178.169:60128
+    $ onkyo -n 709 power=on
+
+This will only turn on the TX-NR709 device.
+
+There is also an ``--all`` flag, to send you commands to all devices at once.
+
+Finally, you are of course able to manually specify the device to connect to::
+
+    $ onkyo --host 172.20.0.144 volume=55
+    $ onkyo --host 172.20.0.144 --port 42424 volume=55
+
+To find out which commands are available, use the ``--help-commands`` option.
+
+
+Commands
+--------
+
+A command consists of three parts: The zone, the command, and the arguments.
+Here are some examples::
+
+    power=on
+    zone2.power=on
+    main.balance=3
+
+As you can see, the basic format is::
+
+    zone.command=argument
+
+If you do not specify a zone, then ``main`` is assumed.
+
+There are some variations on this syntax that are possible, for example the
+following are all equivalent::
+
+    power on
+    power:on
+    main.power on
+    main power on
+
+In other words, instead of the ``.`` and ``=`` separators, whitespace may
+be used, and the colon ``:`` is an alternative to ``=``. However, it's best
+to use the suggested syntax above.
+
+The names of these commands are defined by this project, and are rewritten
+to actual low-level eISCP commands Onkyo uses. If you know them, you can
+also send such low-level commands directly::
+
+    $ onkyo SLI26     # Selects the "Tuner" source.
+
+
+Notes on Power On
+~~~~~~~~~~~~~~~~~
+
+For the ``power on`` command to work while the device is in standby, make
+sure you turn on the ``Setup -> Hardware -> Network -> Network Control``.
+
+Without it, you can only connect to your receiver while it is already
+turned on.
+
+
+Python module
+-------------
 
 .. code:: python
 
@@ -29,8 +115,8 @@ Usage
     receiver = eiscp.eISCP('192.168.1.125')
 
     # Turn the receiver on, select PC input
-    receiver.command('Power ON')
-    receiver.command('Computer/PC')
+    receiver.command('power on')
+    receiver.command('source pc')
 
     receiver.disconnect()
 
@@ -40,24 +126,12 @@ Don't forget to call ``disconnect()`` to close the socket. You can also use a
 .. code:: python
 
     with eiscp.eISCP('192.168.1.125') as receiver:
-        receiver.command('all-ch-stereo')
+        receiver.command('source all-ch-stereo')
 
 
-The ``command()`` method supports different styles. These also work:
+The command language is explain above. There is a lower level command:
 
-.. code:: python
-
-    receiver.command('internet-radio')
-    receiver.command('volume_Down')
-
-Specifically, case is ignored, and ``-``, ``_`` and `` `` (a space character)
-all mean the same thing.
-
-You can also send the internal command names:
-
-.. code:: python
-
-    receiver.command('SLI26')   # Selects the "Tuner" source.
+    receiver.command('power', 'on', zone='main')
 
 
 Device discovery
@@ -78,16 +152,6 @@ A discovered device has an ``info`` attribute that gives you some data:
 
     {'iscp_port': '60128', 'identifier': '0009B04448E0',
      'area_code': 'XX', 'model_name': 'TX-NR709', 'device_category': '1'}
-
-
-Notes on Power On
-~~~~~~~~~~~~~~~~~
-
-For the ``power on`` command to work while the device is in standby, make
-sure you turn on the ``Setup -> Hardware -> Network -> Network Control``.
-
-Without it, you can only connect to your receiver while it is already
-turned on.
 
 
 Limitations
