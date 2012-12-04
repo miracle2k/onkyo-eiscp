@@ -147,12 +147,7 @@ class eISCP(object):
     def command(self, command, arguments=None, zone=None):
         """Execute a command.
 
-        This supports many different modes. For starters, you can send
-        an arbitrary low-level eISCP command::
-
-            command('PWR00')
-
-        On top of these there is a system of human-readable, "pretty"
+        This exposes a system of human-readable, "pretty"
         commands, which is organized into three parts: the zone, the
         command, and arguments. For example::
 
@@ -225,9 +220,12 @@ class eISCP(object):
             raise ValueError('"%s" is not a valid argument for command '
                              '"%s" in zone "%s"' % (argument, command, zone))
 
-
         eiscp_command = '%s%s' % (prefix, value)
+        return self.raw(eiscp_command)
 
+    def raw(self, eiscp_command):
+        """Send a low-level ISCP command directly, like ``MVL50``.
+        """
         self._ensure_socket_connected()
         self.command_socket.send(command_to_packet(eiscp_command))
 
