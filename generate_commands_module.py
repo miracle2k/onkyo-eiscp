@@ -109,7 +109,7 @@ COMMAND_MAPPINGS = {
 def find_value_aliases(values):
     for value, data  in values.iteritems():
         if not 'name' in data:
-            return
+            continue
         name = data['name']
         if not hasattr(name, '__iter__'):
             yield name, value
