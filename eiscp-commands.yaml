@@ -45,9 +45,29 @@ main:
         name: query
         description: gets the Audio Muting State
         models: set3
-  SPA"/"SPB:
-    name: speaker-a-b
-    description: Speaker A/B Command
+  SPA:
+    name: speaker-a
+    description: Speaker A Command
+    values:
+      '00':
+        name: 'off'
+        description: sets Speaker Off
+        models: set3
+      '01':
+        name: 'on'
+        description: sets Speaker On
+        models: set4
+      UP:
+        name: up
+        description: sets Speaker Switch Wrap-Around
+        models: set5
+      QSTN:
+        name: query
+        description: gets the Speaker State
+        models: set5
+  SPB:
+    name: speaker-b
+    description: Speaker B Command
     values:
       '00':
         name: 'off'
