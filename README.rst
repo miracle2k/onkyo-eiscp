@@ -165,6 +165,9 @@ Limitations
 -----------
 
 - Receiving status information is not yet supported.
+- Some commands require a more complex argument structure, like
+  variable-length strings, and those are not yet supported (you can
+  send them in raw mode of course).
 
 
 The YAML file
