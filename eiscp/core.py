@@ -10,22 +10,22 @@ class InvalidCommandException(Exception):
     """Raised when an invalid command is provided."""
 
 
-def eiscp_packet(data):
-    """Convert ``data`` into an eISCP packet as expected by
-    Onkyo receivers.
+def eiscp_packet(iscp_message):
+    """Wrap ``iscp_message`` in an eISCP packet, as expected by
+    Onkyo receivers when communicating over Ethernet.
     """
     # We attach data separately, because Python's struct module does
     # not support variable length strings,
     header = struct.pack(
         '! 4s I I b 3b',
-        'ISCP',           # magic
-        16,                # header size (16 bytes)
-        len(data),      # data size
-        0x01,              # version
-        0x00, 0x00, 0x00   # reserved
+        'ISCP',             # magic
+        16,                 # header size (16 bytes)
+        len(iscp_message),  # data size
+        0x01,               # version
+        0x00, 0x00, 0x00    # reserved
     )
 
-    return "%s%s" % (header, data)
+    return "%s%s" % (header, iscp_message)
 
 
 def parse_packet(bytes):
@@ -42,15 +42,17 @@ def parse_packet(bytes):
 
 
 def command_to_packet(command):
-    """Convert an ascii command like (PVR00) to the binary data we need
-    to send to the receiver.
+    """Convert an ascii command like (PVR00) to the binary data we
+    need to send to the receiver.
     """
+    # First, create a ISCP message.
     # ! = start character
     # 1 = destination unit type, 1 means receiver
     if '!1' != command[:2]:
         command = '!1%s' % command
-    command = '%s\r' % command
-    return eiscp_packet(command)
+    iscp_message = '%s\r' % command
+    # Wrap the message inside an eISCP packet.
+    return eiscp_packet(iscp_message)
 
 
 def normalize_command(command):
@@ -223,11 +225,11 @@ class eISCP(object):
         eiscp_command = '%s%s' % (prefix, value)
         return self.raw(eiscp_command)
 
-    def raw(self, eiscp_command):
-        """Send a low-level ISCP command directly, like ``MVL50``.
+    def raw(self, iscp_message):
+        """Send a low-level ISCP message directly, like ``MVL50``.
         """
         self._ensure_socket_connected()
-        self.command_socket.send(command_to_packet(eiscp_command))
+        self.command_socket.send(command_to_packet(iscp_message))
 
     def power_on(self):
         """Turn the receiver power on."""
