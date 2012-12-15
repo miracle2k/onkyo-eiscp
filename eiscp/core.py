@@ -146,33 +146,14 @@ class eISCP(object):
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.disconnect()
 
-    def command(self, command, arguments=None, zone=None):
-        """Execute a command.
+    def command_to_raw(self, command, arguments=None, zone=None):
+        """Transform the given given high-level command to a
+        low-level ISCP message.
 
-        This exposes a system of human-readable, "pretty"
-        commands, which is organized into three parts: the zone, the
-        command, and arguments. For example::
+        Raises :class:`ValueError` if `command` is not valid.
 
-            command('power', 'on')
-            command('power', 'on', zone='main')
-            command('volume', 66, zone='zone2')
-
-        As you can see, if no zone is given, the main zone is assumed.
-
-        Instead of passing three different parameters, you may put the
-        whole thing in a single string, which is helpful when taking
-        input from users::
-
-            command('power on')
-            command('zone2 volume 66')
-
-        To further simplify things, for example when taking user input
-        from a command line, where whitespace needs escaping, the
-        following is also supported:
-
-            command('power=on')
-            command('zone2.volume=66')
-
+        See :meth:`command` for more information on how a high-level
+        command looks like.
         """
         default_zone = 'main'
         command_sep = r'[. ]'
@@ -222,8 +203,38 @@ class eISCP(object):
             raise ValueError('"%s" is not a valid argument for command '
                              '"%s" in zone "%s"' % (argument, command, zone))
 
-        eiscp_command = '%s%s' % (prefix, value)
-        return self.raw(eiscp_command)
+        return '%s%s' % (prefix, value)
+
+    def command(self, command, arguments=None, zone=None):
+        """Execute a command.
+
+        This exposes a system of human-readable, "pretty"
+        commands, which is organized into three parts: the zone, the
+        command, and arguments. For example::
+
+            command('power', 'on')
+            command('power', 'on', zone='main')
+            command('volume', 66, zone='zone2')
+
+        As you can see, if no zone is given, the main zone is assumed.
+
+        Instead of passing three different parameters, you may put the
+        whole thing in a single string, which is helpful when taking
+        input from users::
+
+            command('power on')
+            command('zone2 volume 66')
+
+        To further simplify things, for example when taking user input
+        from a command line, where whitespace needs escaping, the
+        following is also supported:
+
+            command('power=on')
+            command('zone2.volume=66')
+
+        """
+        iscp_message = self.command_to_raw(command)
+        return self.raw(iscp_message)
 
     def raw(self, iscp_message):
         """Send a low-level ISCP message directly, like ``MVL50``.

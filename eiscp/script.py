@@ -102,17 +102,18 @@ def main(argv=sys.argv):
     for receiver in receivers:
         with receiver:
             for command in to_execute:
-                print '%s: %s' % (receiver, command)
-                # TODO: two step process: convert to raw to validate, then send
-                try:
-                    if command.isupper() and command.isalnum():
-                        receiver.raw(command)
+                if command.isupper() and command.isalnum():
+                    print '%s: %s' % (receiver, command)
+                    receiver.raw(command)
+                else:
+                    print '%s: %s' % (receiver, command)
+                    try:
+                        raw = receiver.command_to_raw(command)
+                    except ValueError, e:
+                        print "Error:", e
+                        return 2
                     else:
-                        receiver.command(command)
-                except ValueError, e:
-                    # TODO: We should validate commands before send them.
-                    print "Error:", e
-                    return 2
+                        receiver.raw(raw)
 
 
 def run():
