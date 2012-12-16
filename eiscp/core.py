@@ -2,7 +2,6 @@ import re
 import struct
 import time
 import socket, select
-import logging
 import Queue, threading
 from collections import namedtuple
 
@@ -310,7 +309,7 @@ class eISCP(object):
         try:
             self.command_socket.close()
         except:
-            logging.exception('Could not close serial port %s' % self.port)
+            pass
         self.command_socket = None
 
     def __enter__(self):
