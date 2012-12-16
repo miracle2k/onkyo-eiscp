@@ -114,6 +114,8 @@ turned on.
 Python module
 -------------
 
+In a simple case, this might look like this:
+
 .. code:: python
 
     import eiscp
@@ -127,8 +129,8 @@ Python module
 
     receiver.disconnect()
 
-Don't forget to call ``disconnect()`` to close the socket. You can also use a
-``with`` statement:
+Don't forget to call ``disconnect()`` to close the socket. You can also use
+a ``with`` statement:
 
 .. code:: python
 
@@ -136,9 +138,74 @@ Don't forget to call ``disconnect()`` to close the socket. You can also use a
         receiver.command('source all-ch-stereo')
 
 
-The command language is explain above. There is a lower level command:
+The command language is explained above. You can also be more explict with
+the structure::
 
     receiver.command('power', 'on', zone='main')
+
+If you prefer to send low-level ISCP commands directly, you can use the
+:meth:`raw` method::
+
+    receiver.raw('MVLUP')
+
+The function :func:`command_to_iscp` will allow you to convert a high-level
+command to a low-level ISCP message for use with :meth:`eISCP.raw`.
+
+
+Receiving messages
+~~~~~~~~~~~~~~~~~~
+
+The Onkyo receiver will send messages to you as well. Specifically, it
+returns a response to every command you send, either by repeating the
+command you have sent back to you, or, in case you sent a query
+message, reporting the answer to you query. It will also send unsolicited
+status updates to you whenver the state of the receiver changes.
+
+API-wise, the :meth:`eISCP.raw` and :meth:`eISCP.command` return the
+response received from the Onkyo device. They are blocking.
+
+To receive other messages, there is :meth:`eISCP.get`, which will
+either return a message or ``None``. You may specify a custom timeout
+value.
+
+.. warning::
+    At least for now, there is no queue. If you call
+    :meth:`eISCP.raw` or :meth:`eISCP.command`, any messages not picked
+    up via :meth:`eISCP.get` are lost.
+
+A problem with the Onkyo protocol is that there is no fool-proof way to
+differentiate a response from unsolicited status updates. Generally, this
+won't be an issue, though in theory the response that is given to you
+after sending ``SLI05`` may be a ``SLI06`` update from another controller.
+
+It is thus preferable to approach the protocol in a different way. Instead
+of using :meth:`eISCP.raw` or :meth:`eISCP.command`, which try to serialize
+the exchange into a request-response scheme, you may also use
+:meth:`eISCP.send`, which dispatches a message without waiting for a response.
+You would then use :meth:`get` to process all incoming messages in the same
+way, regardless of why they were sent. This works well, since a response to
+either a command or a query is no different than a status update.
+
+
+Async API
+~~~~~~~~~
+
+There is also an experimental :class:`eiscp.Receiver`, which has the
+same api as :class:`eiscp.eISCP`, but uses a background thread for
+network communication. This allows you to handle incoming messages
+via a callback::
+
+    def message_received(message):
+        print message
+
+    receiver = Receiver('...')
+    receiver.on_message = message_received
+
+Note that the ``on_message`` handler is executed on the background
+thread, so you may want to use a queue.
+
+For consistancy, :meth:`eISCP.raw` and :meth:`eISCP.command` are still
+designed to artificially block, while :meth:`eISCP.send` is non-blocking.
 
 
 Device discovery
@@ -164,7 +231,6 @@ A discovered device has an ``info`` attribute that gives you some data:
 Limitations
 -----------
 
-- Receiving status information is not yet supported.
 - Some commands require a more complex argument structure, like
   variable-length strings, and those are not yet supported (you can
   send them in raw mode of course).

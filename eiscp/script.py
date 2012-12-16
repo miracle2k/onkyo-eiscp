@@ -30,7 +30,7 @@ import sys
 import os
 import docopt
 
-from core import eISCP
+from core import eISCP, command_to_iscp, iscp_to_command
 import commands
 
 
@@ -103,17 +103,21 @@ def main(argv=sys.argv):
         with receiver:
             for command in to_execute:
                 if command.isupper() and command.isalnum():
-                    print '%s: %s' % (receiver, command)
-                    receiver.raw(command)
+                    iscp_command = command
+                    raw_response = True
                 else:
-                    print '%s: %s' % (receiver, command)
                     try:
-                        raw = receiver.command_to_raw(command)
+                        iscp_command = command_to_iscp(command)
                     except ValueError, e:
                         print "Error:", e
                         return 2
-                    else:
-                        receiver.raw(raw)
+                    raw_response = False
+
+                print '%s: %s' % (receiver, iscp_command)
+                response = receiver.raw(iscp_command)
+                if not raw_response:
+                    response = iscp_to_command(response)
+                print response
 
 
 def run():
