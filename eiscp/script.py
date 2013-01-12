@@ -1,7 +1,7 @@
 """Control Onkyo A/V receivers.
 
 Usage:
-  onkyo [--host <host>] [--host <port>] [--all] [--name <name>] <command>...
+  onkyo [--host <host>] [--port <port>] [--all] [--name <name>] <command>...
   onkyo --discover
   onkyo --help-commands [<zone> <command>]
   onkyo -h | --help
