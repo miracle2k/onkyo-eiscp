@@ -1,4 +1,4 @@
-"""Control Onkyo A/V receivers.
+'''Control Onkyo A/V receivers.
 
 Usage:
   %(program_name)s [--host <host>] [--port <port>] [--all] [--name <name>]
@@ -25,7 +25,7 @@ Examples:
     Turn receiver on, select "PC" source, set volume to 75.
   onkyo zone2.power:standby
     To execute a command for zone that isn't the main one.
-"""
+'''
 
 import sys
 import os
@@ -38,6 +38,7 @@ import commands
 # documentation.
 __doc__ %= dict(program_name=sys.argv[0])
 
+
 def main(argv=sys.argv):
     basename = os.path.basename(argv[0])
     options = docopt.docopt(__doc__, help=True)
@@ -45,7 +46,7 @@ def main(argv=sys.argv):
     # List commands
     if options['--discover']:
         for receiver in eISCP.discover(timeout=1):
-            print "%s %s:%s" % (
+            print '%s %s:%s' % (
                 receiver.info['model_name'], receiver.host, receiver.port)
         return
 
@@ -53,11 +54,11 @@ def main(argv=sys.argv):
     if options['--help-commands']:
         # List the zones
         if not options['<zone>']:
-            print "Available zones:"
+            print 'Available zones:'
             for zone in commands.COMMANDS:
-                print "  %s" % zone
-            print "Use %s --help-commands <zone> to see a list of "\
-                  "commands for that zone." % basename
+                print '  %s' % zone
+            print 'Use %s --help-commands <zone> to see a list of '\
+                  'commands for that zone.' % basename
             return
         # List the commands
         selected_zone = options['<zone>']
@@ -67,9 +68,9 @@ def main(argv=sys.argv):
         if not options['<command>']:
             print 'Available commands for this zone:'
             for _, command in commands.COMMANDS[selected_zone].items():
-                print "  %s - %s" % (command['name'], command['description'])
-            print "Use %s --help-commands %s <command> to see a list "\
-                  "of possible values." % (basename, selected_zone)
+                print '  %s - %s' % (command['name'], command['description'])
+            print 'Use %s --help-commands %s <command> to see a list '\
+                  'of possible values.' % (basename, selected_zone)
             return
         # List values
         selected_command = options['<command>'][0]
@@ -81,7 +82,7 @@ def main(argv=sys.argv):
         print 'Possible values for this command:'
         cmddata = commands.COMMANDS[selected_zone][selected_command]
         for range, value in cmddata['values'].items():
-            print "  %s - %s" % (value['name'], value['description'])
+            print '  %s - %s' % (value['name'], value['description'])
         return
 
     # Determine the receivers the command should run on
@@ -96,7 +97,7 @@ def main(argv=sys.argv):
             else:
                 receivers = receivers[:1]
         if not receivers:
-            print "No receivers found."
+            print 'No receivers found.'
             return 1
 
     # List of commands to execute - deal with special shortcut case
@@ -113,7 +114,7 @@ def main(argv=sys.argv):
                     try:
                         iscp_command = command_to_iscp(command)
                     except ValueError, e:
-                        print "Error:", e
+                        print 'Error:', e
                         return 2
                     raw_response = False
 
