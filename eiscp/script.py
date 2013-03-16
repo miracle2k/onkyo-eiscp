@@ -1,10 +1,11 @@
 """Control Onkyo A/V receivers.
 
 Usage:
-  onkyo [--host <host>] [--port <port>] [--all] [--name <name>] <command>...
-  onkyo --discover
-  onkyo --help-commands [<zone> <command>]
-  onkyo -h | --help
+  %(program_name)s [--host <host>] [--port <port>] [--all] [--name <name>]
+                   <command>...
+  %(program_name)s --discover
+  %(program_name)s --help-commands [<zone> <command>]
+  %(program_name)s -h | --help
 
 Selecting the receiver:
 
@@ -33,6 +34,9 @@ import docopt
 from core import eISCP, command_to_iscp, iscp_to_command
 import commands
 
+# Automatically replace %(program_name)s with the current program name in the
+# documentation.
+__doc__ %= dict(program_name=sys.argv[0])
 
 def main(argv=sys.argv):
     basename = os.path.basename(argv[0])
