@@ -201,6 +201,10 @@ def iscp_to_command(iscp_message):
             if args in zone_cmds[command]['values']:
                 return zone_cmds[command]['name'], \
                        zone_cmds[command]['values'][args]['name']
+            else:
+                return zone_cmds[command]['name'], \
+                   int(args, 16)
+
     else:
         raise ValueError(
             'Cannot convert ISCP message to command: %s' % iscp_message)
