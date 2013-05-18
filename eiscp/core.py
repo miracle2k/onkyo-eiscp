@@ -222,12 +222,12 @@ def filter_for_message(getter_func, msg):
         if candidate and candidate[:3] == msg[:3]:
             return candidate
         # The protocol docs claim that a response  should arrive
-        # within *50ms or the communication as failed*. In my tests,
+        # within *50ms or the communication has failed*. In my tests,
         # however, the interval needed to be at least 200ms before
-        # I managed to see any response, aand only after 300ms
+        # I managed to see any response, and only after 300ms
         # reproducably, so use a generous timeout.
         if time.time() - start > 0.7:
-            raise ValueError('Not received a response')
+            raise ValueError('Timeout waiting for response.')
 
 
 class eISCP(object):
@@ -354,8 +354,8 @@ class eISCP(object):
         a response, there is no fool-proof way to differentiate those
         from unsolicited status updates, though we'll do our best to
         try. Generally, this won't be an issue, though in theory the
-        response this functino returns to you sending ``SLI05`` may be
-        a ``SLI06`` update from another controller.
+        response this function returns to you sending ``SLI05`` may be
+        an ``SLI06`` update from another controller.
 
         It'd be preferable to design your app in a way where you are
         processing all incoming messages the same way, regardless of
