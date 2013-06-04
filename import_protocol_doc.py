@@ -64,7 +64,7 @@ def import_sheet(groupname, sheet, modelsets):
     # Because there is at least one floating standalone table next
     # to the main table, that we don't care about, and which in rows
     # further down below will bother us.
-    max_model_column = len(filter(lambda s: bool(s), modelcols))
+    max_model_column = len(filter(lambda s: bool(s), modelcols)) + 2
 
     prefix = prefix_desc = None
     for row in sheet[1:]:
@@ -139,15 +139,16 @@ def import_sheet(groupname, sheet, modelsets):
                 range = tuple(range)
 
             # Model support
-            support = [re.match(r'(Yes|No)(?:\(\*\))?', c).groups()[0]
-                       for c in row[2:]
-                       # Sometimes neither Yes or No is given. We assume No
-                       # in those cases.
-                       if c]
+            support = [re.match(r'(Yes|No)(?:\(\*\))?', c).groups()[0] \
+                           # Sometimes neither Yes or No is given. We
+                           # assume No in those cases.
+                           if c else "No"
+                       for c in row[2:]]
             # Validate we don't miss anything
+            assert len(support) == len(modelcols) == len(row[2:])
             assert not any([m not in ('Yes','No') for m in support])
 
-            # Get a final list of mnodel names
+            # Get a final list of model names
             supported_modelcols = [
                 model for model, yesno in zip(modelcols, support)
                 if yesno == 'Yes']
@@ -160,7 +161,7 @@ def import_sheet(groupname, sheet, modelsets):
             # readability. Since in post-processing the keys (command names)
             # are liable to change as well, we can't use those to associate
             # the models lists either.
-            if not supported_models in model_sets.values():
+            if not supported_models in model_sets:
                 setname = 'set%d' % (len(modelsets)+1)
                 model_sets[supported_models] = setname
             else:
