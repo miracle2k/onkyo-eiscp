@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='onkyo-eiscp',
-    version='0.9',
+    version='0.9.1',
     url='https://github.com/miracle2k/onkyo-eiscp',
     license='MIT',
     author='Michael Elsdörfer',

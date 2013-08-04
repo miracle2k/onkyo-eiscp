@@ -1,0 +1,8 @@
+0.9.1 (2013-08-04)
+    - Handle more return values without failure.
+    - Support setting range-arguments like volume.
+    - Minor improvements to command definitions.
+    - No longer require specific version of docopt.
+
+0.9 (2013-03-16)
+    - Initial release.
