@@ -3,6 +3,13 @@
 
 from setuptools import setup, find_packages
 
+# Get long_description from README
+import os
+here = os.path.dirname(os.path.abspath(__file__))
+f = open(os.path.join(here, 'README.rst'))
+long_description = f.read().strip()
+f.close()
+
 setup(
     name='onkyo-eiscp',
     version='0.9.1',
@@ -11,6 +18,7 @@ setup(
     author='Michael Elsdörfer',
     author_email='michael@elsdoerfer.com',
     description='Control Onkyo receivers over ethernet.',
+    long_description=long_description,
     packages = find_packages(),
     entry_points="""[console_scripts]\nonkyo = eiscp.script:run\n""",
     install_requires=['docopt>=0.4.1'],
