@@ -1,7 +1,7 @@
 # Generated
 #  by generate_commands_module.py
 #  from eiscp-commands.yaml
-#  at 2013-08-04 13:58:15.055379
+#  at 2013-08-04 14:40:46.165040
 
 from collections import OrderedDict
 
@@ -48,7 +48,7 @@ COMMANDS = OrderedDict([('main', OrderedDict([('PWR', {'description': 'System Po
     ('UP', {'description': 'sets Speaker Switch Wrap-Around', 'name': 'up'}),
     ('QSTN', {'description': 'gets the Speaker State', 'name': 'query'})])}),
   ('MVL', {'description': 'Master Volume Command',
-   'name': 'master-volume',
+   'name': ('master-volume', 'volume'),
    'values': OrderedDict([((0,
      100), {'description': u'Volume Level 0 \u2013 100 ( In hexadecimal representation)', 'name': None}),
     ((0,
@@ -2011,6 +2011,7 @@ COMMAND_MAPPINGS = {'dock': {'command-for-docking-station-via-ri': 'CDS'},
   'video-output-selector': 'VOS',
   'video-picture-mode': 'VPM',
   'video-wide-mode': 'VWM',
+  'volume': 'MVL',
   'xm-artist-name-info': 'XAT',
   'xm-category': 'XCT',
   'xm-channel-name-info': 'XCN',

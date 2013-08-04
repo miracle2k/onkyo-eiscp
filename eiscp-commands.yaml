@@ -114,7 +114,7 @@ main:
         description: gets the Speaker State
         models: set6
   MVL:
-    name: master-volume
+    name: [master-volume, volume]
     description: Master Volume Command
     values:
       ? - 0
