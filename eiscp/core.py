@@ -181,13 +181,30 @@ def command_to_iscp(command, arguments=None, zone=None):
         raise ValueError('"%s" is not a valid command in zone "%s"'
                 % (command, zone))
 
-    # TODO: For now, only support one; though some rare commands would
-    # need multiple.
+    # Resolve the argument to the command. This is a bit more involved,
+    # because some commands support ranges (volume) or patterns
+    # (setting tuning frequency). In some cases, we might imagine
+    # providing the user an API with multiple arguments (TODO: not
+    # currently supported).
     argument = arguments[0]
-    value = commands.VALUE_MAPPINGS[group][prefix].get(argument, argument)
-    if not value in commands.COMMANDS[group][prefix]['values']:
-        raise ValueError('"%s" is not a valid argument for command '
-                         '"%s" in zone "%s"' % (argument, command, zone))
+
+    # 1. Consider if there is a alias, e.g. level-up for UP.
+    try:
+        value = commands.VALUE_MAPPINGS[group][prefix][argument]
+    except KeyError:
+        # 2. See if we can match a range or pattern
+        for possible_arg in commands.VALUE_MAPPINGS[group][prefix]:
+            if argument.isdigit():
+                if isinstance(possible_arg, xrange):
+                    if int(argument) in possible_arg:
+                        # We need to send the format "FF", hex() gives us 0xff
+                        value = hex(int(argument))[2:].upper()
+                    break
+
+            # TODO: patterns not yet supported
+        else:
+            raise ValueError('"%s" is not a valid argument for command '
+                             '"%s" in zone "%s"' % (argument, command, zone))
 
     return '%s%s' % (prefix, value)
 

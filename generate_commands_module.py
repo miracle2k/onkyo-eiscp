@@ -108,14 +108,30 @@ COMMAND_MAPPINGS = {
 
 def find_value_aliases(values):
     for value, data  in values.iteritems():
-        if not 'name' in data:
-            continue
-        name = data['name']
-        if not hasattr(name, '__iter__'):
-            yield name, value
+        # A tuple gives a range, like (0,  100) for the volume
+        if isinstance(value, tuple):
+            key = xrange(*value)
+            yield key, value
+
+        # This is a single value with an alias, i.e.
+        # key = volume-up, value = UP
+        elif 'name' in data:
+            key = data['name']
+            if not isinstance(key, tuple):
+                yield key, value
+            else:
+                # It's possible that there are multiple aliases
+                # for a command
+                for item in key:
+                    yield item, value
         else:
-            for item in name:
-                yield item, value
+            # If no alias ('name' key) is set, this indicates that
+            # the value is a pattern, like nnnnn
+            # We do not support them yet.
+            sys.stderr.write('Skipping patterned argument: %s %s\n' % (value, dict(data)))
+            continue
+
+
 VALUE_MAPPINGS = {
     zone : {
         command : {
