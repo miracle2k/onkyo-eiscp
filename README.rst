@@ -19,7 +19,7 @@ Most recent released version::
 
     $ easy_install onkyo-eiscp
 
-Latest development version::
+Latest `development version`__::
 
     $ easy_install onkyo-eiscp==dev
 
