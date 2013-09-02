@@ -397,7 +397,7 @@ class eISCP(object):
         This is basically a helper that combines :meth:`raw`,
         :func:`command_to_iscp` and :func:`iscp_to_command`.
         """
-        iscp_message = command_to_iscp(command)
+        iscp_message = command_to_iscp(command, arguments, zone)
         response = self.raw(iscp_message)
         if response:
             return iscp_to_command(response)
