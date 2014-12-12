@@ -32,7 +32,7 @@ Usage
 The package installs a script called ``onkyo``, that can be used from the
 command line::
 
-    $ onkyo power=off
+    $ onkyo system-power=off
 
 This will turn your receiver off. You may notice that you haven't given any
 information as to where in the network your receiver is. The script should
@@ -51,7 +51,7 @@ You can select a specific one by filtering by name::
     $ onkyo --discover
     TX-NR709 192.168.178.200:60128
     TX-NR609 192.168.178.169:60128
-    $ onkyo -n 709 power=on
+    $ onkyo -n 709 system-power=on
 
 This will only turn on the TX-NR709 device.
 
@@ -71,7 +71,7 @@ Commands
 A command consists of three parts: The zone, the command, and the arguments.
 Here are some examples::
 
-    power=on
+    system-power=on
     zone2.power=on
     main.balance=3
 
