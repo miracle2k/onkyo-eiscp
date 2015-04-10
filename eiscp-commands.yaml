@@ -569,28 +569,28 @@ main:
         description: unlocks memory
         models: set29
   IFA:
-    name: audio-infomation
-    description: Audio Infomation Command
+    name: audio-information
+    description: Audio Information Command
     values:
       nnnnn:nnnnn:
-        description: Infomation of Audio(Same Immediate Display ',' is separator of
-          infomations)
+        description: Information of Audio(Same Immediate Display ',' is separator of
+          informations)
         models: set30
       QSTN:
         name: query
-        description: gets Infomation of Audio
+        description: gets Information of Audio
         models: set30
   IFV:
-    name: video-infomation
-    description: Video Infomation Command
+    name: video-information
+    description: Video Information Command
     values:
       nnnnn:nnnnn:
-        description: infomation of Video(Same Immediate Display ',' is separator of
-          infomations)
+        description: information of Video(Same Immediate Display ',' is separator of
+          informations)
         models: set21
       QSTN:
         name: query
-        description: gets Infomation of Video
+        description: gets Information of Video
         models: set21
   SLI:
     name: input-selector
