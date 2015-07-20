@@ -24,6 +24,7 @@ setup(
     install_requires=['docopt>=0.4.1'],
     platforms='any',
     classifiers=[
+        'Python 3',
         'Topic :: System :: Networking',
         'Topic :: Games/Entertainment',
         'Topic :: Multimedia',

@@ -64,7 +64,7 @@ def import_sheet(groupname, sheet, modelsets):
     # Because there is at least one floating standalone table next
     # to the main table, that we don't care about, and which in rows
     # further down below will bother us.
-    max_model_column = len(filter(lambda s: bool(s), modelcols)) + 2
+    max_model_column = len([s for s in modelcols if bool(s)]) + 2
 
     prefix = prefix_desc = None
     for row in sheet[1:]:
@@ -72,7 +72,7 @@ def import_sheet(groupname, sheet, modelsets):
         row = row[:max_model_column]
 
         # Remove whitespace from all fields
-        row = map(lambda s: unicode(s).strip(), row)
+        row = [str(s).strip() for s in row]
 
         # Ignore empty lines
         if not any(row):
@@ -114,9 +114,9 @@ def import_sheet(groupname, sheet, modelsets):
             value, desc = row[0], row[1]
 
             # Parse the value - sometimes ranges are given, split those first
-            range = re.split(ur'(?<=["”“])-(?=["”“])', value)
+            range = re.split(r'(?<=["”“])-(?=["”“])', value)
             # Then, remove the quotes
-            validate = lambda s: re.match(ur'^["”“](.*?)["”]$', s)
+            validate = lambda s: re.match(r'^["”“](.*?)["”]$', s)
             range = [validate(r).groups()[0] for r in range]
 
             # If it's actually a single value, store as such
@@ -203,11 +203,11 @@ def import_sheet(groupname, sheet, modelsets):
                     # so does /
                     names = re.split(r'[,/]', name)
                     name = [remove_dups(make_command(name)) for name in names]
-                    name = FlowStyleTuple(filter(lambda s: bool(s), name))
+                    name = FlowStyleTuple([s for s in name if bool(s)])
                 else:
                     name = make_command(name)
                     name = remove_dups(name)
-            elif isinstance(range, basestring):
+            elif isinstance(range, str):
                 if range == 'TG':
                     name = 'toggle'
                 else:
@@ -237,7 +237,7 @@ data = OrderedDict((
     ('zone4', import_sheet('zone4', book.sheets()[7], model_sets)),
     ('dock', import_sheet('dock', book.sheets()[8], model_sets)),
 ))
-data['modelsets'] = OrderedDict(zip(model_sets.values(), model_sets.keys()))
+data['modelsets'] = OrderedDict(list(zip(list(model_sets.values()), list(model_sets.keys()))))
 
 
 
@@ -252,7 +252,7 @@ def represent_odict(dump, tag, mapping, flow_style=None):
         dump.represented_objects[dump.alias_key] = node
     best_style = True
     if hasattr(mapping, 'items'):
-        mapping = mapping.items()
+        mapping = list(mapping.items())
     for item_key, item_value in mapping:
         node_key = dump.represent_data(item_key)
         node_value = dump.represent_data(item_value)
@@ -269,15 +269,15 @@ def represent_odict(dump, tag, mapping, flow_style=None):
     return node
 
 yaml.SafeDumper.add_representer(OrderedDict,
-    lambda dumper, value: represent_odict(dumper, u'tag:yaml.org,2002:map', value))
+    lambda dumper, value: represent_odict(dumper, 'tag:yaml.org,2002:map', value))
 # Be sure to not use flow style, since this makes merging in changes harder.,
 # except for special tuples, so we have a way to display small multi-value
 # sequences in one line.
 yaml.SafeDumper.add_representer(FlowStyleTuple,
-    lambda dumper, value: yaml.SafeDumper.represent_sequence(dumper, u'tag:yaml.org,2002:seq', value, flow_style=True))
+    lambda dumper, value: yaml.SafeDumper.represent_sequence(dumper, 'tag:yaml.org,2002:seq', value, flow_style=True))
 
 
-print """# Last generated
+print("""# Last generated
 #   by %s
 #   from %s
 #   at %s
@@ -286,5 +286,5 @@ print """# Last generated
 # automatic import didn't and often can't do right. These changes
 # should be tracked in source control, so they can be merged with
 # new generated versions of the file.
-""" % (os.path.basename(sys.argv[0]), os.path.basename(sys.argv[1]), datetime.now())
-print yaml.safe_dump(data, default_flow_style=False)
+""" % (os.path.basename(sys.argv[0]), os.path.basename(sys.argv[1]), datetime.now()))
+print(yaml.safe_dump(data, default_flow_style=False))

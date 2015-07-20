@@ -2,10 +2,10 @@ import re
 import struct
 import time
 import socket, select
-import Queue, threading
+import queue, threading
 from collections import namedtuple
 
-import commands
+from . import commands
 
 
 class ISCPMessage(object):
@@ -210,7 +210,7 @@ def command_to_iscp(command, arguments=None, zone=None):
 
 
 def iscp_to_command(iscp_message):
-    for zone, zone_cmds in commands.COMMANDS.iteritems():
+    for zone, zone_cmds in commands.COMMANDS.items():
         # For now, ISCP commands are always three characters, which
         # makes this easy.
         command, args = iscp_message[:3], iscp_message[3:]
@@ -433,7 +433,7 @@ class Receiver(eISCP):
     def _ensure_thread_running(self):
         if not getattr(self, '_thread', False):
             self._stop = False
-            self._queue = Queue.Queue()
+            self._queue = queue.Queue()
             self._thread = threading.Thread(target=self._thread_loop)
             self._thread.start()
 
@@ -485,7 +485,7 @@ class Receiver(eISCP):
                 # Send next message
                 try:
                     item = self._queue.get(timeout=0.01)
-                except Queue.Empty:
+                except queue.Empty:
                     continue
                 if item:
                     message, event, result = item
@@ -501,7 +501,7 @@ class Receiver(eISCP):
                             # to get() them. Maybe use a queue after all.
                             response = filter_for_message(
                                 super(Receiver, self).get, message)
-                        except ValueError, e:
+                        except ValueError as e:
                             # No response received within timeout
                             result.append(e)
                         else:
