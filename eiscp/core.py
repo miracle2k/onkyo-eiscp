@@ -32,9 +32,16 @@ class ISCPMessage(object):
     @classmethod
     def parse(self, data):
         EOF = '\x1a'
+        TERMINATORS = ['\n', '\r']
         assert data[:2] == '!1'
-        assert data[-1] in [EOF, '\n', '\r']
-        return data[2:-3]
+        eof_offset = -1
+        # EOF can be followed by CR/LF/CR+LF
+        if data[eof_offset] in TERMINATORS:
+          eof_offset -= 1
+          if data[eof_offset] in TERMINATORS:
+            eof_offset -= 1
+        assert data[eof_offset] == EOF
+        return data[2:eof_offset]
 
 
 class eISCPPacket(object):
