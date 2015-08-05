@@ -258,6 +258,21 @@ def filter_for_message(getter_func, msg):
             raise ValueError('Timeout waiting for response.')
 
 
+def parse_info(data):
+    response = eISCPPacket.parse(data)
+    # Return string looks something like this:
+    # !1ECNTX-NR609/60128/DX
+    info = re.match(r'''
+        !
+        (?P<device_category>\d)
+        ECN
+        (?P<model_name>[^/]*)/
+        (?P<iscp_port>\d{5})/
+        (?P<area_code>\w{2})/
+        (?P<identifier>.{0,12})
+    ''', response.strip(), re.VERBOSE).groupdict()
+    return info
+
 class eISCP(object):
     """Implements the eISCP interface to Onkyo receivers.
 
@@ -294,18 +309,7 @@ class eISCP(object):
                 break
             data, addr = sock.recvfrom(1024)
 
-            response = eISCPPacket.parse(data)
-            # Return string looks something like this:
-            # !1ECNTX-NR609/60128/DX
-            info = re.match(r'''
-                !
-                (?P<device_category>\d)
-                ECN
-                (?P<model_name>[^/]*)/
-                (?P<iscp_port>\d{5})/
-                (?P<area_code>\w{2})/
-                (?P<identifier>.{0,12})
-            ''', response.strip(), re.VERBOSE).groupdict()
+            info = parse_info(data)
 
             # Give the user a ready-made receiver instance. It will only
             # connect on demand, when actually used.
@@ -319,17 +323,38 @@ class eISCP(object):
     def __init__(self, host, port=60128):
         self.host = host
         self.port = port
+        self._info = None
 
         self.command_socket = None
 
     def __repr__(self):
-        if getattr(self, 'info', False) and self.info.get('model_name'):
+        if self.info and self.info.get('model_name'):
             model = self.info['model_name']
         else:
             model = 'unknown'
         string = "<%s(%s) %s:%s>" % (
             self.__class__.__name__, model, self.host, self.port)
         return string
+
+    @property
+    def info(self):
+        if not self._info:
+            sock = socket.socket(
+                socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+            sock.setblocking(0)
+            sock.bind(('0.0.0.0', 0))
+            sock.sendto(str(eISCPPacket('!xECNQSTN')), (self.host, self.port))
+
+            ready = select.select([sock], [], [], 0.1)
+            if ready[0]:
+                data = sock.recv(1024)
+                self._info = parse_info(data)
+            sock.close()
+        return self._info
+
+    @info.setter
+    def info(self, value):
+        self._info = value
 
     def _ensure_socket_connected(self):
         if self.command_socket is None:
