@@ -2255,7 +2255,7 @@ main:
           \ letters max)\n    when AVR is not displayed NET/USB List(Ketboard,Menu,Popup\u2026\
           ), \"nnnnnnnnn\" is \"See TV\".\n  p ->Property (- : no)\nwhen t = C,\n\
           \  l ->Cursor Position (0-9 : 1st to 10th Line, - : No Cursor)\n  p ->Update\
-          \ Type (P : Page Infomation Update ( Page Clear or Disable List Info) ,\
+          \ Type (P : Page Information Update ( Page Clear or Disable List Info) ,\
           \ C : Cursor Position Update)\nwhen t = U, (for Network Control Only)\n\
           \  l ->Line Info (0-9 : 1st to 10th Line)\n  nnnnnnnnn:Listed data (variable-length,\
           \ 64 Unicode letters [UTF-8 encoded] max)\n    when AVR is not displayed\
@@ -3389,7 +3389,7 @@ main:
           \ Cursor Info)\nwhen t = A,\n  l ->Line Info (0-9 : 1st to 10th Line)\n\
           \  nnnnnnnnn:Listed data (variable-length, 64 letters max ASCII letter only)\n\
           \  p ->Property (- : no)\nwhen t = C,\n  l ->Cursor Position (0-9 : 1st\
-          \ to 10th Line, - : No Cursor)\n  p ->Update Type (P : Page Infomation Update\
+          \ to 10th Line, - : No Cursor)\n  p ->Update Type (P : Page Information Update\
           \ ( Page Clear or Disable List Info) , C : Cursor Position Update)"
         models: set27
   IMD:
@@ -3597,7 +3597,7 @@ main:
         models: set12
       UP:
         name: up
-        description: gets & dispaly DAB Infomation Wrap-Around Up
+        description: gets & dispaly DAB Information Wrap-Around Up
         models: set12
 zone2:
   ZPW:
