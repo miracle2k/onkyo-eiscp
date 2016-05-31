@@ -46,8 +46,8 @@ def main(argv=sys.argv):
     # List commands
     if options['--discover']:
         for receiver in eISCP.discover(timeout=1):
-            print '%s %s:%s' % (
-                receiver.info['model_name'], receiver.host, receiver.port)
+            print '%s %s:%s %s' % (
+                receiver.info['model_name'], receiver.host, receiver.port, receiver.info["identifier"])
         return
 
     # List available commands
