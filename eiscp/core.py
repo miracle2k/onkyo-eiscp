@@ -3,6 +3,7 @@ import struct
 import time
 import socket, select
 import Queue, threading
+import netifaces
 from collections import namedtuple
 
 import commands
@@ -293,32 +294,44 @@ class eISCP(object):
         """
         onkyo_port = 60128
         onkyo_magic = str(eISCPPacket('!xECNQSTN'))
+        # Since due to interface aliasing we may see the same Onkyo device
+        # multiple times, we build the list as a dict keyed by the
+        # unique identifier code
+        found_receivers = {}
 
-        # Broadcast magic
-        sock = socket.socket(
-            socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-        sock.setblocking(0)   # So we can use select()
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        sock.bind(('0.0.0.0', 0))
-        sock.sendto(onkyo_magic, ('255.255.255.255', onkyo_port))
-
-        found_receivers = []
-        while True:
-            ready = select.select([sock], [], [], timeout)
-            if not ready[0]:
-                break
-            data, addr = sock.recvfrom(1024)
-
-            info = parse_info(data)
-
-            # Give the user a ready-made receiver instance. It will only
-            # connect on demand, when actually used.
-            receiver = (clazz or eISCP)(addr[0], int(info['iscp_port']))
-            receiver.info = info
-            found_receivers.append(receiver)
-
-        sock.close()
-        return found_receivers
+        # We do this on all network interfaces
+        # which have an AF_INET address and broadcast address
+        for interface in netifaces.interfaces():
+            ifaddrs=netifaces.ifaddresses(interface)
+            if not netifaces.AF_INET in ifaddrs:
+                continue
+            for ifaddr in ifaddrs[netifaces.AF_INET]:
+                if not "addr" in ifaddr or not "broadcast" in ifaddr:
+                    continue
+                # Broadcast magic
+                sock = socket.socket(
+                    socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+                sock.setblocking(0)   # So we can use select()
+                sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+                sock.bind((ifaddr["addr"], 0))
+                sock.sendto(onkyo_magic, (ifaddr["broadcast"], onkyo_port))
+        
+                while True:
+                    ready = select.select([sock], [], [], timeout)
+                    if not ready[0]:
+                        break
+                    data, addr = sock.recvfrom(1024)
+        
+                    info = parse_info(data)
+        
+                    # Give the user a ready-made receiver instance. It will only
+                    # connect on demand, when actually used.
+                    receiver = (clazz or eISCP)(addr[0], int(info['iscp_port']))
+                    receiver.info = info
+                    found_receivers[info["identifier"]]=receiver
+        
+                sock.close()
+        return found_receivers.values()
 
     def __init__(self, host, port=60128):
         self.host = host
