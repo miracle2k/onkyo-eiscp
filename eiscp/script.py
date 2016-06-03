@@ -1,7 +1,8 @@
 '''Control Onkyo A/V receivers.
 
 Usage:
-  %(program_name)s [--host <host>] [--port <port>] [--all] [--name <name>]
+  %(program_name)s [--host <host>] [--port <port>] 
+                   [--all] [--name <name>] [--id <identifier>]
                    <command>...
   %(program_name)s --discover
   %(program_name)s --help-commands [<zone> <command>]
@@ -13,6 +14,7 @@ Selecting the receiver:
   --port, -p <port>     Connect to this port [default: 60128]
   --all, -a             Discover receivers, send to all found
   --name, -n <name>     Discover receivers, send to those matching name.
+  --id, -i <id>         Discover receivers, send to those matching identifier.
 
 If none of these options is given, the program searches for receivers,
 and uses the first one found.
@@ -94,6 +96,9 @@ def main(argv=sys.argv):
             if options['--name']:
                 receivers = [r for r in receivers
                              if options['--name'] in r.info['model_name']]
+            elif options['--id']:
+                receivers = [r for r in receivers
+                             if options['--id'] in r.info['identifier']]
             else:
                 receivers = receivers[:1]
         if not receivers:
