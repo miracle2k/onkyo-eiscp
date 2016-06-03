@@ -46,7 +46,7 @@ If you have multiple receivers on your network, then by default, it will
 simply connect to the first device found (which may be a different one
 every time).
 
-You can select a specific one by filtering by name or identifier::
+You can select a specific one by filtering by name::
 
     $ onkyo --discover
     TX-NR709 192.168.178.200:60128 0009B0D34163
@@ -55,6 +55,8 @@ You can select a specific one by filtering by name or identifier::
     $ onkyo -n 709 system-power=on
 
 This will only turn on the TX-NR709 device.
+
+Or using the unique identifier::
 
     $ onkyo -i 0009B0D24B75 system-power=on
 
