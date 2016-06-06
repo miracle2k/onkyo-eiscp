@@ -292,6 +292,9 @@ http://code.google.com/p/onkyo-eiscp-remote-windows/
 https://github.com/janten/onkyo-eiscp-remote-mac
     Object-C implementation.
 
+https://github.com/owagner/onkyo2mqtt
+    MQTT connectivity for onkyo-eiscp, adhering to the mqtt-smarthome specification
+
 https://sites.google.com/a/webarts.ca/toms-blog/Blog/new-blog-items/javaeiscp-integraserialcontrolprotocol
     Some Java code. Also deserves credit for providing the official Onkyo
     protocol documentation linked above.
