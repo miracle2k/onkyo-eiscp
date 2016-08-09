@@ -1,3 +1,10 @@
+1.0 (2016-08-09)
+    - Various bug fixes.
+    - Network discovery improvements.
+    
+    With help from Oliver Wagner, Lars Kellogg-Stedman,
+    Rick van Hattem, Paul Cowan and sbrants.
+
 0.9.1 (2013-08-04)
     - Handle more return values without failure.
     - Support setting range-arguments like volume.
