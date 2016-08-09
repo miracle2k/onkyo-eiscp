@@ -151,12 +151,12 @@ the structure::
     receiver.command('power', 'on', zone='main')
 
 If you prefer to send low-level ISCP commands directly, you can use the
-:meth:`raw` method::
+`raw` method::
 
     receiver.raw('MVLUP')
 
-The function :func:`command_to_iscp` will allow you to convert a high-level
-command to a low-level ISCP message for use with :meth:`eISCP.raw`.
+The function `command_to_iscp` will allow you to convert a high-level
+command to a low-level ISCP message for use with `eISCP.raw`.
 
 
 Receiving messages
@@ -168,17 +168,17 @@ command you have sent back to you, or, in case you sent a query
 message, reporting the answer to you query. It will also send unsolicited
 status updates to you whenver the state of the receiver changes.
 
-API-wise, the :meth:`eISCP.raw` and :meth:`eISCP.command` return the
+API-wise, the `eISCP.raw` and `eISCP.command` return the
 response received from the Onkyo device. They are blocking.
 
-To receive other messages, there is :meth:`eISCP.get`, which will
+To receive other messages, there is `eISCP.get`, which will
 either return a message or ``None``. You may specify a custom timeout
 value.
 
 .. warning::
     At least for now, there is no queue. If you call
-    :meth:`eISCP.raw` or :meth:`eISCP.command`, any messages not picked
-    up via :meth:`eISCP.get` are lost.
+    `eISCP.raw` or `eISCP.command`, any messages not picked
+    up via `eISCP.get` are lost.
 
 A problem with the Onkyo protocol is that there is no fool-proof way to
 differentiate a response from unsolicited status updates. Generally, this
@@ -186,10 +186,10 @@ won't be an issue, though in theory the response that is given to you
 after sending ``SLI05`` may be a ``SLI06`` update from another controller.
 
 It is thus preferable to approach the protocol in a different way. Instead
-of using :meth:`eISCP.raw` or :meth:`eISCP.command`, which try to serialize
+of using `eISCP.raw` or `eISCP.command`, which try to serialize
 the exchange into a request-response scheme, you may also use
-:meth:`eISCP.send`, which dispatches a message without waiting for a response.
-You would then use :meth:`get` to process all incoming messages in the same
+`eISCP.send`, which dispatches a message without waiting for a response.
+You would then use `get` to process all incoming messages in the same
 way, regardless of why they were sent. This works well, since a response to
 either a command or a query is no different than a status update.
 
@@ -197,8 +197,8 @@ either a command or a query is no different than a status update.
 Async API
 ~~~~~~~~~
 
-There is also an experimental :class:`eiscp.Receiver`, which has the
-same api as :class:`eiscp.eISCP`, but uses a background thread for
+There is also an experimental `eiscp.Receiver`, which has the
+same api as `eiscp.eISCP`, but uses a background thread for
 network communication. This allows you to handle incoming messages
 via a callback::
 
@@ -211,8 +211,8 @@ via a callback::
 Note that the ``on_message`` handler is executed on the background
 thread, so you may want to use a queue.
 
-For consistancy, :meth:`eISCP.raw` and :meth:`eISCP.command` are still
-designed to artificially block, while :meth:`eISCP.send` is non-blocking.
+For consistancy, `eISCP.raw` and `eISCP.command` are still
+designed to artificially block, while `eISCP.send` is non-blocking.
 
 
 Device discovery
