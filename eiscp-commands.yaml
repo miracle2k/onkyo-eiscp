@@ -692,6 +692,10 @@ main:
         name: usb
         description: sets USB(toggle)
         models: set41
+      2E:
+        name: bluetooth
+        description: sets BLUETOOTH
+        models: set41
       '40':
         name: universal-port
         description: sets Universal PORT
@@ -3813,6 +3817,10 @@ zone2:
         name: usb
         description: sets USB(toggle)
         models: set41
+      2E:
+        name: bluetooth
+        description: sets BLUETOOTH
+        models: set152
       '40':
         name: universal-port
         description: sets Universal PORT
@@ -4383,6 +4391,10 @@ zone3:
         name: usb
         description: sets USB(toggle)
         models: set76
+      2E:
+        name: bluetooth
+        description: sets BLUETOOTH
+        models: set76
       '40':
         name: universal-port
         description: sets Universal PORT
@@ -4819,6 +4831,10 @@ zone4:
       2C:
         name: usb
         description: sets USB(toggle)
+        models: set176
+      2E:
+        name: bluetooth
+        description: sets BLUETOOTH
         models: set176
       '40':
         name: universal-port
