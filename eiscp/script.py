@@ -48,43 +48,43 @@ def main(argv=sys.argv):
     # List commands
     if options['--discover']:
         for receiver in eISCP.discover(timeout=1):
-            print '%s %s:%s %s' % (
-                receiver.info['model_name'], receiver.host, receiver.port, receiver.info['identifier'])
+            print('{} {} {}'.format(
+                receiver.info['model_name'], receiver.host, receiver.port, receiver.info['identifier']))
         return
 
     # List available commands
     if options['--help-commands']:
         # List the zones
         if not options['<zone>']:
-            print 'Available zones:'
+            print('Available zones:')
             for zone in commands.COMMANDS:
-                print '  %s' % zone
-            print 'Use %s --help-commands <zone> to see a list of '\
-                  'commands for that zone.' % basename
+                print('  {}'.format(zone))
+            print('Use {} --help-commands <zone> to see a list of '\
+                  'commands for that zone.'.format(basename))
             return
         # List the commands
         selected_zone = options['<zone>']
         if not selected_zone in commands.COMMANDS:
-            print 'No such zone: %s' % selected_zone
+            print('No such zone: {}'.format(selected_zone))
             return 1
         if not options['<command>']:
-            print 'Available commands for this zone:'
+            print('Available commands for this zone:')
             for _, command in commands.COMMANDS[selected_zone].items():
-                print '  %s - %s' % (command['name'], command['description'])
-            print 'Use %s --help-commands %s <command> to see a list '\
-                  'of possible values.' % (basename, selected_zone)
+                print('  {} - {}'.format(command['name'], command['description']))
+            print('Use {} --help-commands {} <command> to see a list '\
+                  'of possible values.'.format(basename, selected_zone))
             return
         # List values
         selected_command = options['<command>'][0]
         selected_command = commands.COMMAND_MAPPINGS[selected_zone].get(
             selected_command, selected_command)
         if not selected_command in commands.COMMANDS[selected_zone]:
-            print 'No such command in zone: %s' % selected_command
+            print('No such command in zone: {}'.format(selected_command))
             return 1
-        print 'Possible values for this command:'
+        print('Possible values for this command:')
         cmddata = commands.COMMANDS[selected_zone][selected_command]
         for range, value in cmddata['values'].items():
-            print '  %s - %s' % (value['name'], value['description'])
+            print('  {} - {}'.format(value['name'], value['description']))
         return
 
     # Determine the receivers the command should run on
@@ -102,7 +102,7 @@ def main(argv=sys.argv):
             else:
                 receivers = receivers[:1]
         if not receivers:
-            print 'No receivers found.'
+            print('No receivers found.')
             return 1
 
     # List of commands to execute - deal with special shortcut case
@@ -118,16 +118,16 @@ def main(argv=sys.argv):
                 else:
                     try:
                         iscp_command = command_to_iscp(command)
-                    except ValueError, e:
-                        print 'Error:', e
+                    except ValueError as e:
+                        print('Error:', e)
                         return 2
                     raw_response = False
 
-                print '%s: %s' % (receiver, iscp_command)
+                print('{}: {}'.format(receiver, iscp_command))
                 response = receiver.raw(iscp_command)
                 if not raw_response:
                     response = iscp_to_command(response)
-                print response
+                print(response)
 
 
 def run():

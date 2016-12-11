@@ -2,7 +2,7 @@ import re
 import struct
 import time
 import socket, select
-import Queue, threading
+import queue, threading
 import netifaces
 from collections import namedtuple
 
@@ -28,7 +28,7 @@ class ISCPMessage(object):
         # ! = start character
         # 1 = destination unit type, 1 means receiver
         # End character may be CR, LF or CR+LF, according to doc
-        return '!1%s\r' % self.data
+        return '!1{}\r'.format(self.data)
 
     @classmethod
     def parse(self, data):
@@ -58,18 +58,21 @@ class eISCPPacket(object):
         # We attach data separately, because Python's struct module does
         # not support variable length strings,
         header = struct.pack(
-            '! 4s I I b 3b',
-            'ISCP',             # magic
+            '! 4s I I b 3s',
+            b'ISCP',            # magic
             16,                 # header size (16 bytes)
             len(iscp_message),  # data size
             0x01,               # version
-            0x00, 0x00, 0x00    # reserved
+            b'\x00\x00\x00'     #reserved
         )
 
-        self._bytes = "%s%s" % (header, iscp_message)
+        self._bytes = header + iscp_message.encode('utf-8')
         # __new__, string subclass?
 
     def __str__(self):
+        return self._bytes.decode('utf-8')
+
+    def get_raw(self):
         return self._bytes
 
     @classmethod
@@ -77,7 +80,7 @@ class eISCPPacket(object):
         """Parse the eISCP package given by ``bytes``.
         """
         h = cls.parse_header(bytes[:16])
-        data = bytes[h.header_size:h.header_size + h.data_size]
+        data = bytes[h.header_size:h.header_size + h.data_size].decode()
         assert len(data) == h.data_size
         return data
 
@@ -96,6 +99,9 @@ class eISCPPacket(object):
         magic, header_size, data_size, version, reserved = \
             struct.unpack('! 4s I I b 3s', bytes)
 
+        magic = magic.decode()
+        reserved = reserved.decode()
+
         # Strangly, the header contains a header_size field.
         assert magic == 'ISCP'
         assert header_size == 16
@@ -108,7 +114,7 @@ def command_to_packet(command):
     """Convert an ascii command like (PVR00) to the binary data we
     need to send to the receiver.
     """
-    return str(eISCPPacket(ISCPMessage(command)))
+    return eISCPPacket(ISCPMessage(command)).get_raw()
 
 
 def normalize_command(command):
@@ -182,12 +188,12 @@ def command_to_iscp(command, arguments=None, zone=None):
     # Find the command in our database, resolve to internal eISCP command
     group = commands.ZONE_MAPPINGS.get(zone, zone)
     if not zone in commands.COMMANDS:
-        raise ValueError('"%s" is not a valid zone' % zone)
+        raise ValueError('"{}" is not a valid zone'.format(zone))
 
     prefix = commands.COMMAND_MAPPINGS[group].get(command, command)
     if not prefix in commands.COMMANDS[group]:
-        raise ValueError('"%s" is not a valid command in zone "%s"'
-                % (command, zone))
+        raise ValueError('"{}" is not a valid command in zone "{}"'.format(
+                command, zone))
 
     # Resolve the argument to the command. This is a bit more involved,
     # because some commands support ranges (volume) or patterns
@@ -203,7 +209,7 @@ def command_to_iscp(command, arguments=None, zone=None):
         # 2. See if we can match a range or pattern
         for possible_arg in commands.VALUE_MAPPINGS[group][prefix]:
             if argument.isdigit():
-                if isinstance(possible_arg, xrange):
+                if isinstance(possible_arg, range):
                     if int(argument) in possible_arg:
                         # We need to send the format "FF", hex() gives us 0xff
                         value = hex(int(argument))[2:].zfill(2).upper()
@@ -211,14 +217,14 @@ def command_to_iscp(command, arguments=None, zone=None):
 
             # TODO: patterns not yet supported
         else:
-            raise ValueError('"%s" is not a valid argument for command '
-                             '"%s" in zone "%s"' % (argument, command, zone))
+            raise ValueError('"{}" is not a valid argument for command '
+                             '"{}" in zone "{}"'.format(argument, command, zone))
 
-    return '%s%s' % (prefix, value)
+    return '{}{}'.format(prefix, value)
 
 
 def iscp_to_command(iscp_message):
-    for zone, zone_cmds in commands.COMMANDS.iteritems():
+    for zone, zone_cmds in commands.COMMANDS.items():
         # For now, ISCP commands are always three characters, which
         # makes this easy.
         command, args = iscp_message[:3], iscp_message[3:]
@@ -236,7 +242,7 @@ def iscp_to_command(iscp_message):
 
     else:
         raise ValueError(
-            'Cannot convert ISCP message to command: %s' % iscp_message)
+            'Cannot convert ISCP message to command: {}'.format(iscp_message))
 
 
 def filter_for_message(getter_func, msg):
@@ -293,7 +299,7 @@ class eISCP(object):
         in form of a list of dicts.
         """
         onkyo_port = 60128
-        onkyo_magic = str(eISCPPacket('!xECNQSTN'))
+        onkyo_magic = eISCPPacket('!xECNQSTN').get_raw()
         # Since due to interface aliasing we may see the same Onkyo device
         # multiple times, we build the list as a dict keyed by the
         # unique identifier code
@@ -321,7 +327,7 @@ class eISCP(object):
                     if not ready[0]:
                         break
                     data, addr = sock.recvfrom(1024)
-        
+
                     info = parse_info(data)
         
                     # Give the user a ready-made receiver instance. It will only
@@ -345,7 +351,7 @@ class eISCP(object):
             model = self.info['model_name']
         else:
             model = 'unknown'
-        string = "<%s(%s) %s:%s>" % (
+        string = "<{}({}) {}:{}>".format(
             self.__class__.__name__, model, self.host, self.port)
         return string
 
@@ -356,7 +362,7 @@ class eISCP(object):
                 socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
             sock.setblocking(0)
             sock.bind(('0.0.0.0', 0))
-            sock.sendto(str(eISCPPacket('!xECNQSTN')), (self.host, self.port))
+            sock.sendto(eISCPPacket('!xECNQSTN').get_raw(), (self.host, self.port))
 
             ready = select.select([sock], [], [], 0.1)
             if ready[0]:
@@ -409,7 +415,7 @@ class eISCP(object):
         if ready[0]:
             header_bytes = self.command_socket.recv(16)
             header = eISCPPacket.parse_header(header_bytes)
-            message = self.command_socket.recv(header.data_size)
+            message = self.command_socket.recv(header.data_size).decode()
             return ISCPMessage.parse(message)
 
     def raw(self, iscp_message):
@@ -546,7 +552,7 @@ class Receiver(eISCP):
                             # to get() them. Maybe use a queue after all.
                             response = filter_for_message(
                                 super(Receiver, self).get, message)
-                        except ValueError, e:
+                        except ValueError as e:
                             # No response received within timeout
                             result.append(e)
                         else:
