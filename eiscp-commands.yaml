@@ -640,6 +640,10 @@ main:
         name: [dvd, bd, dvd]
         description: sets DVD, BD/DVD
         models: set1
+      '11':
+        name: [strm]
+        description: sets STRM BOX
+        models: set41
       '20':
         name: [tape-1, tv, tape]
         description: sets TAPE(1), TV/TAPE
@@ -3765,6 +3769,10 @@ zone2:
         name: [dvd, bd, dvd]
         description: sets DVD, BD/DVD
         models: set145
+      '11':
+        name: [strm]
+        description: sets STRM BOX
+        models: set152
       '20':
         name: tape
         description: sets TAPE(1)
@@ -4339,6 +4347,10 @@ zone3:
         name: dvd
         description: sets DVD
         models: set159
+      '11':
+        name: [strm]
+        description: sets STRM BOX
+        models: set76
       '20':
         name: tape
         description: sets TAPE(1)
@@ -4780,6 +4792,10 @@ zone4:
         name: dvd
         description: sets DVD
         models: set173
+      '11':
+        name: [strm]
+        description: sets STRM BOX
+        models: set176
       '20':
         name: [tape-1, tv, tape]
         description: sets TAPE(1), TV/TAPE
