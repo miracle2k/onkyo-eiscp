@@ -224,16 +224,11 @@ def iscp_to_command(iscp_message):
         command, args = iscp_message[:3], iscp_message[3:]
         if command in zone_cmds:
             if args in zone_cmds[command]['values']:
-                return zone_cmds[command]['name'], \
-                       zone_cmds[command]['values'][args]['name']
+                args = zone_cmds[command]['values'][args]['name']
             else:
-                match = re.match('[+-]?[0-9a-f]+$', args, re.IGNORECASE)
-                if match:
-                    return zone_cmds[command]['name'], \
-                             int(args, 16)
-                else:
-                    return zone_cmds[command]['name'], args
-
+                if re.match('[+-]?[0-9a-f]+$', args, re.IGNORECASE):
+                    args = int(args, 16)
+            return zone_cmds[command]['name'], args
     else:
         raise ValueError(
             'Cannot convert ISCP message to command: %s' % iscp_message)
@@ -341,13 +336,23 @@ class eISCP(object):
         self.command_socket = None
 
     def __repr__(self):
-        if self.info and self.info.get('model_name'):
-            model = self.info['model_name']
-        else:
-            model = 'unknown'
         string = "<%s(%s) %s:%s>" % (
-            self.__class__.__name__, model, self.host, self.port)
+            self.__class__.__name__, self.model_name, self.host, self.port)
         return string
+
+    @property
+    def model_name(self):
+        if self.info and self.info.get('model_name'):
+            return self.info['model_name']
+        else:
+            return 'unknown-model'
+
+    @property
+    def identifier(self):
+        if self.info and self.info.get('identifier'):
+            return self.info['identifier']
+        else:
+            return 'no-id'
 
     @property
     def info(self):
