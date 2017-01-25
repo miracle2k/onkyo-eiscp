@@ -310,21 +310,21 @@ class eISCP(object):
                 sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
                 sock.bind((ifaddr["addr"], 0))
                 sock.sendto(onkyo_magic, (ifaddr["broadcast"], onkyo_port))
-        
+
                 while True:
                     ready = select.select([sock], [], [], timeout)
                     if not ready[0]:
                         break
                     data, addr = sock.recvfrom(1024)
-        
+
                     info = parse_info(data)
-        
+
                     # Give the user a ready-made receiver instance. It will only
                     # connect on demand, when actually used.
                     receiver = (clazz or eISCP)(addr[0], int(info['iscp_port']))
                     receiver.info = info
                     found_receivers[info["identifier"]]=receiver
-        
+
                 sock.close()
         return found_receivers.values()
 

@@ -1,7 +1,7 @@
 '''Control Onkyo A/V receivers.
 
 Usage:
-  %(program_name)s [--host <host>] [--port <port>] 
+  %(program_name)s [--host <host>] [--port <port>]
                    [--all] [--name <name>] [--id <identifier>]
                    <command>...
   %(program_name)s --discover
