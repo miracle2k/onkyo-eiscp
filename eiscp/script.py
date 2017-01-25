@@ -108,25 +108,29 @@ def main(argv=sys.argv):
     to_execute = options['<command>']
 
     # Execute commands
+    model_names = [r.model_name for r in receivers]
     for receiver in receivers:
         with receiver:
+            name = receiver.model_name
+            if model_names.count(receiver.model_name) > 1:
+                name += '@' + receiver.host
             for command in to_execute:
                 if command.isupper() and command.isalnum():
-                    iscp_command = command
-                    raw_response = True
+                    print 'sending to %s: %s' % (name, command)
+                    response = receiver.raw(command)
+                    print 'response: %s' % response
                 else:
+                    print 'sending to %s: %s (%s)' % (name, command, command_to_iscp(command))
                     try:
-                        iscp_command = command_to_iscp(command)
+                        cmd_name, args = receiver.command(command)
                     except ValueError, e:
                         print 'Error:', e
                         return 2
-                    raw_response = False
-
-                print '%s: %s' % (receiver, iscp_command)
-                response = receiver.raw(iscp_command)
-                if not raw_response:
-                    response = iscp_to_command(response)
-                print response
+                    if isinstance(cmd_name, tuple):
+                        cmd_name = min(cmd_name, key=len)
+                    if isinstance(args, tuple):
+                        args = ','.join(args)
+                    print 'response: %s = %s' % (cmd_name, args)
 
 
 def run():
