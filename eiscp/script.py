@@ -11,7 +11,7 @@ Usage:
 Selecting the receiver:
 
   --host, -t <host>     Connect to this host
-  --port, -p <port>     Connect to this port [default: 60128]
+  --port, -p <port>     Connect to this port
   --all, -a             Discover receivers, send to all found
   --name, -n <name>     Discover receivers, send to those matching name.
   --id, -i <id>         Discover receivers, send to those matching identifier.
@@ -87,8 +87,10 @@ def main(argv=sys.argv):
         return
 
     # Determine the receivers the command should run on
-    if options['--host']:
-        receivers = [eISCP(options['--host'], int(options['--port']))]
+    host = options.get('--host') or os.environ.get('ONKYO_HOST', None)
+    port = int(options.get('--port') or os.environ.get('ONKYO_PORT', eISCP.ONKYO_PORT))
+    if host:
+        receivers = [eISCP(host, port)]
     else:
         receivers = eISCP.discover(timeout=1)
         if not options['--all']:
