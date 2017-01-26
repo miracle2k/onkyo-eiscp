@@ -3,7 +3,7 @@
 Usage:
   %(program_name)s [--host <host>] [--port <port>]
   %(prog_n_space)s [--all] [--name <name>] [--id <identifier>]
-  %(prog_n_space)s <command>...
+  %(prog_n_space)s [--verbose | -v]... <command>...
   %(program_name)s --discover
   %(program_name)s --help-commands [<zone> <command>]
   %(program_name)s -h | --help
@@ -15,6 +15,7 @@ Selecting the receiver:
   --all, -a             Discover receivers, send to all found
   --name, -n <name>     Discover receivers, send to those matching name.
   --id, -i <id>         Discover receivers, send to those matching identifier.
+  --verbose, -v         Show commands sent and additional info
 
 If none of these options is given, the program searches for receivers,
 and uses the first one found.
@@ -119,11 +120,13 @@ def main(argv=sys.argv):
                 name += '@' + receiver.host
             for command in to_execute:
                 if command.isupper() and command.isalnum():
-                    print 'sending to %s: %s' % (name, command)
+                    if options['--verbose'] >= 1:
+                        print 'sending to %s: %s' % (name, command)
                     response = receiver.raw(command)
                     print 'response: %s' % response
                 else:
-                    print 'sending to %s: %s (%s)' % (name, command, command_to_iscp(command))
+                    if options['--verbose'] >= 1:
+                        print 'sending to: %s (%s)' % (name, command, command_to_iscp(command))
                     try:
                         cmd_name, args = receiver.command(command)
                     except ValueError, e:
@@ -133,7 +136,7 @@ def main(argv=sys.argv):
                         cmd_name = min(cmd_name, key=len)
                     if isinstance(args, tuple):
                         args = ','.join(args)
-                    print 'response: %s = %s' % (cmd_name, args)
+                    print '%s: %s = %s' % (name, cmd_name, args)
 
 
 def run():
