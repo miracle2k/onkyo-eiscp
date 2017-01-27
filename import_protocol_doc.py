@@ -24,13 +24,6 @@ import os
 from datetime import datetime
 import yaml
 from collections import OrderedDict
-
-# Currently requires this fork for Excel support:
-# https://github.com/djv/tablib
-# Can be installed via ``sudo pip install -e git+https://github.com/djv/tablib.git#egg=tablib``
-#
-# We could just as well skip tablib and work with the base libraries
-# directly, though.
 import tablib
 
 
@@ -46,6 +39,28 @@ def make_command(name):
 # Tained tuple that can have a non-standard YAML representation
 class FlowStyleTuple(tuple):
     pass
+
+
+def is_known_footer(string):
+    """Sometimes the excel has a footer for a command section and
+    we cannot very reliably differentiate it from a command value
+    (actually, it might be possible, but this appraoch is easier).
+    """
+
+    if not string:
+        return False
+
+    lines = [
+        u'If Jacket Art is disable from one',
+        u'Please refer to sheets of popup xml,',
+        u'Line Separator : " ・ "（0x20, 0xC2, 0xB7, 0x20'
+    ]
+
+    for line in lines:
+        if line in string:
+            return True
+
+    return False
 
 
 def import_sheet(groupname, sheet, modelsets):
@@ -66,36 +81,70 @@ def import_sheet(groupname, sheet, modelsets):
     # further down below will bother us.
     max_model_column = len(filter(lambda s: bool(s), modelcols)) + 2
 
+
+    def loop_rows(data):
+        it = iter(data)
+
+        while True:
+            row = next(it)
+
+            # Special case with many many rows we have to skip
+            # (the NRI query command)
+            if row[0] and 'ex.)XML data' in row[0]:
+                while True:
+                    row = next(it)
+                    if row[0] and 'NET Custom Popup' in row[0]:
+                        break
+
+            else:
+                yield row
+
+
     prefix = prefix_desc = None
-    for row in sheet[1:]:
+    for row in loop_rows(sheet[1:]):
         # Remove right-most columns that no longer belong to the main table
         row = row[:max_model_column]
 
         # Remove whitespace from all fields
-        row = map(lambda s: unicode(s).strip(), row)
+        row = map(lambda s: unicode(s).strip() if s else s, row)
+
+        #print row
 
         # Ignore empty lines
         if not any(row):
             continue
 
-        # This is a command prefix, e.g. "PWR" for power.
-        # What follows are the different values that can be appended,
-        # for example to make up the full command, e.g. "PWR01".
+        # Excel format is as such:
+        # First, there is a row that defines the command prefix,
+        # e.g. "PWR" for power. We can recognize that by the fact that
+        # the model colums are all empty.
         #
-        # The data looks something like ``"PWR" - System Power Command ``,
-        # and we need to parse it.
-        if not any(row[1:]):
+        # What follows in subsequent rows are the different values that
+        # can be appended to the prefix, to make up the full command,
+        # e.g. "PWR01".
+        #
+        # One exception are footer lines below all the values which
+        # contain extra information about the command. These are difficult
+        # to recognize.
+
+        # Try to recognize command footers. Footnotes often start with *.
+        if (row[0].strip().startswith('*') and not row[1]) or is_known_footer(row[0]):
+            continue
+
+        # Let's recognize command prefix headers. The data in
+        # those rows looks something like
+        # ``"PWR" - System Power Command ``, and we need to parse it.
+        elif not any(row[1:]):
             # Ignore a variety of text rows that are similar to a prefix header.
             # We need to grasp at straws here, since we can't look at the
             # row color, which would also tell us if it's a header.
-            if row[0].startswith('*'):
+            if row[0].strip().startswith('*'):
                 continue
             if 'when' in row[0] or 'Ex:' in row[0] or 'is shared' in row[0]:
                 continue
 
             # operation command, command, brakets
-
-            prefix, prefix_desc = re.match(r'"(.*?)" -\s?(.*)', row[0]).groups()
+            prefix, prefix_desc = re.match(r'"?(.*?)"? -\s?(.*)', row[0]).groups()
 
             # Auto-determine a possible command name
             name = re.sub(r'\(.*\)$', '', prefix_desc)  # Remove trailing brackets
@@ -113,37 +162,51 @@ def import_sheet(groupname, sheet, modelsets):
         else:
             value, desc = row[0], row[1]
 
-            # Parse the value - sometimes ranges are given, split those first
-            range = re.split(ur'(?<=["”“])-(?=["”“])', value)
-            # Then, remove the quotes
-            validate = lambda s: re.match(ur'^["”“](.*?)["”]$', s)
-            range = [validate(r).groups()[0] for r in range]
-
-            # If it's actually a single value, store as such
-            # e.g. "UP" as opposed to "0 - 28".
-            if len(range) == 1:
-                range = range[0]
-                # Replace `xx` to make it clearer it's a placeholder
-                range = range.replace('xx', '{xx}')
-                # If it's a number, it should always be hex. We could convert
-                # to base-10, but why bother. They can just as well be treated
-                # as string commands.
-                #try:
-                #    range = int(range, 16)
-                #except ValueError:
-                #    pass
+            if not re.search(r'["”“]', value):
+                range = value
             else:
-                # If it's a range, output all as 10-base for simplicity.
-                range = [int(i, 16) for i in range]
-                # Make sure it's hashable
-                range = tuple(range)
+                # Parse the value - sometimes ranges are given, split those first
+                range = re.split(ur'(?<=["”“])-(?=["”“])', value)
+                # Then, remove the quotes
+                validate = lambda s: re.match(ur'^["”“](.*?)["”]$', s)
+                range = [validate(r).groups()[0] for r in range]
+
+                # If it's actually a single value, store as such
+                # e.g. "UP" as opposed to "0 - 28".
+                if len(range) == 1:
+                    range = range[0]
+                    # Replace `xx` to make it clearer it's a placeholder
+                    range = range.replace('xx', '{xx}')
+                    # If it's a number, it should always be hex. We could convert
+                    # to base-10, but why bother. They can just as well be treated
+                    # as string commands.
+                    #try:
+                    #    range = int(range, 16)
+                    #except ValueError:
+                    #    pass
+                else:
+                    # If it's a range, output all as 10-base for simplicity.
+                    range = [int(i, 16) for i in range]
+                    # Make sure it's hashable
+                    range = tuple(range)
 
             # Model support
-            support = [re.match(r'(Yes|No)(?:\(\*\))?', c).groups()[0] \
-                           # Sometimes neither Yes or No is given. We
-                           # assume No in those cases.
-                           if c else "No"
-                       for c in row[2:]]
+            def parse_support(s):
+                # Sometimes neither Yes or No is given. We
+                # assume No in those cases.
+                if not s:
+                    return False
+
+                m = re.match(r'(Yes|No)(?:\(\*\))?', c)
+                if not m:
+                    # Sometimes it doesn't say Yes or No, but as string
+                    # such as RS232C. It seems that this notes always
+                    # imply YES. We log yes and ignore the extra
+                    # information.
+                    return "Yes"
+                return m.groups()[0]
+
+            support = ['Yes' if parse_support(c) else 'No' for c in row[2:]]
             # Validate we don't miss anything
             assert len(support) == len(modelcols) == len(row[2:])
             assert not any([m not in ('Yes','No') for m in support])
@@ -225,7 +288,10 @@ def import_sheet(groupname, sheet, modelsets):
 
 
 with open(sys.argv[1], 'r') as f:
-    book = tablib.import_book(f.read())
+    try:
+        book = tablib.Databook().load('xlsx', f.read())
+    except Exception as e:
+        raise
 
 
 # Model sets collect unique combinations of supported models.
