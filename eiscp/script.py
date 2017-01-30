@@ -120,31 +120,46 @@ def main(argv=sys.argv):
             if model_names.count(receiver.model_name) > 1:
                 name += '@' + receiver.host
             for command in to_execute:
-                if command.isupper() and command.isalnum():
-                    if options['--verbose'] >= 1:
-                        print 'sending to %s: %s' % (name, command)
+                raw = command.isupper() and command.isalnum()
+                log = Log(name, options, raw)
+                log.log_command(command)
+                if raw:
                     response = receiver.raw(command)
-                    if options['--quiet'] >= 1:
-                        print response
-                    else
-                        print '%s: %s' % (name, response)
                 else:
-                    if options['--verbose'] >= 1:
-                        print 'sending to: %s (%s)' % (name, command, command_to_iscp(command))
                     try:
-                        cmd_name, args = receiver.command(command)
+                        response = receiver.command(command)
                     except ValueError, e:
                         print 'Error:', e
                         return 2
-                    if isinstance(cmd_name, tuple):
-                        cmd_name = min(cmd_name, key=len)
-                    if isinstance(args, tuple):
-                        args = ','.join(args)
-                    if options['--quiet'] >= 1:
-                        print '%s = %s' % (name, cmd_name, args)
-                    else:
-                        print '%s: %s = %s' % (name, cmd_name, args)
+                log.log_response(response)
 
+class Log():
+    def __init__(self, name, options, raw):
+        self.name = name
+        self.verbose = options['--verbose']
+        self.quiet = options['--quiet']
+        self.raw = raw
+    def log_command(self, command):
+        if self.verbose >= 1:
+            if self.raw:
+                command_str = command
+            else:
+                command_str = '%s (%s)' % (command, command_to_iscp(command))
+            print 'sending to %s: %s' % (self.name, command_str)
+    def log_response(self, response):
+        if self.raw:
+            response_str = response
+        else:
+            cmd_name, args = response
+            if isinstance(cmd_name, tuple):
+                cmd_name = min(cmd_name, key=len)
+            if isinstance(args, tuple):
+                args = ','.join(args)
+            response_str = '%s = %s' % (cmd_name, args)
+        if self.quiet >= 1:
+            print response_str
+        else:
+            print '%s: %s' % (self.name, response_str)
 
 def run():
     sys.exit(main() or 0)
