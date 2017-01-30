@@ -2,8 +2,8 @@
 
 Usage:
   %(program_name)s [--host <host>] [--port <port>]
-                   [--all] [--name <name>] [--id <identifier>]
-                   <command>...
+  %(prog_n_space)s [--all] [--name <name>] [--id <identifier>]
+  %(prog_n_space)s <command>...
   %(program_name)s --discover
   %(program_name)s --help-commands [<zone> <command>]
   %(program_name)s -h | --help
@@ -23,9 +23,9 @@ and uses the first one found.
   --help-commands       List available commands.
 
 Examples:
-  onkyo power:on source:pc volume:75
+  %(program_name)s power=on source=pc volume=75
     Turn receiver on, select "PC" source, set volume to 75.
-  onkyo zone2.power:standby
+  %(program_name)s zone2.power=standby
     To execute a command for zone that isn't the main one.
 '''
 
@@ -38,7 +38,8 @@ import commands
 
 # Automatically replace %(program_name)s with the current program name in the
 # documentation.
-__doc__ %= dict(program_name=sys.argv[0])
+program_name = os.path.basename(sys.argv[0])
+__doc__ %= {'program_name': program_name, 'prog_n_space': ' ' * len(program_name)}
 
 
 def main(argv=sys.argv):
