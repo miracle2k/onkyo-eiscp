@@ -3,7 +3,7 @@
 Usage:
   %(program_name)s [--host <host>] [--port <port>]
   %(prog_n_space)s [--all] [--name <name>] [--id <identifier>]
-  %(prog_n_space)s [--verbose | -v]... <command>...
+  %(prog_n_space)s [--verbose | -v]... [--quiet | -q]... <command>...
   %(program_name)s --discover
   %(program_name)s --help-commands [<zone> <command>]
   %(program_name)s -h | --help
@@ -16,6 +16,7 @@ Selecting the receiver:
   --name, -n <name>     Discover receivers, send to those matching name.
   --id, -i <id>         Discover receivers, send to those matching identifier.
   --verbose, -v         Show commands sent and additional info
+  --quiet, -q           Don't include receiver name in response
 
 If none of these options is given, the program searches for receivers,
 and uses the first one found.
@@ -123,7 +124,10 @@ def main(argv=sys.argv):
                     if options['--verbose'] >= 1:
                         print 'sending to %s: %s' % (name, command)
                     response = receiver.raw(command)
-                    print 'response: %s' % response
+                    if options['--quiet'] >= 1:
+                        print response
+                    else
+                        print '%s: %s' % (name, response)
                 else:
                     if options['--verbose'] >= 1:
                         print 'sending to: %s (%s)' % (name, command, command_to_iscp(command))
@@ -136,7 +140,10 @@ def main(argv=sys.argv):
                         cmd_name = min(cmd_name, key=len)
                     if isinstance(args, tuple):
                         args = ','.join(args)
-                    print '%s: %s = %s' % (name, cmd_name, args)
+                    if options['--quiet'] >= 1:
+                        print '%s = %s' % (name, cmd_name, args)
+                    else:
+                        print '%s: %s = %s' % (name, cmd_name, args)
 
 
 def run():
