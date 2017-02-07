@@ -16,7 +16,9 @@ Selecting the receiver:
   --name, -n <name>     Discover receivers, send to those matching name.
   --id, -i <id>         Discover receivers, send to those matching identifier.
   --verbose, -v         Show commands sent and additional info
+                        (specify multiple times to show parsed raw commands)
   --quiet, -q           Don't include receiver name in response
+                        (specify multiple times to hide even the command name)
 
 If none of these options is given, the program searches for receivers,
 and uses the first one found.
@@ -124,13 +126,14 @@ def main(argv=sys.argv):
                 log = Log(name, options, raw)
                 log.log_command(command)
                 if raw:
-                    response = receiver.raw(command)
+                    iscp_message = command
                 else:
                     try:
-                        response = receiver.command(command)
+                        iscp_message = command_to_iscp(command)
                     except ValueError, e:
                         print 'Error:', e
                         return 2
+                response = receiver.raw(iscp_message)
                 log.log_response(response)
 
 class Log():
@@ -141,21 +144,32 @@ class Log():
         self.raw = raw
     def log_command(self, command):
         if self.verbose >= 1:
-            if self.raw:
-                command_str = command
+            if self.verbose >= 2:
+                if self.raw:
+                    command_str = '%s (%s)' % (command, iscp_to_command(command))
+                else:
+                    command_str = '%s (%s)' % (command, command_to_iscp(command))
             else:
-                command_str = '%s (%s)' % (command, command_to_iscp(command))
+                command_str = command
             print 'sending to %s: %s' % (self.name, command_str)
     def log_response(self, response):
-        if self.raw:
+        if self.raw and self.verbose < 2:
             response_str = response
         else:
-            cmd_name, args = response
+            cmd_name, args = iscp_to_command(response)
             if isinstance(cmd_name, tuple):
                 cmd_name = min(cmd_name, key=len)
             if isinstance(args, tuple):
                 args = ','.join(args)
-            response_str = '%s = %s' % (cmd_name, args)
+            if self.quiet >= 2:
+                response_str = args
+            else:
+                if self.verbose >= 2:
+                    response_str = '%s = %s (%s)' % (cmd_name, args, response)
+                else:
+                    response_str = '%s = %s' % (cmd_name, args)
+            if self.raw:
+                response_str = '%s (%s)' % (response, response_str)
         if self.quiet >= 1:
             print response_str
         else:
