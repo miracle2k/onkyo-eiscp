@@ -280,6 +280,8 @@ class eISCP(object):
     uses a background thread.
     """
 
+    ONKYO_PORT = 60128
+
     @classmethod
     def discover(cls, timeout=5, clazz=None):
         """Try to find ISCP devices on network.
@@ -287,7 +289,6 @@ class eISCP(object):
         Waits for ``timeout`` seconds, then returns all devices found,
         in form of a list of dicts.
         """
-        onkyo_port = 60128
         onkyo_magic = str(eISCPPacket('!xECNQSTN'))
         # Since due to interface aliasing we may see the same Onkyo device
         # multiple times, we build the list as a dict keyed by the
@@ -309,7 +310,7 @@ class eISCP(object):
                 sock.setblocking(0)   # So we can use select()
                 sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
                 sock.bind((ifaddr["addr"], 0))
-                sock.sendto(onkyo_magic, (ifaddr["broadcast"], onkyo_port))
+                sock.sendto(onkyo_magic, (ifaddr["broadcast"], eISCP.ONKYO_PORT))
 
                 while True:
                     ready = select.select([sock], [], [], timeout)
