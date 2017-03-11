@@ -14,7 +14,7 @@ import yaml.constructor
 # Since we use lists as keys, we need to load them as tuples
 def construct_tuple(loader, node):
     return tuple(yaml.SafeLoader.construct_sequence(loader, node))
-yaml.SafeLoader.add_constructor(u'tag:yaml.org,2002:seq', construct_tuple)
+yaml.SafeLoader.add_constructor('tag:yaml.org,2002:seq', construct_tuple)
 
 # We also need to load mappings in order
 # Based on https://gist.github.com/844388
@@ -36,7 +36,7 @@ def construct_mapping(self, node, deep=False):
         key = self.construct_object(key_node, deep=deep)
         try:
             hash(key)
-        except TypeError, exc:
+        except TypeError as exc:
             raise yaml.constructor.ConstructorError(
                 'while constructing a mapping', node.start_mark,
                 'found unacceptable key (%s)' % exc, key_node.start_mark)
@@ -44,7 +44,7 @@ def construct_mapping(self, node, deep=False):
         mapping[key] = value
     return mapping
 
-yaml.SafeLoader.add_constructor(u'tag:yaml.org,2002:map', construct_ordereddict)
+yaml.SafeLoader.add_constructor('tag:yaml.org,2002:map', construct_ordereddict)
 
 
 # Load YAML file
@@ -70,12 +70,12 @@ COMMANDS = OrderedDict([
                     'name': value_data.get('name'),
                     'description': value_data['description'],
                 })
-                for value, value_data in command_data['values'].items()
+                for value, value_data in list(command_data['values'].items())
             ]),
         })
-        for command, command_data in commands.iteritems()
+        for command, command_data in commands.items()
     ]))
-    for zone, commands in zones.iteritems()
+    for zone, commands in zones.items()
 ])
 
 # We also want alias mappings to easily allows us to resolve a user command
@@ -90,7 +90,7 @@ ZONE_MAPPINGS = {
 
 
 def find_command_aliases(command_list):
-    for command, data  in command_list.iteritems():
+    for command, data  in command_list.items():
         name = data['name']
         if not hasattr(name, '__iter__'):
             yield name, command
@@ -102,15 +102,15 @@ COMMAND_MAPPINGS = {
         alias : command
         for alias, command in find_command_aliases(commands)
     }
-    for zone, commands in zones.iteritems()
+    for zone, commands in zones.items()
 }
 
 
 def find_value_aliases(values):
-    for value, data  in values.iteritems():
+    for value, data  in values.items():
         # A tuple gives a range, like (0,  100) for the volume
         if isinstance(value, tuple):
-            key = xrange(*value)
+            key = range(*value)
             yield key, value
 
         # This is a single value with an alias, i.e.
@@ -138,9 +138,9 @@ VALUE_MAPPINGS = {
             alias : value
             for alias, value in find_value_aliases(command_data['values'])
         }
-        for command, command_data in commands.items()
+        for command, command_data in list(commands.items())
     }
-    for zone, commands in zones.iteritems()
+    for zone, commands in zones.items()
 }
 
 
@@ -151,7 +151,7 @@ def print_ordereddict(obj, p, cycle):
     if cycle:
         return p.text('OrderedDict(...)')
     p.begin_group(1, 'OrderedDict([')
-    keys = obj.keys()
+    keys = list(obj.keys())
     for idx, key in enumerate(keys):
         if idx:
             p.text(',')
@@ -164,8 +164,7 @@ def print_ordereddict(obj, p, cycle):
     p.end_group(1, '])')
 pretty._type_pprinters[OrderedDict] = print_ordereddict
 
-print \
-"""# Generated
+print("""# Generated
 #  by {0}
 #  from {1}
 #  at {2}
@@ -186,6 +185,6 @@ VALUE_MAPPINGS = {value_mappings}
     zone_mappings=pretty.pretty(ZONE_MAPPINGS),
     command_mappings=pretty.pretty(COMMAND_MAPPINGS),
     value_mappings=pretty.pretty(VALUE_MAPPINGS),
-)
+))
 
 
