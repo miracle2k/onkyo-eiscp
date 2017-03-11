@@ -24,13 +24,6 @@ import os
 from datetime import datetime
 import yaml
 from collections import OrderedDict
-
-# Currently requires this fork for Excel support:
-# https://github.com/djv/tablib
-# Can be installed via ``sudo pip install -e git+https://github.com/djv/tablib.git#egg=tablib``
-#
-# We could just as well skip tablib and work with the base libraries
-# directly, though.
 import tablib
 
 
@@ -46,6 +39,28 @@ def make_command(name):
 # Tained tuple that can have a non-standard YAML representation
 class FlowStyleTuple(tuple):
     pass
+
+
+def is_known_footer(string):
+    """Sometimes the excel has a footer for a command section and
+    we cannot very reliably differentiate it from a command value
+    (actually, it might be possible, but this appraoch is easier).
+    """
+
+    if not string:
+        return False
+
+    lines = [
+        'If Jacket Art is disable from one',
+        'Please refer to sheets of popup xml,',
+        'Line Separator : " ・ "（0x20, 0xC2, 0xB7, 0x20'
+    ]
+
+    for line in lines:
+        if line in string:
+            return True
+
+    return False
 
 
 def import_sheet(groupname, sheet, modelsets):
@@ -64,38 +79,72 @@ def import_sheet(groupname, sheet, modelsets):
     # Because there is at least one floating standalone table next
     # to the main table, that we don't care about, and which in rows
     # further down below will bother us.
-    max_model_column = len(filter(lambda s: bool(s), modelcols)) + 2
+    max_model_column = len([s for s in modelcols if bool(s)]) + 2
+
+
+    def loop_rows(data):
+        it = iter(data)
+
+        while True:
+            row = next(it)
+
+            # Special case with many many rows we have to skip
+            # (the NRI query command)
+            if row[0] and 'ex.)XML data' in row[0]:
+                while True:
+                    row = next(it)
+                    if row[0] and 'NET Custom Popup' in row[0]:
+                        break
+
+            else:
+                yield row
+
 
     prefix = prefix_desc = None
-    for row in sheet[1:]:
+    for row in loop_rows(sheet[1:]):
         # Remove right-most columns that no longer belong to the main table
         row = row[:max_model_column]
 
         # Remove whitespace from all fields
-        row = map(lambda s: unicode(s).strip(), row)
+        row = [str(s).strip() if s else s for s in row]
+
+        #print row
 
         # Ignore empty lines
         if not any(row):
             continue
 
-        # This is a command prefix, e.g. "PWR" for power.
-        # What follows are the different values that can be appended,
-        # for example to make up the full command, e.g. "PWR01".
+        # Excel format is as such:
+        # First, there is a row that defines the command prefix,
+        # e.g. "PWR" for power. We can recognize that by the fact that
+        # the model colums are all empty.
         #
-        # The data looks something like ``"PWR" - System Power Command ``,
-        # and we need to parse it.
-        if not any(row[1:]):
+        # What follows in subsequent rows are the different values that
+        # can be appended to the prefix, to make up the full command,
+        # e.g. "PWR01".
+        #
+        # One exception are footer lines below all the values which
+        # contain extra information about the command. These are difficult
+        # to recognize.
+
+        # Try to recognize command footers. Footnotes often start with *.
+        if (row[0].strip().startswith('*') and not row[1]) or is_known_footer(row[0]):
+            continue
+
+        # Let's recognize command prefix headers. The data in
+        # those rows looks something like
+        # ``"PWR" - System Power Command ``, and we need to parse it.
+        elif not any(row[1:]):
             # Ignore a variety of text rows that are similar to a prefix header.
             # We need to grasp at straws here, since we can't look at the
             # row color, which would also tell us if it's a header.
-            if row[0].startswith('*'):
+            if row[0].strip().startswith('*'):
                 continue
             if 'when' in row[0] or 'Ex:' in row[0] or 'is shared' in row[0]:
                 continue
 
             # operation command, command, brakets
-
-            prefix, prefix_desc = re.match(r'"(.*?)" -\s?(.*)', row[0]).groups()
+            prefix, prefix_desc = re.match(r'"?(.*?)"? -\s?(.*)', row[0]).groups()
 
             # Auto-determine a possible command name
             name = re.sub(r'\(.*\)$', '', prefix_desc)  # Remove trailing brackets
@@ -113,37 +162,51 @@ def import_sheet(groupname, sheet, modelsets):
         else:
             value, desc = row[0], row[1]
 
-            # Parse the value - sometimes ranges are given, split those first
-            range = re.split(ur'(?<=["”“])-(?=["”“])', value)
-            # Then, remove the quotes
-            validate = lambda s: re.match(ur'^["”“](.*?)["”]$', s)
-            range = [validate(r).groups()[0] for r in range]
-
-            # If it's actually a single value, store as such
-            # e.g. "UP" as opposed to "0 - 28".
-            if len(range) == 1:
-                range = range[0]
-                # Replace `xx` to make it clearer it's a placeholder
-                range = range.replace('xx', '{xx}')
-                # If it's a number, it should always be hex. We could convert
-                # to base-10, but why bother. They can just as well be treated
-                # as string commands.
-                #try:
-                #    range = int(range, 16)
-                #except ValueError:
-                #    pass
+            if not re.search(r'["”“]', value):
+                range = value
             else:
-                # If it's a range, output all as 10-base for simplicity.
-                range = [int(i, 16) for i in range]
-                # Make sure it's hashable
-                range = tuple(range)
+                # Parse the value - sometimes ranges are given, split those first
+                range = re.split(r'(?<=["”“])-(?=["”“])', value)
+                # Then, remove the quotes
+                validate = lambda s: re.match(r'^["”“](.*?)["”]$', s)
+                range = [validate(r).groups()[0] for r in range]
+
+                # If it's actually a single value, store as such
+                # e.g. "UP" as opposed to "0 - 28".
+                if len(range) == 1:
+                    range = range[0]
+                    # Replace `xx` to make it clearer it's a placeholder
+                    range = range.replace('xx', '{xx}')
+                    # If it's a number, it should always be hex. We could convert
+                    # to base-10, but why bother. They can just as well be treated
+                    # as string commands.
+                    #try:
+                    #    range = int(range, 16)
+                    #except ValueError:
+                    #    pass
+                else:
+                    # If it's a range, output all as 10-base for simplicity.
+                    range = [int(i, 16) for i in range]
+                    # Make sure it's hashable
+                    range = tuple(range)
 
             # Model support
-            support = [re.match(r'(Yes|No)(?:\(\*\))?', c).groups()[0] \
-                           # Sometimes neither Yes or No is given. We
-                           # assume No in those cases.
-                           if c else "No"
-                       for c in row[2:]]
+            def parse_support(s):
+                # Sometimes neither Yes or No is given. We
+                # assume No in those cases.
+                if not s:
+                    return False
+
+                m = re.match(r'(Yes|No)(?:\(\*\))?', c)
+                if not m:
+                    # Sometimes it doesn't say Yes or No, but as string
+                    # such as RS232C. It seems that this notes always
+                    # imply YES. We log yes and ignore the extra
+                    # information.
+                    return "Yes"
+                return m.groups()[0]
+
+            support = ['Yes' if parse_support(c) else 'No' for c in row[2:]]
             # Validate we don't miss anything
             assert len(support) == len(modelcols) == len(row[2:])
             assert not any([m not in ('Yes','No') for m in support])
@@ -203,11 +266,11 @@ def import_sheet(groupname, sheet, modelsets):
                     # so does /
                     names = re.split(r'[,/]', name)
                     name = [remove_dups(make_command(name)) for name in names]
-                    name = FlowStyleTuple(filter(lambda s: bool(s), name))
+                    name = FlowStyleTuple([s for s in name if bool(s)])
                 else:
                     name = make_command(name)
                     name = remove_dups(name)
-            elif isinstance(range, basestring):
+            elif isinstance(range, str):
                 if range == 'TG':
                     name = 'toggle'
                 else:
@@ -225,7 +288,10 @@ def import_sheet(groupname, sheet, modelsets):
 
 
 with open(sys.argv[1], 'r') as f:
-    book = tablib.import_book(f.read())
+    try:
+        book = tablib.Databook().load('xlsx', f.read())
+    except Exception as e:
+        raise
 
 
 # Model sets collect unique combinations of supported models.
@@ -237,7 +303,7 @@ data = OrderedDict((
     ('zone4', import_sheet('zone4', book.sheets()[7], model_sets)),
     ('dock', import_sheet('dock', book.sheets()[8], model_sets)),
 ))
-data['modelsets'] = OrderedDict(zip(model_sets.values(), model_sets.keys()))
+data['modelsets'] = OrderedDict(list(zip(list(model_sets.values()), list(model_sets.keys()))))
 
 
 
@@ -252,7 +318,7 @@ def represent_odict(dump, tag, mapping, flow_style=None):
         dump.represented_objects[dump.alias_key] = node
     best_style = True
     if hasattr(mapping, 'items'):
-        mapping = mapping.items()
+        mapping = list(mapping.items())
     for item_key, item_value in mapping:
         node_key = dump.represent_data(item_key)
         node_value = dump.represent_data(item_value)
@@ -269,15 +335,15 @@ def represent_odict(dump, tag, mapping, flow_style=None):
     return node
 
 yaml.SafeDumper.add_representer(OrderedDict,
-    lambda dumper, value: represent_odict(dumper, u'tag:yaml.org,2002:map', value))
+    lambda dumper, value: represent_odict(dumper, 'tag:yaml.org,2002:map', value))
 # Be sure to not use flow style, since this makes merging in changes harder.,
 # except for special tuples, so we have a way to display small multi-value
 # sequences in one line.
 yaml.SafeDumper.add_representer(FlowStyleTuple,
-    lambda dumper, value: yaml.SafeDumper.represent_sequence(dumper, u'tag:yaml.org,2002:seq', value, flow_style=True))
+    lambda dumper, value: yaml.SafeDumper.represent_sequence(dumper, 'tag:yaml.org,2002:seq', value, flow_style=True))
 
 
-print """# Last generated
+print("""# Last generated
 #   by %s
 #   from %s
 #   at %s
@@ -286,5 +352,5 @@ print """# Last generated
 # automatic import didn't and often can't do right. These changes
 # should be tracked in source control, so they can be merged with
 # new generated versions of the file.
-""" % (os.path.basename(sys.argv[0]), os.path.basename(sys.argv[1]), datetime.now())
-print yaml.safe_dump(data, default_flow_style=False)
+""" % (os.path.basename(sys.argv[0]), os.path.basename(sys.argv[1]), datetime.now()))
+print(yaml.safe_dump(data, default_flow_style=False))
