@@ -33,8 +33,8 @@ import sys
 import os
 import docopt
 
-from core import eISCP, command_to_iscp, iscp_to_command
-import commands
+from .core import eISCP, command_to_iscp, iscp_to_command
+from . import commands
 
 # Automatically replace %(program_name)s with the current program name in the
 # documentation.
@@ -100,7 +100,7 @@ def main(argv=sys.argv):
                 receivers = [r for r in receivers
                              if options['--id'] in r.info['identifier']]
             else:
-                receivers = receivers[:1]
+                receivers = list(receivers)[:1]
         if not receivers:
             print('No receivers found.')
             return 1

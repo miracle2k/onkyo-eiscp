@@ -6,7 +6,7 @@ import queue, threading
 import netifaces
 from collections import namedtuple
 
-import commands
+from . import commands
 
 
 class ISCPMessage(object):
@@ -332,7 +332,8 @@ class eISCP(object):
         
                     # Give the user a ready-made receiver instance. It will only
                     # connect on demand, when actually used.
-                    receiver = (clazz or eISCP)(addr[0], int(info['iscp_port']))
+                    #receiver = (clazz or eISCP)
+                    receiver = eISCP(addr[0], int(info['iscp_port']))
                     receiver.info = info
                     found_receivers[info["identifier"]]=receiver
         
