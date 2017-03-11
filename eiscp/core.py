@@ -290,6 +290,7 @@ class eISCP(object):
     You may want to look at the :meth:`Receiver` class instead, which
     uses a background thread.
     """
+    ONKYO_PORT = 60128
 
     @classmethod
     def discover(cls, timeout=5, clazz=None):
@@ -298,7 +299,6 @@ class eISCP(object):
         Waits for ``timeout`` seconds, then returns all devices found,
         in form of a list of dicts.
         """
-        onkyo_port = 60128
         onkyo_magic = eISCPPacket('!xECNQSTN').get_raw()
         # Since due to interface aliasing we may see the same Onkyo device
         # multiple times, we build the list as a dict keyed by the
@@ -320,7 +320,7 @@ class eISCP(object):
                 sock.setblocking(0)   # So we can use select()
                 sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
                 sock.bind((ifaddr["addr"], 0))
-                sock.sendto(onkyo_magic, (ifaddr["broadcast"], onkyo_port))
+                sock.sendto(onkyo_magic, (ifaddr["broadcast"], eISCP.ONKYO_PORT))
         
                 while True:
                     ready = select.select([sock], [], [], timeout)
@@ -337,7 +337,7 @@ class eISCP(object):
                     found_receivers[info["identifier"]]=receiver
         
                 sock.close()
-        return found_receivers.values()
+        return list(found_receivers.values())
 
     def __init__(self, host, port=60128):
         self.host = host
@@ -345,6 +345,20 @@ class eISCP(object):
         self._info = None
 
         self.command_socket = None
+
+    @property
+    def model_name(self):
+        if self.info and self.info.get('model_name'):
+            return self.info['model_name']
+        else:
+            return 'unknown-model'
+
+    @property
+    def identifier(self):
+        if self.info and self.info.get('identifier'):
+            return self.info['identifier']
+        else:
+            return 'no-id'
 
     def __repr__(self):
         if self.info and self.info.get('model_name'):
