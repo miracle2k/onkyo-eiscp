@@ -346,7 +346,7 @@ COMMANDS = OrderedDict([('main', OrderedDict([('PWR', {'values': OrderedDict([('
      'description': 'sets TAPE(1), TV/TAPE'}),
     ('21', {'name': 'tape2', 'description': 'sets TAPE2'}),
     ('22', {'name': 'phono', 'description': 'sets PHONO'}),
-    ('23', {'name': ('cd', 'tv', 'cd'), 'description': 'sets CD, TV/CD'}),
+    ('23', {'name': ('cd', 'tv/cd'), 'description': 'sets CD, TV/CD'}),
     ('24', {'name': 'fm', 'description': 'sets FM'}),
     ('25', {'name': 'am', 'description': 'sets AM'}),
     ('\u201c26\u201d', {'name': 'tuner', 'description': 'sets TUNER'}),
