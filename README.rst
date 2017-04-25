@@ -19,12 +19,6 @@ Most recent released version::
 
     $ easy_install onkyo-eiscp
 
-Latest `development version`__::
-
-    $ easy_install onkyo-eiscp==dev
-
-__ http://github.com/miracle2k/onkyo-eiscp/tarball/master#egg=onkyo-eiscp-dev
-
 
 Usage
 -----
