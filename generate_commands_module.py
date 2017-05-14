@@ -89,18 +89,17 @@ ZONE_MAPPINGS = {
 }
 
 
-def find_command_aliases(command_list):
-    for command, data  in command_list.items():
-        name = data['name']
-        if not hasattr(name, '__iter__'):
-            yield name, command
-        else:
-            for item in name:
-                yield item, command
+
+def iter_commands_with_aliases(commands):
+    for iscp_command, command_data in commands.items():
+        yield command_data['name'], iscp_command
+        for alias in command_data.get('aliases', []):
+            yield alias, iscp_command
+
 COMMAND_MAPPINGS = {
     zone : {
         alias : command
-        for alias, command in find_command_aliases(commands)
+        for alias, command in iter_commands_with_aliases(commands)
     }
     for zone, commands in zones.items()
 }
