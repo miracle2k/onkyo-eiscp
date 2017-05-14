@@ -7,6 +7,7 @@ import netifaces
 from collections import namedtuple
 
 from . import commands
+from .utils import ValueRange
 
 
 class ISCPMessage(object):
@@ -209,7 +210,7 @@ def command_to_iscp(command, arguments=None, zone=None):
         # 2. See if we can match a range or pattern
         for possible_arg in commands.VALUE_MAPPINGS[group][prefix]:
             if argument.isdigit():
-                if isinstance(possible_arg, range):
+                if isinstance(possible_arg, ValueRange):
                     if int(argument) in possible_arg:
                         # We need to send the format "FF", hex() gives us 0xff
                         value = hex(int(argument))[2:].zfill(2).upper()

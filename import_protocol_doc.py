@@ -190,6 +190,18 @@ def import_sheet(groupname, sheet, modelsets):
                     # Make sure it's hashable
                     range = tuple(range)
 
+                    # TODO: This will fail in a number of cases where
+                    # values given as in -10...0...+10
+                    # Beginning from now we want to rewrite this
+                    # to -10 to 10, with a default of 0. The default
+                    # seems to be always 0. I am not sure if this is
+                    # a true default either, or some kind of strange
+                    # range notation Onkyo uses. In any case, the logic
+                    # to parse these ranges into simple pairs is still
+                    # missing. I add this check as a reminder to myself.
+                    # The YAML already has been manually adjusted.
+                    assert len(range) == 2
+
             # Model support
             def parse_support(s):
                 # Sometimes neither Yes or No is given. We

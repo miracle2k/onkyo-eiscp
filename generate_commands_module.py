@@ -106,11 +106,22 @@ COMMAND_MAPPINGS = {
 }
 
 
+class ValueRange(object):
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+
+        self._range = tuple(range(start, end))
+
+    def __contains__(self, value):
+        return value in self._range
+
+
 def find_value_aliases(values):
     for value, data  in values.items():
         # A tuple gives a range, like (0,  100) for the volume
         if isinstance(value, tuple):
-            key = range(*value)
+            key = ValueRange(*value)
             yield key, value
 
         # This is a single value with an alias, i.e.
@@ -163,6 +174,15 @@ def print_ordereddict(obj, p, cycle):
         p.text(')')
     p.end_group(1, '])')
 pretty._type_pprinters[OrderedDict] = print_ordereddict
+def print_ValueRange(obj, p, cycle):
+    if cycle:
+        return p.text('ValueRange(...)')
+    p.begin_group(1, 'ValueRange(')
+    p.pretty(obj.start)
+    p.text(', ')
+    p.pretty(obj.end)
+    p.end_group(1, ')')
+pretty._type_pprinters[ValueRange] = print_ValueRange
 
 print("""# Generated
 #  by {0}
@@ -170,7 +190,7 @@ print("""# Generated
 #  at {2}
 
 from collections import OrderedDict
-
+from .utils import ValueRange
 
 COMMANDS = {commands}
 

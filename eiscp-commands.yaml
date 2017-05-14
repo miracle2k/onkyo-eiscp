@@ -511,13 +511,11 @@ main:
     description: Subwoofer (temporary) Level Command
     values:
       ? - -30
-        - 0
         - 24
       : name: 15-0db-0-0db-12-0db
         description: sets Subwoofer Level -15.0dB - 0.0dB - +12.0dB(0.5dB Step)
         models: set1
       ? - -15
-        - 0
         - 12
       : name: 15db-0db-12db
         description: sets Subwoofer Level -15dB - 0dB - +12dB
@@ -539,13 +537,11 @@ main:
     description: Subwoofer 2 (temporary) Level Command
     values:
       ? - -30
-        - 0
         - 24
       : name: 15-0db-0-0db-12-0db
         description: sets Subwoofer 2 Level -15.0dB - 0.0dB - +12.0dB(0.5dB Step)
         models: set1
       ? - -15
-        - 0
         - 12
       : name: 15db-0db-12db
         description: sets Subwoofer 2 Level -15dB - 0dB - +12dB
@@ -567,13 +563,11 @@ main:
     description: Center (temporary) Level Command
     values:
       ? - -24
-        - 0
         - 24
       : name: 12-0db-0-0db-12-0db
         description: sets Center Level -12.0dB - 0.0dB - +12.0dB(0.5dB Step)
         models: set1
       ? - -12
-        - 0
         - 12
       : name: 12db-0db-12db
         description: sets Center Level -12dB - 0dB - +12dB
@@ -2639,7 +2633,6 @@ main:
     description: IntelliVolume / Input Level Absorber
     values:
       ? - -24
-        - 0
         - 24
       : name: 12-0db-0db-12-0db
         description: sets IntelliVolume -12.0dB~0dB~+12.0dB(0.5dB Step)
