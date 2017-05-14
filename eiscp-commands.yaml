@@ -11,10 +11,11 @@
 main:
   PWR:
     name: system-power
+    aliases: ['power']
     description: System Power Command
     values:
       '00':
-        name: standby
+        name: [standby, "off"]
         description: sets System Standby
         models: set1
       '01':
@@ -825,6 +826,7 @@ main:
         models: set1
   SLI:
     name: input-selector
+    aliases: ['source']
     description: Input Selector Command
     values:
       '00':
