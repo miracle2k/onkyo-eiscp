@@ -117,6 +117,24 @@ class ValueRange(object):
 
 
 def find_value_aliases(values):
+    """A "command value" or "command argument" in the YAML is defined
+    as::
+
+         ISCP_VALUE:
+            name: some-user-facing-alias-value
+            description: 'foobar'
+
+    ISCP_VALUE can be something static such as "up" or "00", or it
+    can be a range, or pattern. Static values can also have aliases:
+
+        ISCP_VALUE:
+            name: [the-main-user-facing-alias-value, something-else]
+            description: 'foobar'
+
+    This function will return a list of 2-tuples:
+
+        (user-facing-value, iscp_calue)
+    """
     for value, data  in values.items():
         # A tuple gives a range, like (0,  100) for the volume
         if isinstance(value, tuple):
