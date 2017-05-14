@@ -2,7 +2,11 @@ import re
 import struct
 import time
 import socket, select
-import queue, threading
+import threading
+try:
+    import queue as queue
+except ImportError:
+    import Queue as queue
 import netifaces
 from collections import namedtuple
 
