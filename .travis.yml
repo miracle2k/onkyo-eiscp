@@ -7,6 +7,6 @@ python:
   - "3.5"
   - "3.6"
 # command to install dependencies
-install: "setup.py develop && pip install -r requirements-dev.txt"
+install: "./setup.py develop && pip install -r requirements-dev.txt"
 # command to run tests
 script: pytest
