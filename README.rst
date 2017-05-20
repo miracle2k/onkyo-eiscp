@@ -270,8 +270,11 @@ commands, values, and even supported devices.
 Related Links
 -------------
 
+http://michael.elsdoerfer.name/onkyo/ISCP_AVR_134.xlsx
+http://michael.elsdoerfer.name/onkyo/ISCP_AVR_2014%20Models.xlsx
+http://michael.elsdoerfer.name/onkyo/ISCP-V1.26_2013.xlsx
 http://michael.elsdoerfer.name/onkyo/ISCP-V1.21_2011.xls
-    Document from Onkyo describing the protocol, including a full list
+    Documents from Onkyo describing the protocol, including lists
     of supported commands.
 
 https://github.com/compbrain/Onkyo-TX-NR708-Control
