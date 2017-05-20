@@ -270,28 +270,26 @@ commands, values, and even supported devices.
 Related Links
 -------------
 
-http://michael.elsdoerfer.name/onkyo/ISCP_AVR_134.xlsx
-http://michael.elsdoerfer.name/onkyo/ISCP_AVR_2014%20Models.xlsx
-http://michael.elsdoerfer.name/onkyo/ISCP-V1.26_2013.xlsx
-http://michael.elsdoerfer.name/onkyo/ISCP-V1.21_2011.xls
-    Documents from Onkyo describing the protocol, including lists
-    of supported commands.
+Documents from Onkyo describing the protocol, including lists of supported commands:
+    http://michael.elsdoerfer.name/onkyo/ISCP_AVR_134.xlsx
+    http://michael.elsdoerfer.name/onkyo/ISCP_AVR_2014%20Models.xlsx
+    http://michael.elsdoerfer.name/onkyo/ISCP-V1.26_2013.xlsx
+    http://michael.elsdoerfer.name/onkyo/ISCP-V1.21_2011.xls
 
-https://github.com/compbrain/Onkyo-TX-NR708-Control
-    Repository on which this was originally based.
+The repository on which this was originally based on:
+    https://github.com/compbrain/Onkyo-TX-NR708-Control
 
-https://github.com/beanz/device-onkyo-perl
-    Perl implementation.
+An implementation in Perl:
+    https://github.com/beanz/device-onkyo-perl
 
-http://code.google.com/p/onkyo-eiscp-remote-windows/
-    C# implementation.
+An implementation in C#:
+    http://code.google.com/p/onkyo-eiscp-remote-windows/
 
-https://github.com/janten/onkyo-eiscp-remote-mac
-    Object-C implementation.
+An implementation in Object-C:
+    https://github.com/janten/onkyo-eiscp-remote-mac
 
-https://github.com/owagner/onkyo2mqtt
-    MQTT connectivity for onkyo-eiscp, adhering to the mqtt-smarthome specification
+MQTT connectivity for onkyo-eiscp, adhering to the mqtt-smarthome specification:
+    https://github.com/owagner/onkyo2mqtt
 
-https://sites.google.com/a/webarts.ca/toms-blog/Blog/new-blog-items/javaeiscp-integraserialcontrolprotocol
-    Some Java code. Also deserves credit for providing the official Onkyo
-    protocol documentation linked above.
+Some Java code that deserves credit for providing the original Onkyo protocol documentation linked above:
+    https://sites.google.com/a/webarts.ca/toms-blog/Blog/new-blog-items/javaeiscp-integraserialcontrolprotocol
