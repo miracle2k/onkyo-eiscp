@@ -272,7 +272,7 @@ Related Links
 
 Documents from Onkyo describing the protocol, including lists of supported commands:
     - http://michael.elsdoerfer.name/onkyo/ISCP_AVR_134.xlsx
-    - http://michael.elsdoerfer.name/onkyo/ISCP_AVR_2014%20Models.xlsx
+    - http://michael.elsdoerfer.name/onkyo/ISCP_AVR_2014.Models.xlsx
     - http://michael.elsdoerfer.name/onkyo/ISCP-V1.26_2013.xlsx
     - http://michael.elsdoerfer.name/onkyo/ISCP-V1.21_2011.xls
 
