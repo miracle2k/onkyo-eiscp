@@ -1,3 +1,9 @@
+1.2.1 (2017-05-24)
+    - Fix broken master-volume command.
+
+1.2. (2017-05-14)
+    - Fix broken Python 3 support.
+
 1.1 (2017-05-07)
     - Python 3 support (mostly sridhars).
     - Various UX improvements by Decklin Foster.
