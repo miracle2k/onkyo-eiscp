@@ -3,7 +3,7 @@ from eiscp.core import iscp_to_command, command_to_iscp
 
 class TestIscpToCommand:
     def test(self):
-        assert iscp_to_command('MVL') == (('master-volume', 'volume'), '')
+        assert iscp_to_command('MVL') == ('master-volume', '')
 
 
 class TestCommandToIscp:
