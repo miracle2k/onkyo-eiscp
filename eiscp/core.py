@@ -305,6 +305,7 @@ class eISCP(object):
         in form of a list of dicts.
         """
         onkyo_magic = eISCPPacket('!xECNQSTN').get_raw()
+        pioneer_magic = eISCPPacket('!pECNQSTN').get_raw()
         # Since due to interface aliasing we may see the same Onkyo device
         # multiple times, we build the list as a dict keyed by the
         # unique identifier code
@@ -326,6 +327,7 @@ class eISCP(object):
                 sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
                 sock.bind((ifaddr["addr"], 0))
                 sock.sendto(onkyo_magic, (ifaddr["broadcast"], eISCP.ONKYO_PORT))
+                sock.sendto(pioneer_magic, (ifaddr["broadcast"], eISCP.ONKYO_PORT))
         
                 while True:
                     ready = select.select([sock], [], [], timeout)
