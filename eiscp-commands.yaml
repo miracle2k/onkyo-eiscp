@@ -895,7 +895,7 @@ main:
         description: sets PHONO
         models: set1
       '23':
-        name: [cd, tv, cd]
+        name: [cd, tv/cd]
         description: sets CD, TV/CD
         models: set1
       '24':
@@ -3539,7 +3539,7 @@ zone2:
         description: sets PHONO
         models: set3
       '23':
-        name: [cd, tv, cd]
+        name: [cd, tv/cd]
         description: sets CD, TV/CD
         models: set3
       '24':
@@ -4173,7 +4173,7 @@ zone3:
         description: sets PHONO
         models: set4
       '23':
-        name: [cd, tv, cd]
+        name: [cd, tv/cd]
         description: sets CD, TV/CD
         models: set4
       '24':
@@ -4638,7 +4638,7 @@ zone4:
         description: sets PHONO
         models: set6
       '23':
-        name: [cd, tv, cd]
+        name: [cd, tv/cd]
         description: sets CD, TV/CD
         models: set6
       '24':
