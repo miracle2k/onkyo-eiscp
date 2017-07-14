@@ -1,3 +1,7 @@
+1.2.2 (2017-07-15)
+    - Fix selecting the TV source.
+    - Discover support for Pioneer receivers (Michael Brase).
+
 1.2.1 (2017-05-24)
     - Fix broken master-volume command.
 
@@ -11,7 +15,7 @@
 1.0 (2016-08-09)
     - Various bug fixes.
     - Network discovery improvements.
-    
+
     With help from Oliver Wagner, Lars Kellogg-Stedman,
     Rick van Hattem, Paul Cowan and sbrants.
 
