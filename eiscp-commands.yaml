@@ -839,7 +839,7 @@ main:
         description: sets VIDEO2, CBL/SAT
         models: set1
       '02':
-        name: [video3, game, tv, game, game1]
+        name: [video3, game/tv, game, game1]
         description: sets VIDEO3, GAME/TV, GAME, GAME1
         models: set1
       '03':
@@ -883,7 +883,7 @@ main:
         description: sets TV
         models: set1
       '20':
-        name: [tape-1, tv, tape]
+        name: [tape-1, tv/tape]
         description: sets TAPE(1), TV/TAPE
         models: set1
       '21':
@@ -3483,7 +3483,7 @@ zone2:
         description: sets VIDEO2, CBL/SAT
         models: set3
       '02':
-        name: [video3, game, tv, game, game1]
+        name: [video3, game/tv, game, game1]
         description: sets VIDEO3, GAME/TV, GAME, GAME1
         models: set3
       '03':
@@ -4117,7 +4117,7 @@ zone3:
         description: sets VIDEO2, CBL/SAT
         models: set4
       '02':
-        name: [video3, game, tv, game, game1]
+        name: [video3, game/tv, game, game1]
         description: sets VIDEO3, GAME/TV, GAME, GAME1
         models: set4
       '03':
@@ -4590,7 +4590,7 @@ zone4:
         description: sets VIDEO2, CBL/SAT
         models: set6
       '02':
-        name: [video3, game, tv, game, game1]
+        name: [video3, game/tv, game, game1]
         description: sets VIDEO3, GAME/TV, GAME, GAME1
         models: set6
       '03':
@@ -4626,7 +4626,7 @@ zone4:
         description: sets DVD, BD/DVD
         models: set6
       '20':
-        name: [tape-1, tv, tape]
+        name: [tape-1, tv/tape]
         description: sets TAPE(1), TV/TAPE
         models: set6
       '21':
