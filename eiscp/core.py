@@ -505,7 +505,7 @@ class Receiver(eISCP):
     def _ensure_thread_running(self):
         if not getattr(self, '_thread', False):
             self._stop = False
-            self._queue = Queue.Queue()
+            self._queue = queue.Queue()
             self._thread = threading.Thread(target=self._thread_loop)
             self._thread.start()
 
@@ -557,7 +557,7 @@ class Receiver(eISCP):
                 # Send next message
                 try:
                     item = self._queue.get(timeout=0.01)
-                except Queue.Empty:
+                except queue.Empty:
                     continue
                 if item:
                     message, event, result = item
