@@ -51,9 +51,9 @@ def is_known_footer(string):
         return False
 
     lines = [
-        'If Jacket Art is disable from one',
-        'Please refer to sheets of popup xml,',
-        'Line Separator : " ・ "（0x20, 0xC2, 0xB7, 0x20'
+        u'If Jacket Art is disable from one',
+        u'Please refer to sheets of popup xml,',
+        u'Line Separator : " ・ "（0x20, 0xC2, 0xB7, 0x20'
     ]
 
     for line in lines:
@@ -106,7 +106,7 @@ def import_sheet(groupname, sheet, modelsets):
         row = row[:max_model_column]
 
         # Remove whitespace from all fields
-        row = [str(s).strip() if s else s for s in row]
+        row = [unicode(s).strip() if s else s for s in row]
 
         #print row
 
@@ -166,9 +166,10 @@ def import_sheet(groupname, sheet, modelsets):
                 range = value
             else:
                 # Parse the value - sometimes ranges are given, split those first
-                range = re.split(r'(?<=["”“])-(?=["”“])', value)
+                range = re.split(ur'(?<=[\u201d"”“])-(?=[\u201d"”“])', value)
                 # Then, remove the quotes
-                validate = lambda s: re.match(r'^["”“](.*?)["”]$', s)
+                validate = lambda s: re.match(ur'^[\u201d”"”“](.*?)["”]$', s)
+
                 range = [validate(r).groups()[0] for r in range]
 
                 # If it's actually a single value, store as such
