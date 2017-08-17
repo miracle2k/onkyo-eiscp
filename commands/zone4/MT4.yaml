@@ -1,0 +1,26 @@
+description: Zone4 Muting Command
+name: muting
+values:
+  '00':
+    description: sets Zone4 Muting Off
+    models: &id001
+    - DTR-70.1
+    - DTR-70.2
+    - DTR-70.3
+    - DTR-70.4
+    - DTR-80.1
+    - DTR-80.2
+    - DTR-80.3
+    name: 'off'
+  '01':
+    description: sets Zone4 Muting On
+    models: *id001
+    name: 'on'
+  QSTN:
+    description: gets the Zone4 Muting Status
+    models: *id001
+    name: query
+  TG:
+    description: sets Zone4 Muting Wrap-Around
+    models: *id001
+    name: toggle

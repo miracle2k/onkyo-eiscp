@@ -1,0 +1,595 @@
+description: Listening Mode Command
+name: listening-mode
+values:
+  '00':
+    description: sets STEREO
+    models: &id001
+    - /515AE(Ether)
+    - /616AE(Ether)
+    - /818AE
+    - DHC-40.1
+    - DHC-40.2
+    - DHC-60.5
+    - DHC-60.7
+    - DHC-80.1
+    - DHC-80.2
+    - DHC-80.3
+    - DHC-80.6
+    - DHC-9.9
+    - DRX-2
+    - DRX-3
+    - DRX-4
+    - DRX-5
+    - DTC-7
+    - DTC-9.1
+    - DTC-9.4
+    - DTC-9.8
+    - DTR-10.5
+    - DTR-20.1
+    - DTR-20.2
+    - DTR-20.3
+    - DTR-20.4
+    - DTR-20.7
+    - DTR-30.1
+    - DTR-30.2
+    - DTR-30.3
+    - DTR-30.4
+    - DTR-30.5
+    - DTR-30.6
+    - DTR-30.7
+    - DTR-4.5
+    - DTR-4.6
+    - DTR-4.9
+    - DTR-40.1
+    - DTR-40.2
+    - DTR-40.3
+    - DTR-40.4
+    - DTR-40.5
+    - DTR-40.6
+    - DTR-40.7
+    - DTR-5.2
+    - DTR-5.3
+    - DTR-5.4
+    - DTR-5.5
+    - DTR-5.6
+    - DTR-5.8
+    - DTR-5.9
+    - DTR-50.1
+    - DTR-50.2
+    - DTR-50.3
+    - DTR-50.4
+    - DTR-50.5
+    - DTR-50.6
+    - DTR-50.7
+    - DTR-6.2
+    - DTR-6.3
+    - DTR-6.4
+    - DTR-6.5
+    - DTR-6.6
+    - DTR-6.8
+    - DTR-6.9
+    - DTR-60.5
+    - DTR-60.6
+    - DTR-60.7
+    - DTR-7.1
+    - DTR-7.2
+    - DTR-7.3
+    - DTR-7.4
+    - DTR-7.6
+    - DTR-7.7
+    - DTR-7.8
+    - DTR-7.9
+    - DTR-70.1
+    - DTR-70.2
+    - DTR-70.3
+    - DTR-70.4
+    - DTR-70.6
+    - DTR-8.2
+    - DTR-8.3
+    - DTR-8.4
+    - DTR-8.8
+    - DTR-8.9
+    - DTR-80.1
+    - DTR-80.2
+    - DTR-80.3
+    - DTR-9.1
+    - DTR-9.9
+    - DTX-5.8
+    - DTX-5.9
+    - DTX-7
+    - DTX-7.7
+    - DTX-7.8
+    - DTX-8.8
+    - DTX-8.9
+    - DTX-9.9
+    - ETX-NA1000
+    - HT-R693(Ether)
+    - HT-R993(Ether)
+    - HT-RC550(Ether)
+    - HT-RC560(Ether)
+    - HT-RC660
+    - NR-365(Ether)
+    - PR-SC5507
+    - PR-SC5508
+    - PR-SC5509
+    - PR-SC5530
+    - PR-SC885
+    - PR-SC886
+    - RDC-7
+    - RDC-7(Ver2.0)
+    - RDC-7.1
+    - TX-DS787
+    - TX-DS797
+    - TX-DS898
+    - TX-DS989
+    - TX-DS989
+    - TX-NA900
+    - TX-NA905
+    - TX-NA906
+    - TX-NA906X
+    - TX-NR1000
+    - TX-NR1007
+    - TX-NR1008
+    - TX-NR1009
+    - TX-NR1010
+    - TX-NR1030
+    - TX-NR3007
+    - TX-NR3008
+    - TX-NR3009
+    - TX-NR3010
+    - TX-NR3030
+    - TX-NR414(Ether)
+    - TX-NR5000
+    - TX-NR5007
+    - TX-NR5008
+    - TX-NR5009
+    - TX-NR5010
+    - TX-NR509(Ether)
+    - TX-NR515
+    - TX-NR525
+    - TX-NR535(Ether)
+    - TX-NR545(Ether)
+    - TX-NR555(Ether)
+    - TX-NR579(Ether)
+    - TX-NR609(Ether)
+    - TX-NR616
+    - TX-NR626
+    - TX-NR636
+    - TX-NR646(Ether)
+    - TX-NR656(Ether)
+    - TX-NR708
+    - TX-NR709
+    - TX-NR717(Ether)
+    - TX-NR727(Ether)
+    - TX-NR737(Ether)
+    - TX-NR747(Ether)
+    - TX-NR757
+    - TX-NR807
+    - TX-NR808
+    - TX-NR809
+    - TX-NR818
+    - TX-NR828(Ether)
+    - TX-NR838(Ether)
+    - TX-NR900
+    - TX-NR901
+    - TX-NR905
+    - TX-NR906
+    - TX-NR929
+    - TX-RZ610
+    - TX-RZ710
+    - TX-RZ800
+    - TX-RZ810
+    - TX-RZ900
+    - TX-SA706
+    - TX-SA706X
+    - TX-SA805
+    - TX-SA806
+    - TX-SA806X
+    - TX-SA875
+    - TX-SA876
+    - TX-SR702
+    - TX-SR703
+    - TX-SR705
+    - TX-SR706
+    - TX-SR707
+    - TX-SR803
+    - TX-SR804
+    - TX-SR805
+    - TX-SR806
+    - TX-SR875
+    - TX-SR876
+    name: stereo
+  '01':
+    description: sets DIRECT
+    models: *id001
+    name: direct
+  '02':
+    description: sets SURROUND
+    models: *id001
+    name: surround
+  '03':
+    description: sets FILM, Game-RPG
+    models: *id001
+    name:
+    - film
+    - game-rpg
+  '04':
+    description: sets THX
+    models: *id001
+    name: thx
+  '05':
+    description: sets ACTION, Game-Action
+    models: *id001
+    name:
+    - action
+    - game-action
+  '06':
+    description: sets MUSICAL, Game-Rock
+    models: *id001
+    name:
+    - musical
+    - game-rock
+  '07':
+    description: sets MONO MOVIE
+    models: *id001
+    name: mono-movie
+  08:
+    description: sets ORCHESTRA
+    models: *id001
+    name: orchestra
+  09:
+    description: sets UNPLUGGED
+    models: *id001
+    name: unplugged
+  0A:
+    description: sets STUDIO-MIX
+    models: *id001
+    name: studio-mix
+  0B:
+    description: sets TV LOGIC
+    models: *id001
+    name: tv-logic
+  0C:
+    description: sets ALL CH STEREO
+    models: *id001
+    name: all-ch-stereo
+  0D:
+    description: sets THEATER-DIMENSIONAL
+    models: *id001
+    name: theater-dimensional
+  0E:
+    description: sets ENHANCED 7/ENHANCE, Game-Sports
+    models: *id001
+    name:
+    - enhanced-7
+    - enhance
+    - game-sports
+  0F:
+    description: sets MONO
+    models: *id001
+    name: mono
+  '11':
+    description: sets PURE AUDIO
+    models: *id001
+    name: pure-audio
+  '12':
+    description: sets MULTIPLEX
+    models: *id001
+    name: multiplex
+  '13':
+    description: sets FULL MONO
+    models: *id001
+    name: full-mono
+  '14':
+    description: sets DOLBY VIRTUAL
+    models: *id001
+    name: dolby-virtual
+  '15':
+    description: sets DTS Surround Sensation
+    models: *id001
+    name: dts-surround-sensation
+  '16':
+    description: sets Audyssey DSX
+    models: *id001
+    name: audyssey-dsx
+  1F:
+    description: sets Whole House Mode
+    models: *id001
+    name: whole-house
+  '23':
+    description: sets Stage (when Genre Control is Enable in Japan Model)
+    models: *id001
+    name: stage
+  '25':
+    description: sets Action (when Genre Control is Enable in Japan Model)
+    models: *id001
+    name: action
+  '26':
+    description: sets Music (when Genre Contorl is Enable in Japan Model)
+    models: *id001
+    name: music
+  2E:
+    description: sets Sports (when Genre Control is Enable in Japan Model)
+    models: *id001
+    name: sports
+  '40':
+    description: sets Straight Decode
+    models: *id001
+    name: straight-decode
+  '41':
+    description: sets Dolby EX
+    models: *id001
+    name: dolby-ex
+  '42':
+    description: sets THX Cinema
+    models: *id001
+    name: thx-cinema
+  '43':
+    description: sets THX Surround EX
+    models: *id001
+    name: thx-surround-ex
+  '44':
+    description: sets THX Music
+    models: *id001
+    name: thx-music
+  '45':
+    description: sets THX Games
+    models: *id001
+    name: thx-games
+  '50':
+    description: sets THX U2/S2/I/S Cinema/Cinema2
+    models: *id001
+    name:
+    - thx-u2
+    - s2
+    - i
+    - s-cinema
+    - cinema2
+  '51':
+    description: sets THX MusicMode,THX U2/S2/I/S Music
+    models: *id001
+    name:
+    - thx-musicmode
+    - thx-u2
+    - s2
+    - i
+    - s-music
+  '52':
+    description: sets THX Games Mode,THX U2/S2/I/S Games
+    models: *id001
+    name:
+    - thx-games
+    - thx-u2
+    - s2
+    - i
+    - s-games
+  '80':
+    description: sets PLII/PLIIx Movie, Dolby Atmos/Dolby Surround
+    models: *id001
+    name:
+    - plii
+    - pliix-movie
+    - dolby-atmos
+    - dolby-surround
+  '81':
+    description: sets PLII/PLIIx Music
+    models: *id001
+    name:
+    - plii
+    - pliix-music
+  '82':
+    description: sets Neo:6 Cinema/Neo:X Cinema, DTS:X/Neural:X
+    models: *id001
+    name:
+    - neo-6-cinema
+    - neo-x-cinema
+    - dts-x
+    - neural-x
+  '83':
+    description: sets Neo:6 Music/Neo:X Music
+    models: *id001
+    name:
+    - neo-6-music
+    - neo-x-music
+  '84':
+    description: sets PLII/PLIIx THX Cinema, Dolby Surround THX Cinema
+    models: *id001
+    name:
+    - plii
+    - pliix-thx-cinema
+    - dolby-surround-thx-cinema
+  '85':
+    description: sets Neo:6/Neo:X THX Cinema, DTS Neural:X THX Cinema
+    models: *id001
+    name:
+    - neo-6
+    - neo-x-thx-cinema
+    - dts-neural-x-thx-cinema
+  '86':
+    description: sets PLII/PLIIx Game
+    models: *id001
+    name:
+    - plii
+    - pliix-game
+  '87':
+    description: sets Neural Surr
+    models: *id001
+    name: neural-surr
+  '88':
+    description: sets Neural THX/Neural Surround
+    models: *id001
+    name:
+    - neural-thx
+    - neural-surround
+  '89':
+    description: sets PLII/PLIIx THX Games, Dolby Surround THX Games
+    models: *id001
+    name:
+    - plii
+    - pliix-thx-games
+    - dolby-surround-thx-games
+  8A:
+    description: sets Neo:6/Neo:X THX Games, DTS Neural:X THX Games
+    models: *id001
+    name:
+    - neo-6
+    - neo-x-thx-games
+    - dts-neural-x-thx-games
+  8B:
+    description: sets PLII/PLIIx THX Music, Dolby Surround THX Music
+    models: *id001
+    name:
+    - plii
+    - pliix-thx-music
+    - dolby-surround-thx-music
+  8C:
+    description: sets Neo:6/Neo:X THX Music, DTS Neural:X THX Music
+    models: *id001
+    name:
+    - neo-6
+    - neo-x-thx-music
+    - dts-neural-x-thx-music
+  8D:
+    description: sets Neural THX Cinema
+    models: *id001
+    name: neural-thx-cinema
+  8E:
+    description: sets Neural THX Music
+    models: *id001
+    name: neural-thx-music
+  8F:
+    description: sets Neural THX Games
+    models: *id001
+    name: neural-thx-games
+  '90':
+    description: sets PLIIz Height
+    models: *id001
+    name: pliiz-height
+  '91':
+    description: sets Neo:6 Cinema DTS Surround Sensation
+    models: *id001
+    name: neo-6-cinema-dts-surround-sensation
+  '92':
+    description: sets Neo:6 Music DTS Surround Sensation
+    models: *id001
+    name: neo-6-music-dts-surround-sensation
+  '93':
+    description: sets Neural Digital Music
+    models: *id001
+    name: neural-digital-music
+  '94':
+    description: sets PLIIz Height + THX Cinema
+    models: *id001
+    name: pliiz-height-thx-cinema
+  '95':
+    description: sets PLIIz Height + THX Music
+    models: *id001
+    name: pliiz-height-thx-music
+  '96':
+    description: sets PLIIz Height + THX Games
+    models: *id001
+    name: pliiz-height-thx-games
+  '97':
+    description: sets PLIIz Height + THX U2/S2 Cinema
+    models: *id001
+    name:
+    - pliiz-height-thx-u2
+    - s2-cinema
+  '98':
+    description: sets PLIIz Height + THX U2/S2 Music
+    models: *id001
+    name:
+    - pliiz-height-thx-u2
+    - s2-music
+  '99':
+    description: sets PLIIz Height + THX U2/S2 Games
+    models: *id001
+    name:
+    - pliiz-height-thx-u2
+    - s2-games
+  9A:
+    description: sets Neo:X Game
+    models: *id001
+    name: neo-x-game
+  A0:
+    description: sets PLIIx/PLII Movie + Audyssey DSX
+    models: *id001
+    name:
+    - pliix
+    - plii-movie-audyssey-dsx
+  A1:
+    description: sets PLIIx/PLII Music + Audyssey DSX
+    models: *id001
+    name:
+    - pliix
+    - plii-music-audyssey-dsx
+  A2:
+    description: sets PLIIx/PLII Game + Audyssey DSX
+    models: *id001
+    name:
+    - pliix
+    - plii-game-audyssey-dsx
+  A3:
+    description: sets Neo:6 Cinema + Audyssey DSX
+    models: *id001
+    name: neo-6-cinema-audyssey-dsx
+  A4:
+    description: sets Neo:6 Music + Audyssey DSX
+    models: *id001
+    name: neo-6-music-audyssey-dsx
+  A5:
+    description: sets Neural Surround + Audyssey DSX
+    models: *id001
+    name: neural-surround-audyssey-dsx
+  A6:
+    description: sets Neural Digital Music + Audyssey DSX
+    models: *id001
+    name: neural-digital-music-audyssey-dsx
+  A7:
+    description: sets Dolby EX + Audyssey DSX
+    models: *id001
+    name: dolby-ex-audyssey-dsx
+  AUTO:
+    description: sets Listening Mode Wrap-Around Up
+    models: *id001
+    name: auto
+  DOWN:
+    description: sets Listening Mode Wrap-Around Down
+    models: *id001
+    name: down
+  FF:
+    description: sets Auto Surround
+    models: *id001
+    name: auto-surround
+  GAME:
+    description: sets Listening Mode Wrap-Around Up
+    models: *id001
+    name: game
+  MOVIE:
+    description: sets Listening Mode Wrap-Around Up
+    models: *id001
+    name: movie
+  MUSIC:
+    description: sets Listening Mode Wrap-Around Up
+    models: *id001
+    name: music
+  QSTN:
+    description: gets The Listening Mode
+    models: *id001
+    name: query
+  STEREO:
+    description: sets Listening Mode Wrap-Around Up
+    models: *id001
+    name: stereo
+  SURR:
+    description: sets Listening Mode Wrap-Around Up
+    models: *id001
+    name: surr
+  THX:
+    description: sets Listening Mode Wrap-Around Up
+    models: *id001
+    name: thx
+  UP:
+    description: sets Listening Mode Wrap-Around Up
+    models: *id001
+    name: up

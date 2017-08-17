@@ -1,0 +1,25 @@
+description: Tuning Command
+name: tuning
+values:
+  DOWN:
+    description: sets Tuning Frequency Wrap-Around Down
+    models: &id001
+    - DTR-70.1
+    - DTR-70.2
+    - DTR-70.3
+    - DTR-70.4
+    - DTR-80.1
+    - DTR-80.2
+    - DTR-80.3
+    name: down
+  QSTN:
+    description: gets The Tuning Frequency
+    models: *id001
+    name: query
+  UP:
+    description: sets Tuning Frequency Wrap-Around Up
+    models: *id001
+    name: up
+  nnnnn:
+    description: sets Directly Tuning Frequency (FM nnn.nn MHz / AM nnnnn kHz)
+    models: *id001

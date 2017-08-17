@@ -1,0 +1,74 @@
+description: Net-Tune/Network Operation Command(Network Model Only)
+name: net-tune-network
+values:
+  DISPLAY:
+    description: DISPLAY KEY(for iPod 1wire)
+    models: &id001
+    - DTR-70.1
+    - DTR-70.2
+    - DTR-70.3
+    - DTR-70.4
+    - DTR-80.1
+    - DTR-80.2
+    - DTR-80.3
+    name: display
+  DOWN:
+    description: DOWN KEY(for iPod 1wire)
+    models: *id001
+    name: down
+  FF:
+    description: FF KEY (CONTINUOUS*) (for iPod 1wire)
+    models: *id001
+    name: ff
+  LEFT:
+    description: LEFT KEY(for iPod 1wire)
+    models: *id001
+    name: left
+  PAUSE:
+    description: PAUSE KEY
+    models: *id001
+    name: pause
+  PLAY:
+    description: PLAY KEY
+    models: *id001
+    name: play
+  RANDOM:
+    description: RANDOM KEY(for iPod 1wire)
+    models: *id001
+    name: random
+  REPEAT:
+    description: REPEAT KEY(for iPod 1wire)
+    models: *id001
+    name: repeat
+  RETURN:
+    description: RETURN KEY(for iPod 1wire)
+    models: *id001
+    name: return
+  REW:
+    description: REW KEY (CONTINUOUS*) (for iPod 1wire)
+    models: *id001
+    name: rew
+  RIGHT:
+    description: RIGHT KEY(for iPod 1wire)
+    models: *id001
+    name: right
+  SELECT:
+    description: SELECT KEY(for iPod 1wire)
+    models: *id001
+    name: select
+  STOP:
+    description: STOP KEY
+    models: *id001
+    name: stop
+  TRDN:
+    description: TRACK DOWN KEY
+    models: *id001
+    name: trdn
+  TRUP:
+    description: TRACK UP KEY
+    models: *id001
+    name: trup
+  UP:
+    description: UP KEY(for iPod 1wire)
+    models: *id001
+    name: up

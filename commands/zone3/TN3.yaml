@@ -1,0 +1,123 @@
+description: Zone3 Tone Command
+name: tone
+values:
+  BDOWN:
+    description: sets Bass Down (1 Step)
+    models: &id001
+    - /616AE(Ether)
+    - /818AE
+    - DHC-60.5
+    - DHC-60.7
+    - DHC-80.1
+    - DHC-80.2
+    - DHC-80.3
+    - DHC-80.6
+    - DHC-9.9
+    - DRX-5
+    - DTC-9.8
+    - DTR-10.5
+    - DTR-30.4
+    - DTR-40.4
+    - DTR-40.5
+    - DTR-40.6
+    - DTR-50.1
+    - DTR-50.2
+    - DTR-50.3
+    - DTR-50.4
+    - DTR-50.5
+    - DTR-50.6
+    - DTR-50.7
+    - DTR-60.5
+    - DTR-60.6
+    - DTR-60.7
+    - DTR-7.8
+    - DTR-70.1
+    - DTR-70.2
+    - DTR-70.3
+    - DTR-70.4
+    - DTR-70.6
+    - DTR-8.8
+    - DTR-8.9
+    - DTR-80.1
+    - DTR-80.2
+    - DTR-80.3
+    - DTR-9.9
+    - DTX-7.8
+    - DTX-8.8
+    - DTX-8.9
+    - DTX-9.9
+    - ETX-NA1000
+    - PR-SC5507
+    - PR-SC5508
+    - PR-SC5509
+    - PR-SC5530
+    - PR-SC885
+    - PR-SC886
+    - RDC-7.1
+    - TX-NA905
+    - TX-NA906
+    - TX-NA906X
+    - TX-NR1000
+    - TX-NR1007
+    - TX-NR1008
+    - TX-NR1009
+    - TX-NR1010
+    - TX-NR1030
+    - TX-NR3007
+    - TX-NR3008
+    - TX-NR3009
+    - TX-NR3010
+    - TX-NR3030
+    - TX-NR5000
+    - TX-NR5007
+    - TX-NR5008
+    - TX-NR5009
+    - TX-NR5010
+    - TX-NR616
+    - TX-NR717(Ether)
+    - TX-NR727(Ether)
+    - TX-NR737(Ether)
+    - TX-NR807
+    - TX-NR808
+    - TX-NR809
+    - TX-NR818
+    - TX-NR828(Ether)
+    - TX-NR838(Ether)
+    - TX-NR905
+    - TX-NR906
+    - TX-NR929
+    - TX-RZ800
+    - TX-RZ810
+    - TX-RZ900
+    - TX-SA805
+    - TX-SA806X
+    - TX-SA875
+    - TX-SA876
+    - TX-SR805
+    - TX-SR875
+    - TX-SR876
+    name: bass-down
+  BUP:
+    description: sets Bass Up (1 Step)
+    models: *id001
+    name: bass-up
+  B{xx}:
+    description: Zone3 Bass (xx is "-A"..."00"..."+A"[-10...0...+10 1 step])
+    models: *id001
+    name: b-xx
+  QSTN:
+    description: gets Zone3 Tone ("BxxTxx")
+    models: *id001
+    name: query
+  TDOWN:
+    description: sets Treble Down (1 Step)
+    models: *id001
+    name: treble-down
+  TUP:
+    description: sets Treble Up (1 Step)
+    models: *id001
+    name: treble-up
+  T{xx}:
+    description: Zone3 Treble (xx is "-A"..."00"..."+A"[-10...0...+10 1 step])
+    models: *id001
+    name: t-xx

@@ -1,0 +1,30 @@
+description: Net-Tune/Network Operation Command(Net-Tune Model Only)
+name: net-tune-network
+values:
+  PAUSEz:
+    description: PAUSE KEY
+    models: &id001
+    - DTR-70.1
+    - DTR-70.2
+    - DTR-70.3
+    - DTR-70.4
+    - DTR-80.1
+    - DTR-80.2
+    - DTR-80.3
+    name: pausez
+  PLAYz:
+    description: PLAY KEY
+    models: *id001
+    name: playz
+  STOPz:
+    description: STOP KEY
+    models: *id001
+    name: stopz
+  TRDNz:
+    description: TRACK DOWN KEY
+    models: *id001
+    name: trdnz
+  TRUPz:
+    description: TRACK UP KEY
+    models: *id001
+    name: trupz

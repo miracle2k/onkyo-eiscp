@@ -1,0 +1,15 @@
+description: Internet Radio Preset Command (Network Model Only)
+name: internet-radio-preset
+values:
+  ? - 1
+    - 40
+  : description: sets Preset No. 1 - 40 ( In hexadecimal representation)
+    models:
+    - DTR-70.1
+    - DTR-70.2
+    - DTR-70.3
+    - DTR-70.4
+    - DTR-80.1
+    - DTR-80.2
+    - DTR-80.3
+    name: no-1-40

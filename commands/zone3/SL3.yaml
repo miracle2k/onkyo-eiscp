@@ -1,0 +1,316 @@
+description: ZONE3 Selector Command
+name: selector
+values:
+  '00':
+    description: sets VIDEO1, VCR/DVR, STB/DVR
+    models: &id001
+    - /616AE(Ether)
+    - /818AE
+    - DHC-60.5
+    - DHC-60.7
+    - DHC-80.1
+    - DHC-80.2
+    - DHC-80.3
+    - DHC-80.6
+    - DHC-9.9
+    - DRX-5
+    - DTC-9.8
+    - DTR-10.5
+    - DTR-30.4
+    - DTR-40.4
+    - DTR-40.5
+    - DTR-40.6
+    - DTR-50.1
+    - DTR-50.2
+    - DTR-50.3
+    - DTR-50.4
+    - DTR-50.5
+    - DTR-50.6
+    - DTR-50.7
+    - DTR-60.5
+    - DTR-60.6
+    - DTR-60.7
+    - DTR-7.8
+    - DTR-70.1
+    - DTR-70.2
+    - DTR-70.3
+    - DTR-70.4
+    - DTR-70.6
+    - DTR-8.8
+    - DTR-8.9
+    - DTR-80.1
+    - DTR-80.2
+    - DTR-80.3
+    - DTR-9.9
+    - DTX-7.8
+    - DTX-8.8
+    - DTX-8.9
+    - DTX-9.9
+    - ETX-NA1000
+    - PR-SC5507
+    - PR-SC5508
+    - PR-SC5509
+    - PR-SC5530
+    - PR-SC885
+    - PR-SC886
+    - RDC-7.1
+    - TX-NA905
+    - TX-NA906
+    - TX-NA906X
+    - TX-NR1000
+    - TX-NR1007
+    - TX-NR1008
+    - TX-NR1009
+    - TX-NR1010
+    - TX-NR1030
+    - TX-NR3007
+    - TX-NR3008
+    - TX-NR3009
+    - TX-NR3010
+    - TX-NR3030
+    - TX-NR5000
+    - TX-NR5007
+    - TX-NR5008
+    - TX-NR5009
+    - TX-NR5010
+    - TX-NR616
+    - TX-NR717(Ether)
+    - TX-NR727(Ether)
+    - TX-NR737(Ether)
+    - TX-NR807
+    - TX-NR808
+    - TX-NR809
+    - TX-NR818
+    - TX-NR828(Ether)
+    - TX-NR838(Ether)
+    - TX-NR905
+    - TX-NR906
+    - TX-NR929
+    - TX-RZ800
+    - TX-RZ810
+    - TX-RZ900
+    - TX-SA805
+    - TX-SA806X
+    - TX-SA875
+    - TX-SA876
+    - TX-SR805
+    - TX-SR875
+    - TX-SR876
+    name:
+    - video1
+    - vcr
+    - dvr
+    - stb
+    - dvr
+  '01':
+    description: sets VIDEO2, CBL/SAT
+    models: *id001
+    name:
+    - video2
+    - cbl
+    - sat
+  '02':
+    description: sets VIDEO3, GAME/TV, GAME, GAME1
+    models: *id001
+    name:
+    - video3
+    - game/tv
+    - game
+    - game1
+  '03':
+    description: sets VIDEO4, AUX1(AUX)
+    models: *id001
+    name:
+    - video4
+    - aux1
+  '04':
+    description: sets VIDEO5, AUX2, GAME2
+    models: *id001
+    name:
+    - video5
+    - aux2
+    - game2
+  '05':
+    description: sets VIDEO6, PC
+    models: *id001
+    name:
+    - video6
+    - pc
+  '06':
+    description: sets VIDEO7
+    models: *id001
+    name: video7
+  '07':
+    description: sets Hidden1, EXTRA1
+    models: *id001
+    name:
+    - hidden1
+    - extra1
+  08:
+    description: sets Hidden2, EXTRA2
+    models: *id001
+    name:
+    - hidden2
+    - extra2
+  09:
+    description: sets Hidden3, EXTRA3
+    models: *id001
+    name:
+    - hidden3
+    - extra3
+  '10':
+    description: sets DVD
+    models: *id001
+    name: dvd
+  '11':
+    description: sets STRM BOX
+    models: *id001
+    name: strm-box
+  '12':
+    description: sets TV
+    models: *id001
+    name: tv
+  '20':
+    description: sets TAPE(1)
+    models: *id001
+    name: tape
+  '21':
+    description: sets TAPE2
+    models: *id001
+    name: tape2
+  '22':
+    description: sets PHONO
+    models: *id001
+    name: phono
+  '23':
+    description: sets CD, TV/CD
+    models: *id001
+    name:
+    - cd
+    - tv/cd
+  '24':
+    description: sets FM
+    models: *id001
+    name: fm
+  '25':
+    description: sets AM
+    models: *id001
+    name: am
+  '26':
+    description: sets TUNER
+    models: *id001
+    name: tuner
+  '27':
+    description: sets MUSIC SERVER, P4S, DLNA
+    models: *id001
+    name:
+    - music-server
+    - p4s
+    - dlna
+  '28':
+    description: sets INTERNET RADIO, iRadio Favorite
+    models: *id001
+    name:
+    - internet-radio
+    - iradio-favorite
+  '29':
+    description: sets USB/USB(Front)
+    models: *id001
+    name:
+    - usb
+    - usb
+  2A:
+    description: sets USB(Rear)
+    models: *id001
+    name: usb
+  2B:
+    description: sets NETWORK, NET
+    models: *id001
+    name:
+    - network
+    - net
+  2C:
+    description: sets USB(toggle)
+    models: *id001
+    name: usb
+  2D:
+    description: sets Airplay
+    models: *id001
+    name: airplay
+  2E:
+    description: sets Bluetooth
+    models: *id001
+    name: bluetooth
+  '30':
+    description: sets MULTI CH
+    models: *id001
+    name: multi-ch
+  '31':
+    description: sets XM
+    models: *id001
+    name: xm
+  '32':
+    description: sets SIRIUS
+    models: *id001
+    name: sirius
+  '33':
+    description: 'sets DAB '
+    models:
+    - /616AE(Ether)
+    - /818AE
+    - DHC-60.5
+    - DHC-60.7
+    - DHC-80.6
+    - DRX-5
+    - DTR-30.4
+    - DTR-40.4
+    - DTR-40.5
+    - DTR-40.6
+    - DTR-50.4
+    - DTR-50.5
+    - DTR-50.6
+    - DTR-50.7
+    - DTR-60.5
+    - DTR-60.6
+    - DTR-60.7
+    - DTR-70.4
+    - DTR-70.6
+    - PR-SC5509
+    - PR-SC5530
+    - TX-NR1010
+    - TX-NR1030
+    - TX-NR3010
+    - TX-NR3030
+    - TX-NR5010
+    - TX-NR616
+    - TX-NR717(Ether)
+    - TX-NR727(Ether)
+    - TX-NR737(Ether)
+    - TX-NR818
+    - TX-NR828(Ether)
+    - TX-NR838(Ether)
+    - TX-NR929
+    - TX-RZ800
+    - TX-RZ810
+    - TX-RZ900
+    name: dab
+  '40':
+    description: sets Universal PORT
+    models: *id001
+    name: universal-port
+  '80':
+    description: sets SOURCE
+    models: *id001
+    name: source
+  DOWN:
+    description: sets Selector Position Wrap-Around Down
+    models: *id001
+    name: down
+  QSTN:
+    description: gets The Selector Position
+    models: *id001
+    name: query
+  UP:
+    description: sets Selector Position Wrap-Around Up
+    models: *id001
+    name: up

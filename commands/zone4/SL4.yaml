@@ -1,0 +1,191 @@
+description: ZONE4 Selector Command
+name: selector
+values:
+  '00':
+    description: sets VIDEO1, VCR/DVR, STB/DVR
+    models: &id001
+    - DTR-70.1
+    - DTR-70.2
+    - DTR-70.3
+    - DTR-70.4
+    - DTR-80.1
+    - DTR-80.2
+    - DTR-80.3
+    name:
+    - video1
+    - vcr
+    - dvr
+    - stb
+    - dvr
+  '01':
+    description: sets VIDEO2, CBL/SAT
+    models: *id001
+    name:
+    - video2
+    - cbl
+    - sat
+  '02':
+    description: sets VIDEO3, GAME/TV, GAME, GAME1
+    models: *id001
+    name:
+    - video3
+    - game/tv
+    - game
+    - game1
+  '03':
+    description: sets VIDEO4, AUX1(AUX)
+    models: *id001
+    name:
+    - video4
+    - aux1
+  '04':
+    description: sets VIDEO5, AUX2, GAME2
+    models: *id001
+    name:
+    - video5
+    - aux2
+    - game2
+  '05':
+    description: sets VIDEO6, PC
+    models: *id001
+    name:
+    - video6
+    - pc
+  '06':
+    description: sets VIDEO7
+    models: *id001
+    name: video7
+  '07':
+    description: sets Hidden1, EXTRA1
+    models: *id001
+    name:
+    - hidden1
+    - extra1
+  08:
+    description: sets Hidden2, EXTRA2
+    models: *id001
+    name:
+    - hidden2
+    - extra2
+  09:
+    description: sets Hidden3, EXTRA3
+    models: *id001
+    name:
+    - hidden3
+    - extra3
+  '10':
+    description: sets DVD, BD/DVD
+    models: *id001
+    name:
+    - dvd
+    - bd
+    - dvd
+  '20':
+    description: sets TAPE(1), TV/TAPE
+    models: *id001
+    name:
+    - tape-1
+    - tv/tape
+  '21':
+    description: sets TAPE2
+    models: *id001
+    name: tape2
+  '22':
+    description: sets PHONO
+    models: *id001
+    name: phono
+  '23':
+    description: sets CD, TV/CD
+    models: *id001
+    name:
+    - cd
+    - tv/cd
+  '24':
+    description: sets FM
+    models: *id001
+    name: fm
+  '25':
+    description: sets AM
+    models: *id001
+    name: am
+  '26':
+    description: sets TUNER
+    models: *id001
+    name: tuner
+  '27':
+    description: sets MUSIC SERVER, P4S, DLNA
+    models: *id001
+    name:
+    - music-server
+    - p4s
+    - dlna
+  '28':
+    description: sets INTERNET RADIO, iRadio Favorite
+    models: *id001
+    name:
+    - internet-radio
+    - iradio-favorite
+  '29':
+    description: sets USB/USB(Front)
+    models: *id001
+    name:
+    - usb
+    - usb
+  2A:
+    description: sets USB(Rear)
+    models: *id001
+    name: usb
+  2B:
+    description: sets NETWORK, NET
+    models: *id001
+    name:
+    - network
+    - net
+  2C:
+    description: sets USB(toggle)
+    models: *id001
+    name: usb
+  2D:
+    description: sets Airplay
+    models: *id001
+    name: airplay
+  2E:
+    description: sets Bluetooth
+    models: *id001
+    name: bluetooth
+  '30':
+    description: sets MULTI CH
+    models: *id001
+    name: multi-ch
+  '31':
+    description: sets XM
+    models: *id001
+    name: xm
+  '32':
+    description: sets SIRIUS
+    models: *id001
+    name: sirius
+  '33':
+    description: 'sets DAB '
+    models: *id001
+    name: dab
+  '40':
+    description: sets Universal PORT
+    models: *id001
+    name: universal-port
+  '80':
+    description: sets SOURCE
+    models: *id001
+    name: source
+  DOWN:
+    description: sets Selector Position Wrap-Around Down
+    models: *id001
+    name: down
+  QSTN:
+    description: gets The Selector Position
+    models: *id001
+    name: query
+  UP:
+    description: sets Selector Position Wrap-Around Up
+    models: *id001
+    name: up

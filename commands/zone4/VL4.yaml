@@ -1,0 +1,30 @@
+description: Zone4 Volume Command
+name: volume
+values:
+  DOWN:
+    description: sets Volume Level Down
+    models: &id001
+    - DTR-70.1
+    - DTR-70.2
+    - DTR-70.3
+    - DTR-70.4
+    - DTR-80.1
+    - DTR-80.2
+    - DTR-80.3
+    name: level-down
+  QSTN:
+    description: gets the Volume Level
+    models: *id001
+    name: query
+  UP:
+    description: sets Volume Level Up
+    models: *id001
+    name: level-up
+  ? - 0
+    - 80
+  : description: "Volume Level 0 \u2013 80 ( In hexadecimal representation)"
+    models: *id001
+  ? - 0
+    - 100
+  : description: "Volume Level 0 \u2013 100 ( In hexadecimal representation)"
+    models: *id001
