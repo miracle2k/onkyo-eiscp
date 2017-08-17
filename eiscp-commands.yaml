@@ -3345,17 +3345,33 @@ zone2:
         name: query
         description: gets the Zone2 Power Status
         models: set3
-  ZPA"/"ZPB:
-    name: zone-2-a-b
-    description: Zone 2 A/B Command
+  ZPA:
+    name: zone-2-a
+    description: Zone 2 A Command
     values:
       '00':
         name: ['off']
-        description: sets Zone 2 A/B Off
+        description: sets Zone 2 A Off
         models: set3
       '01':
         name: ['on']
-        description: sets Zone 2 A/B On
+        description: sets Zone 2 A On
+        models: set3
+      QSTN:
+        name: query
+        description: gets the Speaker State
+        models: set3
+  ZPB:
+    name: zone-2-b
+    description: Zone 2 B Command
+    values:
+      '00':
+        name: ['off']
+        description: sets Zone 2 B Off
+        models: set3
+      '01':
+        name: ['on']
+        description: sets Zone 2 B On
         models: set3
       QSTN:
         name: query
