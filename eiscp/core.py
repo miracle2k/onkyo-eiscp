@@ -436,8 +436,13 @@ class eISCP(object):
         if ready[0]:
             header_bytes = self.command_socket.recv(16)
             header = eISCPPacket.parse_header(header_bytes)
-            message = self.command_socket.recv(header.data_size).decode()
-            return ISCPMessage.parse(message)
+            body = b''
+            while len(body) < header.data_size:
+                ready = select.select([self.command_socket], [], [], timeout or 0)
+                if not ready[0]:
+                    return None
+                body += self.command_socket.recv(header.data_size - len(body))
+            return ISCPMessage.parse(body.decode())
 
     def raw(self, iscp_message):
         """Send a low-level ISCP message, like ``MVL50``, and wait
