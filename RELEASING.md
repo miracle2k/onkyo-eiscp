@@ -1,4 +1,4 @@
 - Edit CHANGES
-- Increase version in README.md
+- Increase version in setup.py.
 - Commit & git tag -a
 - par
