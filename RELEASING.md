@@ -1,3 +1,4 @@
+- Regenerate commands.py: python generate_commands_module.py eiscp-commands.yaml  > eiscp/commands.py
 - Edit CHANGES
 - Increase version in setup.py.
 - Commit & git tag -a
