@@ -296,6 +296,7 @@ class eISCP(object):
     uses a background thread.
     """
     ONKYO_PORT = 60128
+    CONNECT_TIMEOUT = 5
 
     @classmethod
     def discover(cls, timeout=5, clazz=None):
@@ -399,6 +400,7 @@ class eISCP(object):
     def _ensure_socket_connected(self):
         if self.command_socket is None:
             self.command_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.command_socket.settimeout(self.CONNECT_TIMEOUT)
             self.command_socket.connect((self.host, self.port))
             self.command_socket.setblocking(0)
 
