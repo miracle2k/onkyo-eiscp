@@ -1,0 +1,63 @@
+description: CD Player Operation Command  (Include CD Function Model Only)
+name: cd-player
+values:
+  PAUSE:
+    description: PAUSE
+    models: &id001
+    - DRC-R1
+    - DRX-2
+    - DRX-2.1
+    - DRX-3
+    - DRX-3.1
+    - DRX-4
+    - DRX-4.1
+    - DRX-5
+    - DRX-5.1
+    - DRX-7
+    - DRX-R1
+    - DTM-7
+    - PR-RZ5100
+    - TX-8270(Ether)
+    - TX-NR474(Ether)
+    - TX-NR555(Ether)
+    - TX-NR575(Ether)
+    - TX-NR575DAB(Ether)
+    - TX-NR575E(Ether)
+    - TX-NR656(Ether)
+    - TX-NR676(Ether)
+    - TX-NR676E(Ether)
+    - TX-NR757
+    - TX-NR777
+    - TX-RZ1100
+    - TX-RZ3100
+    - TX-RZ610
+    - TX-RZ620
+    - TX-RZ710
+    - TX-RZ720
+    - TX-RZ810
+    - TX-RZ820
+    name: pause
+  PLAY:
+    description: PLAY
+    models: *id001
+    name: play
+  RANDOM:
+    description: RANDOM
+    models: *id001
+    name: random
+  REPEAT:
+    description: REPEAT
+    models: *id001
+    name: repeat
+  SKIP.F:
+    description: '>>I'
+    models: *id001
+    name: next
+  SKIP.R:
+    description: I<<
+    models: *id001
+    name: previous
+  STOP:
+    description: STOP
+    models: *id001
+    name: stop

@@ -1,0 +1,55 @@
+description: Current disc status notice
+name: current-disc-status-notice
+values:
+  '00':
+    description: No disc
+    models: &id001
+    - DRC-R1
+    - DRX-2
+    - DRX-2.1
+    - DRX-3
+    - DRX-3.1
+    - DRX-4
+    - DRX-4.1
+    - DRX-5
+    - DRX-5.1
+    - DRX-7
+    - DRX-R1
+    - DTM-7
+    - PR-RZ5100
+    - TX-8270(Ether)
+    - TX-NR474(Ether)
+    - TX-NR555(Ether)
+    - TX-NR575(Ether)
+    - TX-NR575DAB(Ether)
+    - TX-NR575E(Ether)
+    - TX-NR656(Ether)
+    - TX-NR676(Ether)
+    - TX-NR676E(Ether)
+    - TX-NR757
+    - TX-NR777
+    - TX-RZ1100
+    - TX-RZ3100
+    - TX-RZ610
+    - TX-RZ620
+    - TX-RZ710
+    - TX-RZ720
+    - TX-RZ810
+    - TX-RZ820
+    name: none
+  '04':
+    description: Audio CD
+    models: *id001
+    name: cd
+  '07':
+    description: MP3 CD
+    models: *id001
+    name: mp3-cd
+  FF:
+    description: Unknown
+    models: *id001
+    name: unknown
+  QSTN:
+    description: gets Disc Status
+    models: *id001
+    name: query
