@@ -22,6 +22,10 @@ main:
         name: 'on'
         description: sets System On
         models: set1
+      ALL:
+        name: 'standby-all'
+        description: All Zone(including Main Zone) Standby
+        models: set1
       QSTN:
         name: query
         description: gets the System Power Status
@@ -120,19 +124,19 @@ main:
       '00':
         name: 'off'
         description: sets Speaker Off
-        models: set3
+        models: set7
       '01':
         name: 'on'
         description: sets Speaker On
-        models: set3
+        models: set7
       UP:
         name: up
         description: sets Speaker Switch Wrap-Around
-        models: set3
+        models: set7
       QSTN:
         name: query
         description: gets the Speaker State
-        models: set3
+        models: set7
   SPL:
     name: speaker-layout
     description: Speaker Layout Command
@@ -191,7 +195,7 @@ main:
         models: set1
       QSTN:
         name: query
-        description: gets the Speaker State
+        description: gets the Spea  ker State
         models: set1
   MVL:
     name: master-volume
@@ -204,12 +208,18 @@ main:
         models: set1
       ? - 0
         - 100
-      : description: "Volume Level 0 \u2013 100 ( In hexadecimal representation)"
+      : name: vol-0-100,
+        description: "Volume Level 0 \u2013 100 ( In hexadecimal representation)"
         models: set1
       ? - 0
         - 80
       : description: "Volume Level 0 \u2013 80 ( In hexadecimal representation)"
         models: set1
+      ? - 0
+        - 50
+      : name: vol-0-50,
+        description: "Volume Level 0 \u2013 50 ( In hexadecimal representation)"
+        models: set2
       UP:
         name: level-up
         description: sets Volume Level Up
@@ -591,6 +601,7 @@ main:
     description: Temporary Channel Level Command
     values:
       aaabbbcccdddeeefffggghhhiiijjjkkklllmmm:
+        name: levels
         description: 'sets Temporary Channel Level
 
           Subwoofer1/2 xxx=-1E(-15.0dB)~000(0.0dB)~+18(+12.0dB)
@@ -696,7 +707,7 @@ main:
     values:
       MENU:
         name: menu
-        description: Menu Key
+        description: Menu Key              Setup Key
         models: set1
       UP:
         name: up
@@ -736,7 +747,7 @@ main:
         models: set1
       QUICK:
         name: quick
-        description: Quick Setup Key
+        description: Quick Setup Key     Quick Menu Key/AV Adjust Key
         models: set1
       IPV:
         name: ipv
@@ -781,7 +792,7 @@ main:
           c\u2026c: Sampling Frequency\nd\u2026d: Input Signal Channel\ne\u2026e:\
           \ Listening Mode\nf\u2026f: Output Signal Channel"
         models: set1
-      "a..a,b..b,c\u2026c,d..d,e\u2026e,f\u2026f,g\u2026g,h\u2026h,i\u2026I,j\u2026j":
+      "a..a,b..b,c\u2026c,d..d,e\u2026e,f\u2026f,g\u2026g,h\u2026h,i\u2026I,j\u2026j,k\u2026k":
         name: a-a-b-b-c-c-d-d-e-e-f-f-g-g-h-h-i-i-j-j
         description: "Information of Audio(Same Immediate Display ',' is separator\
           \ of infomartions)\na...a: Audio Input Port\nb\u2026b: Input Signal Format\n\
@@ -942,6 +953,26 @@ main:
         name: bluetooth
         description: sets Bluetooth
         models: set1
+      2F:
+        name: usb-dac-in
+        description: sets USB DAC In
+        models: set2
+      '41':
+        name: line
+        description: sets LINE
+        models: set2
+      '42':
+        name: line2
+        description: sets LINE2
+        models: set2
+      '44':
+        name: optical
+        description: sets OPTICAL
+        models: set2
+      '45':
+        name: coaxial
+        description: sets COAXIAL
+        models: set2
       '40':
         name: universal-port
         description: sets Universal PORT
@@ -1295,6 +1326,7 @@ main:
     description: HDMI CEC Control Monitor
     values:
       '01':
+        name: main
         description: sets Main
         models: set1
       '02':
@@ -1375,7 +1407,8 @@ main:
     values:
       ? - 0
         - 3
-      : description: sets Super Resolution
+      : name: no-0-3
+        description: sets Super Resolution
         models: set1
       UP:
         name: up
@@ -1500,7 +1533,7 @@ main:
       08:
         name: [direct, bypass]
         description: sets Direct, Bypass
-        models: set2
+        models: set3
       UP:
         name: up
         description: sets Video Zoom Mode Wrap-Around Up
@@ -1590,8 +1623,8 @@ main:
         description: sets FULL MONO
         models: set1
       '14':
-        name: dolby-virtual
-        description: sets DOLBY VIRTUAL
+        name: [dolby-virtual, surround-enhancer]
+        description: sets DOLBY VIRTUAL / Surround Enhancer
         models: set1
       '15':
         name: dts-surround-sensation
@@ -1841,6 +1874,26 @@ main:
         name: query
         description: gets The Listening Mode
         models: set1
+  DIR:
+    name: direct
+    description: Direct Command
+    values:
+      '00':
+        name: 'off'
+        description: sets Off
+        models: set2
+      '01':
+        name: 'on'
+        description: sets On
+        models: set2
+      TG:
+        name: toggle
+        description: sets Direct Wrap-Around Up
+        models: set2
+      QSTN:
+        name: query
+        description: gets Direct Status
+        models: set2
   LTN:
     name: late-night
     description: Late Night Command
@@ -2014,31 +2067,31 @@ main:
         description: gets The AccuEQ State
         models: set1
   MCM:
-    name: mcacc-memory
-    description: MCACC MEMORY
+    name: mcacc-eq
+    description: MCACC EQ
     values:
       '01':
-        name: '1'
+        name: memory-1
         description: sets MCACC MEMORY 1
         models: set1
       '02':
-        name: '2'
+        name: memory-2
         description: sets MCACC MEMORY 2
         models: set1
       '03':
-        name: '3'
+        name: memory-3
         description: sets MCACC MEMORY 3
         models: set1
       '04':
-        name: '4'
+        name: memory-4
         description: sets MCACC MEMORY 4
         models: set1
       '05':
-        name: '5'
+        name: memory-5
         description: sets MCACC MEMORY 5
         models: set1
       '06':
-        name: '6'
+        name: memory-6
         description: sets MCACC MEMORY 6
         models: set1
       UP:
@@ -2052,6 +2105,38 @@ main:
       QSTN:
         name: query
         description: gets The MCACC MEMORY
+        models: set1
+  EQS:
+    name: equalizer-select
+    description: Equalizer Select(O/I:Equalizer, P:Manual EQ Select)
+    values:
+      '00':
+        name: 'off'
+        description: sets Equalizer Off
+        models: set1
+      '01':
+        name: preset-1
+        description: sets Equalizer Preset 1
+        models: set1
+      '02':
+        name: preset-2
+        description: sets Equalizer Preset 2
+        models: set1
+      '03':
+        name: preset-3
+        description: sets Equalizer Preset 3
+        models: set1
+      UP:
+        name: up
+        description: sets Equalizer Preset Wrap-Around Up
+        models: set1
+      DOWN:
+        name: down
+        description: sets Equalizer Preset Wrap-Around Down
+        models: set1
+      QSTN:
+        name: query
+        description: gets The Equalizer Preset
         models: set1
   STW:
     name: eq-for-standing-wave-standing-wave
@@ -2163,11 +2248,12 @@ main:
         description: gets The LFE Mute Level
         models: set1
   ACE:
-    name: all-channel-eq
-    description: All Channel EQ
+    name: all-channel-eq-for-temporary-value
+    description: All Channel EQ for Temporary Value
     values:
       aaabbbcccdddeeefffggghhhiii:
-        description: 'sets All Channel EQ
+        name: eq
+        description: 'sets All Channel EQ for Temporary Value
 
           xxx=-18(-12.0dB)~000(0.0dB)~+18(+12.0dB)
 
@@ -2253,6 +2339,7 @@ main:
     description: A/V Sync
     values:
       snnn:
+        name: offset
         description: "sets A/V Sync\n s: sign ( \"+\" or \"-\" or \"0\")\n If set\
           \ minus value, s=\"-\". (only HDMI Lipsync is available)\n If set plus value,\
           \ s=\"+\"\n If set zero value, s=\"0\"\nnnn : value; If set 100msec, nnn=\"\
@@ -2306,6 +2393,10 @@ main:
         name: x4
         description: sets Upsampling x4
         models: set1
+      '03':
+        name: x8
+        description: sets Upsampling x8
+        models: set2
       UP:
         name: up
         description: sets Upsampling Wrap-Around
@@ -2346,6 +2437,10 @@ main:
         name: sharp
         description: sets Digital Filter Sharp
         models: set1
+      '02':
+        name: short
+        description: sets Digital Filter Short
+        models: set1
       UP:
         name: up
         description: sets Digital Filter Wrap-Around
@@ -2354,6 +2449,67 @@ main:
         name: query
         description: gets The Digital Filter State
         models: set1
+  LRA:
+    name: lock-range-adjust
+    description: Lock Range Adjust
+    values:
+      ? - 1
+        - 7
+      : name: no-1-7
+        description: sets Lock Range Adjust
+        models: set2
+      UP:
+        name: up
+        description: sets Lock Range Adjust Up
+        models: set2
+      Down:
+        name: down
+        description: sets Lock Range Adjust Down
+        models: set2
+      QSTN:
+        name: query
+        description: gets The Lock Range Adjust State
+        models: set2
+  PBS:
+    name: p-bass
+    description: P.BASS
+    values:
+      '00':
+        name: 'off'
+        description: sets P.BASS Off
+        models: set2
+      '01':
+        name: 'on'
+        description: sets P.BASS On
+        models: set2
+      UP:
+        name: toggle
+        description: sets P.BASS Wrap-Around Up
+        models: set2
+      QSTN:
+        name: query
+        description: gets The P.BASS State
+        models: set2
+  SBS:
+    name: s-bass
+    description: S.BASS
+    values:
+      '00':
+        name: 'off'
+        description: sets S.BASS Off
+        models: set4
+      '01':
+        name: 'on'
+        description: sets S.BASS On
+        models: set4
+      UP:
+        name: toggle
+        description: sets S.BASS Wrap-Around Up
+        models: set4
+      QSTN:
+        name: query
+        description: gets The S.BASS State
+        models: set4
   SCD:
     name: screen-centered-dialog-dialog-enahncement
     description: Screen Centered Dialog / Dialog Enahncement
@@ -2423,7 +2579,9 @@ main:
     name: dimension-for-plii-music
     description: Dimension for PLII Music
     values:
-      -3"~"00"~"+3:
+      ? - -3
+        - 3
+      : name: no--3-3
         description: sets Dimension
         models: set1
       UP:
@@ -2442,7 +2600,9 @@ main:
     name: center-width-for-plii-music
     description: Center Width for PLII Music
     values:
-      00"~"07:
+      ? - 0
+        - 7
+      : name: no-0-7
         description: sets Center Width
         models: set1
       UP:
@@ -2461,8 +2621,9 @@ main:
     name: center-image-for-neo-6-music
     description: Center Image for Neo:6 Music
     values:
-      00"~"0A:
-        description: sets Center Image
+      ? - 0
+        - 10
+      : description: sets Center Image
         models: set1
       UP:
         name: up
@@ -2480,7 +2641,9 @@ main:
     name: dialog-control
     description: Dialog Control
     values:
-      00"~"+6:
+      ? - 0
+        - 6
+      : name: no-0-6
         description: sets Dialog Control
         models: set1
       UP:
@@ -2494,6 +2657,22 @@ main:
       QSTN:
         name: query
         description: gets The Dialog Control State
+        models: set1
+  DCE:
+    name: dialog-control-enabled
+    description: Dialog Control Enabled
+    values:
+      '00':
+        name: 'off'
+        description: Dialog Control is disabled
+        models: set1
+      '01':
+        name: 'on'
+        description: Dialog Control is enabled
+        models: set1
+      QSTN:
+        name: query
+        description: gets The Dialog Control Enabled State
         models: set1
   SPI:
     name: speaker-information
@@ -2593,6 +2772,7 @@ main:
     description: Input Channel (Multiplex) / Dual Mono
     values:
       '00':
+        name: main
         description: sets DUAL MONO MAIN
         models: set1
       '01':
@@ -2600,7 +2780,7 @@ main:
         description: sets DUAL MONO SUB
         models: set1
       '02':
-        name: sub
+        name: main-sub
         description: sets DUAL MONO MAIN+SUB
         models: set1
       UP:
@@ -2632,8 +2812,8 @@ main:
         description: gets The Panorama State
         models: set1
   ITV:
-    name: intellivolume-input-level-absorber
-    description: IntelliVolume / Input Level Absorber
+    name: intellivolume-input-volume-absorber
+    description: IntelliVolume / Input Volume Absorber
     values:
       ? - -24
         - 24
@@ -2845,6 +3025,7 @@ main:
     description: Firmware Version
     values:
       abce-fhik-lmno-qrtu:
+        name: version
         description: sets Firmware Version
         models: set1
       QSTN:
@@ -2874,13 +3055,13 @@ main:
           **=D1 DSP1
 
           **=D2 DSP2
-
+          
           **=D3 DSP3
-
+          
           **=VM VMPU
-
+          
           **=OS OSD
-
+          
           **=MP MMPU'
         models: set1
       CMP:
@@ -2900,6 +3081,10 @@ main:
       '01':
         name: '01'
         description: exist new firmware
+        models: set1
+      '02':
+        name: force
+        description: exist new firmware(force)
         models: set1
       QSTN:
         name: query
@@ -2924,11 +3109,34 @@ main:
           \ 0 : All, 1 : Button, 2 : Textbox, 3 : Listbox\n<.....> : XML data ( [CR]\
           \ and [LF] are removed )"
         models: set1
+  TPD:
+    name: temperature-data
+    description: Temperature Data
+    values:
+      -99-999:
+        name: temp
+        description: "The temperature Data(Fahrenheit and Celsius) 0 \u2013 999\n\"\
+          F-99C-73\": -99 degree Fahrenheit / -73 degree Celsius\n\"F 32C  0\": 32\
+          \ degree Fahrenheit / 0 degree Celsius\n\"F 41C  5\": 41 degree Fahrenheit\
+          \ / 5 degree Celsius\n\"F 50C 10\": 50 degree Fahrenheit / 10 degree Celsius\n\
+          \"F122C 50\": 122 degree Fahrenheit / 50 degree Celsius\n\"F212C100\": 212\
+          \ degree Fahrenheit / 100 degree Celsius\n\"F302C150\": 302 degree Fahrenheit\
+          \ / 150 degree Celsius\n\nReference Information:\n[TX-NR474/NR575E/8270/NR575/NR676/NR676E/RZ620/NR777/RZ720/RZ820,\
+          \ DTM-7, DRX-2.1/3.1/4.1/5.1 VSX-832/932/LX102/LX302]\n Yellow Zone: \"\
+          F150C 66\" or more & \"F210C 99\" or less\n Red Zone:\" F212C100\" or more\n\
+          [TX-RZ920, DRX-7.1/R1.1, DRC-R1.1]\n Yellow Zone: \"F176C 80\" or more &\
+          \ \"F246C119\" or less\n Red Zone: \"F248C120\" or more"
+        models: set1
+      QSTN:
+        name: query
+        description: gets the Temperature Data
+        models: set1
   TUN:
     name: tuning
     description: Tuning Command (Include Tuner Pack Model Only)
     values:
       nnnnn:
+        name: freq-nnnnn
         description: 'sets Directly Tuning Frequency (FM nnn.nn MHz / AM nnnnn kHz
           / SR nnnnn ch)
 
@@ -3071,10 +3279,11 @@ main:
     description: TP Scan Command (RDS Model Only)
     values:
       "\u201C\u201D":
+        name: start
         description: "Start TP Scan (When Don\u2019t Have Parameter)"
         models: set1
       "\u201CENTER\u201D":
-        name: enter
+        name: finish
         description: Finish TP Scan
         models: set1
   XCN:
@@ -3082,6 +3291,7 @@ main:
     description: XM Channel Name Info (XM Model Only)
     values:
       nnnnnnnnnn:
+        name: channel-name
         description: XM Channel Name
         models: set1
       QSTN:
@@ -3093,6 +3303,7 @@ main:
     description: XM Artist Name Info (XM Model Only)
     values:
       nnnnnnnnnn:
+        name: artist-name
         description: XM Artist Name
         models: set1
       QSTN:
@@ -3104,6 +3315,7 @@ main:
     description: XM Title Info (XM Model Only)
     values:
       nnnnnnnnnn:
+        name: title
         description: XM Title
         models: set1
       QSTN:
@@ -3116,7 +3328,8 @@ main:
     values:
       ? - 0
         - 597
-      : description: "XM Channel Number  \u201C000 - 255\u201D"
+      : name: channel-no-0-597
+        description: "XM Channel Number  \u201C000 - 255\u201D"
         models: set1
       UP:
         name: up
@@ -3135,6 +3348,7 @@ main:
     description: XM Category Command (XM Model Only)
     values:
       nnnnnnnnnn:
+        name: category-info
         description: XM Category Info
         models: set1
       UP:
@@ -3154,6 +3368,7 @@ main:
     description: SIRIUS Channel Name Info (SIRIUS Model Only)
     values:
       nnnnnnnnnn:
+        name: channel-name
         description: SIRIUS Channel Name
         models: set1
       QSTN:
@@ -3165,6 +3380,7 @@ main:
     description: SIRIUS Artist Name Info (SIRIUS Model Only)
     values:
       nnnnnnnnnn:
+        name: artist-name
         description: SIRIUS Artist Name
         models: set1
       QSTN:
@@ -3176,6 +3392,7 @@ main:
     description: SIRIUS Title Info (SIRIUS Model Only)
     values:
       nnnnnnnnnn:
+        name: title
         description: SIRIUS Title
         models: set1
       QSTN:
@@ -3188,7 +3405,8 @@ main:
     values:
       ? - 0
         - 597
-      : description: "SIRIUS Channel Number  \u201C000 - 255\u201D"
+      : name: channel-no-0-597
+        description: "SIRIUS Channel Number  \u201C000 - 255\u201D"
         models: set1
       UP:
         name: up
@@ -3207,6 +3425,7 @@ main:
     description: SIRIUS Category Command (SIRIUS Model Only)
     values:
       nnnnnnnnnn:
+        name: category-info
         description: SIRIUS Category Info
         models: set1
       UP:
@@ -3226,6 +3445,7 @@ main:
     description: SIRIUS Parental Lock Command (SIRIUS Model Only)
     values:
       nnnn:
+        name: password
         description: Lock Password (4Digits)
         models: set1
       INPUT:
@@ -3241,6 +3461,7 @@ main:
     description: HD Radio Artist Name Info (HD Radio Model Only)
     values:
       nnnnnnnnnn:
+        name: artist-name
         description: HD Radio Artist Name (variable-length, 64 digits max)
         models: set1
       QSTN:
@@ -3252,6 +3473,7 @@ main:
     description: HD Radio Channel Name Info (HD Radio Model Only)
     values:
       nnnnnnnnnn:
+        name: channel-name
         description: HD Radio Channel Name (Station Name) (7 digits)
         models: set1
       QSTN:
@@ -3263,6 +3485,7 @@ main:
     description: HD Radio Title Info (HD Radio Model Only)
     values:
       nnnnnnnnnn:
+        name: title
         description: HD Radio Title (variable-length, 64 digits max)
         models: set1
       QSTN:
@@ -3274,6 +3497,7 @@ main:
     description: HD Radio Detail Info (HD Radio Model Only)
     values:
       nnnnnnnnnn:
+        name: info
         description: HD Radio Title
         models: set1
       QSTN:
@@ -3328,6 +3552,157 @@ main:
         name: query
         description: gets the HD Radio Tuner Status
         models: set1
+  BCS:
+    name: battery-charge-status
+    description: Battery Charge Status Command (Battery Model Only)
+    values:
+      '00':
+        name: charging
+        description: charging
+        models: set6
+      '01':
+        name: completed
+        description: charge completed
+        models: set6
+      '10':
+        name: low
+        description: battery level Low
+        models: set6
+      '11':
+        name: middle
+        description: battery level Middle
+        models: set2
+      '12':
+        name: high
+        description: battery level High
+        models: set2
+      QSTN:
+        name: query
+        description: gets battery charge status
+        models: set2
+  CCD:
+    name: cd-player
+    description: CD Player Operation Command  (Include CD Function Model Only)
+    values:
+      PLAY:
+        name: play
+        description: PLAY
+        models: set2
+      STOP:
+        name: stop
+        description: STOP
+        models: set2
+      PAUSE:
+        name: pause
+        description: PAUSE
+        models: set2
+      SKIP.F:
+        name: next
+        description: '>>I'
+        models: set2
+      SKIP.R:
+        name: previous
+        description: I<<
+        models: set2
+      REPEAT:
+        name: repeat
+        description: REPEAT
+        models: set2
+      RANDOM:
+        name: random
+        description: RANDOM
+        models: set2
+  CST:
+    name: cd-play-status
+    description: CD Play Status
+    values:
+      prs:
+        name: status
+        description: 'CD Play Status (3 letters)
+
+          p -> Play Status: "S": STOP, "P": Play, "p": Pause, "F": FF, "R": FR
+
+          r -> Repeat Status: "-": Off, "R": All,  "1": Repeat 1
+
+          s -> Shuffle(Random) Status: "-": Off, "S": All'
+        models: set2
+      QSTN:
+        name: query
+        description: gets CD Play Status
+        models: set2
+  DST:
+    name: current-disc-status-notice
+    description: Current disc status notice
+    values:
+      '00':
+        name: none
+        description: No disc
+        models: set2
+      '04':
+        name: cd
+        description: Audio CD
+        models: set2
+      '07':
+        name: mp3-cd
+        description: MP3 CD
+        models: set2
+      FF:
+        name: unknown
+        description: Unknown
+        models: set2
+      QSTN:
+        name: query
+        description: gets Disc Status
+        models: set2
+  CFS:
+    name: current-folder-status-no
+    description: "Current Folder Status\uFF08No.\uFF09"
+    values:
+      ? - 1
+        - 153
+      : name: folder-no-1-153
+        description: Folder Number
+        models: set2
+      QSTN:
+        name: query
+        description: gets Folder Number Info
+        models: set2
+  CTM:
+    name: cd-time-info
+    description: CD Time Info
+    values:
+      mm:ss/mm:ss:
+        name: time-mm-ss-mm-ss
+        description: CD Time Info (Elapsed time/Track Time Max 99:59)
+        models: set2
+      QSTN:
+        name: query
+        description: gets CDTime Info
+        models: set2
+  SCE:
+    name: set-cd-elapsed-time
+    description: "Set\u3000CD Elapsed\u3000Time"
+    values:
+      mm:ss:
+        name: time-mm-ss
+        description: "Specified\u3000Elapsed CD Time"
+        models: set2
+  DSN:
+    name: dab-station-name
+    description: DAB Station Name
+    values:
+      "xx\u2026xx":
+        name: station-name
+        description: "xx\u2026xx   : DAB Station Name (UTF-8)\n\u4E0B\u8A18\u6587\u5B57\
+          \u306F\u7279\u6B8A\u30B3\u30FC\u30C9\u3067\u9001\u4FE1\u3059\u308B\n0x02\
+          \  \uFF1A \u2190\n0x03  \uFF1A \u2191\n0x04  \uFF1A \u2192\n0x05  \uFF1A\
+          \ \u2193\n0x06  \uFF1A \u2551\n\u4E0A\u8A18\u4EE5\u5916\u306E0x00~0x1F\u3001\
+          0x80~0xA0\u306F\u30B9\u30DA\u30FC\u30B9\u8868\u793A\u3068\u3059\u308B"
+        models: set2
+      QSTN:
+        name: query
+        description: gets Station Name
+        models: set2
 zone2:
   ZPW:
     name: power
@@ -3336,15 +3711,15 @@ zone2:
       '00':
         name: standby
         description: sets Zone2 Standby
-        models: set3
+        models: set7
       '01':
         name: 'on'
         description: sets Zone2 On
-        models: set3
+        models: set7
       QSTN:
         name: query
         description: gets the Zone2 Power Status
-        models: set3
+        models: set7
   ZPA:
     name: zone-2-a
     description: Zone 2 A Command
@@ -3352,15 +3727,15 @@ zone2:
       '00':
         name: ['off']
         description: sets Zone 2 A Off
-        models: set3
+        models: set7
       '01':
         name: ['on']
         description: sets Zone 2 A On
-        models: set3
+        models: set7
       QSTN:
         name: query
         description: gets the Speaker State
-        models: set3
+        models: set7
   ZPB:
     name: zone-2-b
     description: Zone 2 B Command
@@ -3368,15 +3743,15 @@ zone2:
       '00':
         name: ['off']
         description: sets Zone 2 B Off
-        models: set3
+        models: set7
       '01':
         name: ['on']
         description: sets Zone 2 B On
-        models: set3
+        models: set7
       QSTN:
         name: query
         description: gets the Speaker State
-        models: set3
+        models: set7
   ZMT:
     name: muting
     description: Zone2 Muting Command
@@ -3384,19 +3759,19 @@ zone2:
       '00':
         name: 'off'
         description: sets Zone2 Muting Off
-        models: set3
+        models: set7
       '01':
         name: 'on'
         description: sets Zone2 Muting On
-        models: set3
+        models: set7
       TG:
         name: toggle
         description: sets Zone2 Muting Wrap-Around
-        models: set3
+        models: set7
       QSTN:
         name: query
         description: gets the Zone2 Muting Status
-        models: set3
+        models: set7
   ZVL:
     name: volume
     description: Zone2 Volume Command
@@ -3404,35 +3779,36 @@ zone2:
       ? - 0
         - 200
       : description: "Volume Level 0.0 \u2013 100.0 ( In hexadecimal representation)"
-        models: set3
+        models: set7
       ? - 0
         - 100
-      : description: "Volume Level 0 \u2013 100 ( In hexadecimal representation)"
-        models: set3
+      : name: vol-0-100
+        description: "Volume Level 0 \u2013 100 ( In hexadecimal representation)"
+        models: set7
       ? - 0
         - 80
       : description: "Volume Level 0 \u2013 80 ( In hexadecimal representation)"
-        models: set3
+        models: set7
       UP:
         name: level-up
         description: sets Volume Level Up
-        models: set3
+        models: set7
       DOWN:
         name: level-down
         description: sets Volume Level Down
-        models: set3
+        models: set7
       UP1:
         name: level-up-1db-step
         description: sets Volume Level Up 1dB Step
-        models: set3
+        models: set7
       DOWN1:
         name: level-down-1db-step
         description: sets Volume Level Down 1dB Step
-        models: set3
+        models: set7
       QSTN:
         name: query
         description: gets the Volume Level
-        models: set3
+        models: set7
   ZTN:
     name: tone
     description: Zone2 Tone Command
@@ -3440,31 +3816,31 @@ zone2:
       B{xx}:
         name: bass-xx-is-a-00-a-10-0-10-1-step
         description: sets Zone2 Bass (xx is "-A"..."00"..."+A"[-10...0...+10 1 step]
-        models: set3
+        models: set7
       T{xx}:
         name: treble-xx-is-a-00-a-10-0-10-1-step
         description: sets Zone2 Treble (xx is "-A"..."00"..."+A"[-10...0...+10 1 step]
-        models: set3
+        models: set7
       BUP:
         name: bass-up
         description: sets Bass Up (1 Step)
-        models: set3
+        models: set7
       BDOWN:
         name: bass-down
         description: sets Bass Down (1 Step)
-        models: set3
+        models: set7
       TUP:
         name: treble-up
         description: sets Treble Up (1 Step)
-        models: set3
+        models: set7
       TDOWN:
         name: treble-down
         description: sets Treble Down (1 Step)
-        models: set3
+        models: set7
       QSTN:
         name: query
         description: gets Zone2 Tone ("BxxTxx")
-        models: set3
+        models: set7
   ZBL:
     name: balance
     description: Zone2 Balance Command
@@ -3473,19 +3849,19 @@ zone2:
         name: xx-is-a-00-a-l-10-0-r-10-1-step
         description: sets Zone2 Balance (xx is "-A"..."00"..."+A"[L+10...0...R+10
           1 step]
-        models: set3
+        models: set7
       UP:
         name: up
         description: sets Balance Up (to R 1 Step)
-        models: set3
+        models: set7
       DOWN:
         name: down
         description: sets Balance Down (to L 1 Step)
-        models: set3
+        models: set7
       QSTN:
         name: query
         description: gets Zone2 Balance
-        models: set3
+        models: set7
   SLZ:
     name: selector
     description: ZONE2 Selector Command
@@ -3493,255 +3869,257 @@ zone2:
       '00':
         name: [video1, vcr, dvr, stb, dvr]
         description: sets VIDEO1, VCR/DVR, STB/DVR
-        models: set3
+        models: set7
       '01':
         name: [video2, cbl, sat]
         description: sets VIDEO2, CBL/SAT
-        models: set3
+        models: set7
       '02':
         name: [video3, game/tv, game, game1]
         description: sets VIDEO3, GAME/TV, GAME, GAME1
-        models: set3
+        models: set7
       '03':
         name: [video4, aux1]
         description: sets VIDEO4, AUX1(AUX)
-        models: set3
+        models: set7
       '04':
         name: [video5, aux2, game2]
         description: sets VIDEO5, AUX2, GAME2
-        models: set3
+        models: set7
       '05':
         name: [video6, pc]
         description: sets VIDEO6, PC
-        models: set3
+        models: set7
       '06':
         name: video7
         description: sets VIDEO7
-        models: set3
+        models: set7
       '07':
         name: [hidden1, extra1]
         description: sets Hidden1, EXTRA1
-        models: set3
+        models: set7
       08:
         name: [hidden2, extra2]
         description: sets Hidden2, EXTRA2
-        models: set3
+        models: set7
       09:
         name: [hidden3, extra3]
         description: sets Hidden3, EXTRA3
-        models: set3
+        models: set7
       '10':
         name: [dvd, bd, dvd]
         description: sets DVD, BD/DVD
-        models: set3
+        models: set7
       '11':
         name: strm-box
         description: sets STRM BOX
-        models: set3
+        models: set7
       '12':
         name: tv
         description: sets TV
-        models: set3
+        models: set7
       '20':
         name: tape
         description: sets TAPE(1)
-        models: set3
+        models: set7
       '21':
         name: tape2
         description: sets TAPE2
-        models: set3
+        models: set7
       '22':
         name: phono
         description: sets PHONO
-        models: set3
+        models: set7
       '23':
         name: [cd, tv/cd]
         description: sets CD, TV/CD
-        models: set3
+        models: set7
       '24':
         name: fm
         description: sets FM
-        models: set3
+        models: set7
       '25':
         name: am
         description: sets AM
-        models: set3
+        models: set7
       '26':
         name: tuner
         description: sets TUNER
-        models: set3
+        models: set7
       '27':
         name: [music-server, p4s, dlna]
         description: sets MUSIC SERVER, P4S, DLNA
-        models: set3
+        models: set7
       '28':
         name: [internet-radio, iradio-favorite]
         description: sets INTERNET RADIO, iRadio Favorite
-        models: set3
+        models: set7
       '29':
         name: [usb, usb]
         description: sets USB/USB(Front)
-        models: set3
+        models: set7
       2A:
         name: usb
         description: sets USB(Rear)
-        models: set3
+        models: set7
       2B:
         name: [network, net]
         description: sets NETWORK, NET
-        models: set3
+        models: set7
       2C:
         name: usb
         description: sets USB(toggle)
-        models: set3
+        models: set7
       2D:
         name: airplay
         description: sets Airplay
-        models: set3
+        models: set7
       2E:
         name: bluetooth
         description: sets Bluetooth
-        models: set3
+        models: set7
       '40':
         name: universal-port
         description: sets Universal PORT
-        models: set3
+        models: set7
       '30':
         name: multi-ch
         description: sets MULTI CH
-        models: set3
+        models: set7
       '31':
         name: xm
         description: sets XM
-        models: set3
+        models: set7
       '32':
         name: sirius
         description: sets SIRIUS
-        models: set3
+        models: set7
       '33':
         name: dab
         description: 'sets DAB '
-        models: set3
+        models: set7
       '55':
         name: hdmi-5
         description: sets HDMI 5
-        models: set3
+        models: set7
       '56':
         name: hdmi-6
         description: sets HDMI 6
-        models: set3
+        models: set7
       '57':
         name: hdmi-7
         description: sets HDMI 7
-        models: set3
+        models: set7
       7F:
         name: 'off'
         description: sets OFF
-        models: set3
+        models: set7
       '80':
         name: source
         description: sets SOURCE
-        models: set3
+        models: set7
       UP:
         name: up
         description: sets Selector Position Wrap-Around Up
-        models: set3
+        models: set7
       DOWN:
         name: down
         description: sets Selector Position Wrap-Around Down
-        models: set3
+        models: set7
       QSTN:
         name: query
         description: gets The Selector Position
-        models: set3
+        models: set7
   TUN:
     name: tuning
     description: Tuning Command
     values:
       nnnnn:
+        name: freq-nnnnn
         description: sets Directly Tuning Frequency (FM nnn.nn MHz / AM nnnnn kHz
           / XM nnnnn ch)
-        models: set3
+        models: set7
       UP:
         name: up
         description: sets Tuning Frequency Wrap-Around Up
-        models: set3
+        models: set7
       DOWN:
         name: down
         description: sets Tuning Frequency Wrap-Around Down
-        models: set3
+        models: set7
       QSTN:
         name: query
         description: gets The Tuning Frequency
-        models: set3
+        models: set7
   TUZ:
     name: tuning
     description: Tuning Command
     values:
       nnnnn:
+        name: freq-nnnnn
         description: sets Directly Tuning Frequency (FM nnn.nn MHz / AM nnnnn kHz
           / SR nnnnn ch)
-        models: set3
+        models: set7
       DIRECT:
         name: direct
         description: starts/restarts Direct Tuning Mode
-        models: set3
+        models: set7
       BAND:
         name: band
         description: Change BAND
-        models: set3
+        models: set7
       '0':
         name: 0-in-direct-mode
         description: sets 0 in Direct Tuning Mode
-        models: set3
+        models: set7
       '1':
         name: 1-in-direct-mode
         description: sets 1 in Direct Tuning Mode
-        models: set3
+        models: set7
       '2':
         name: 2-in-direct-mode
         description: sets 2 in Direct Tuning Mode
-        models: set3
+        models: set7
       '3':
         name: 3-in-direct-mode
         description: sets 3 in Direct Tuning Mode
-        models: set3
+        models: set7
       '4':
         name: 4-in-direct-mode
         description: sets 4 in Direct Tuning Mode
-        models: set3
+        models: set7
       '5':
         name: 5-in-direct-mode
         description: sets 5 in Direct Tuning Mode
-        models: set3
+        models: set7
       '6':
         name: 6-in-direct-mode
         description: sets 6 in Direct Tuning Mode
-        models: set3
+        models: set7
       '7':
         name: 7-in-direct-mode
         description: sets 7 in Direct Tuning Mode
-        models: set3
+        models: set7
       '8':
         name: 8-in-direct-mode
         description: sets 8 in Direct Tuning Mode
-        models: set3
+        models: set7
       '9':
         name: 9-in-direct-mode
         description: sets 9 in Direct Tuning Mode
-        models: set3
+        models: set7
       UP:
         name: up
         description: sets Tuning Frequency Wrap-Around Up
-        models: set3
+        models: set7
       DOWN:
         name: down
         description: sets Tuning Frequency Wrap-Around Down
-        models: set3
+        models: set7
       QSTN:
         name: query
         description: gets The Tuning Frequency
-        models: set3
+        models: set7
   PRS:
     name: preset
     description: Preset Command
@@ -3750,24 +4128,24 @@ zone2:
         - 40
       : name: no-1-40
         description: sets Preset No. 1 - 40 ( In hexadecimal representation)
-        models: set3
+        models: set7
       ? - 1
         - 30
       : name: no-1-30
         description: sets Preset No. 1 - 30 ( In hexadecimal representation)
-        models: set3
+        models: set7
       UP:
         name: up
         description: sets Preset No. Wrap-Around Up
-        models: set3
+        models: set7
       DOWN:
         name: down
         description: sets Preset No. Wrap-Around Down
-        models: set3
+        models: set7
       QSTN:
         name: query
         description: gets The Preset No.
-        models: set3
+        models: set7
   PRZ:
     name: preset
     description: Preset Command
@@ -3776,24 +4154,24 @@ zone2:
         - 40
       : name: no-1-40
         description: sets Preset No. 1 - 40 ( In hexadecimal representation)
-        models: set3
+        models: set7
       ? - 1
         - 30
       : name: no-1-30
         description: sets Preset No. 1 - 30 ( In hexadecimal representation)
-        models: set3
+        models: set7
       UP:
         name: up
         description: sets Preset No. Wrap-Around Up
-        models: set3
+        models: set7
       DOWN:
         name: down
         description: sets Preset No. Wrap-Around Down
-        models: set3
+        models: set7
       QSTN:
         name: query
         description: gets The Preset No.
-        models: set3
+        models: set7
   NTC:
     name: net-tune-network
     description: Net-Tune/Network Operation Command(Net-Tune Model Only)
@@ -3801,23 +4179,23 @@ zone2:
       PLAYz:
         name: playz
         description: PLAY KEY
-        models: set3
+        models: set7
       STOPz:
         name: stopz
         description: STOP KEY
-        models: set3
+        models: set7
       PAUSEz:
         name: pausez
         description: PAUSE KEY
-        models: set3
+        models: set7
       TRUPz:
         name: trupz
         description: TRACK UP KEY
-        models: set3
+        models: set7
       TRDNz:
         name: trdnz
         description: TRACK DOWN KEY
-        models: set3
+        models: set7
   NTZ:
     name: net-tune-network
     description: Net-Tune/Network Operation Command(Network Model Only)
@@ -3825,91 +4203,91 @@ zone2:
       PLAY:
         name: play
         description: PLAY KEY
-        models: set3
+        models: set7
       STOP:
         name: stop
         description: STOP KEY
-        models: set3
+        models: set7
       PAUSE:
         name: pause
         description: PAUSE KEY
-        models: set3
+        models: set7
       P/P:
         name: p-p
         description: PLAY / PAUSE KEY
-        models: set3
+        models: set7
       TRUP:
         name: trup
         description: TRACK UP KEY
-        models: set3
+        models: set7
       TRDN:
         name: trdn
         description: TRACK DOWN KEY
-        models: set3
+        models: set7
       CHUP:
         name: chup
         description: CH UP(for iRadio)
-        models: set3
+        models: set7
       CHDN:
         name: chdn
         description: CH DOWN(for iRadio)
-        models: set3
+        models: set7
       FF:
         name: ff
         description: FF KEY (CONTINUOUS*) (for iPod 1wire)
-        models: set3
+        models: set7
       REW:
         name: rew
         description: REW KEY (CONTINUOUS*) (for iPod 1wire)
-        models: set3
+        models: set7
       REPEAT:
         name: repeat
         description: REPEAT KEY(for iPod 1wire)
-        models: set3
+        models: set7
       RANDOM:
         name: random
         description: RANDOM KEY(for iPod 1wire)
-        models: set3
+        models: set7
       REP/SHF:
         name: rep-shf
         description: REPEAT / SHUFFLE KEY
-        models: set3
+        models: set7
       DISPLAY:
         name: display
         description: DISPLAY KEY(for iPod 1wire)
-        models: set3
+        models: set7
       MEMORY:
         name: memory
         description: MEMORY KEY
-        models: set3
+        models: set7
       MODE:
         name: mode
         description: MODE KEY
-        models: set3
+        models: set7
       RIGHT:
         name: right
         description: RIGHT KEY(for iPod 1wire)
-        models: set3
+        models: set7
       LEFT:
         name: left
         description: LEFT KEY(for iPod 1wire)
-        models: set3
+        models: set7
       UP:
         name: up
         description: UP KEY(for iPod 1wire)
-        models: set3
+        models: set7
       DOWN:
         name: down
         description: DOWN KEY(for iPod 1wire)
-        models: set3
+        models: set7
       SELECT:
         name: select
         description: SELECT KEY(for iPod 1wire)
-        models: set3
+        models: set7
       RETURN:
         name: return
         description: RETURN KEY(for iPod 1wire)
-        models: set3
+        models: set7
   NPZ:
     name: internet-radio-preset
     description: Internet Radio Preset Command (Network Model Only)
@@ -3918,7 +4296,7 @@ zone2:
         - 40
       : name: no-1-40
         description: sets Preset No. 1 - 40 ( In hexadecimal representation)
-        models: set3
+        models: set7
   LMZ:
     name: listening-mode
     description: Listening Mode Command
@@ -3926,27 +4304,27 @@ zone2:
       '00':
         name: stereo
         description: sets STEREO
-        models: set3
+        models: set7
       '01':
         name: direct
         description: sets DIRECT
-        models: set3
+        models: set7
       0F:
         name: mono
         description: sets MONO
-        models: set3
+        models: set7
       '12':
         name: multiplex
         description: sets MULTIPLEX
-        models: set3
+        models: set7
       '87':
         name: dvs
         description: sets DVS(Pl2)
-        models: set3
+        models: set7
       '88':
         name: dvs
         description: sets DVS(NEO6)
-        models: set3
+        models: set7
   LTZ:
     name: late-night
     description: Late Night Command
@@ -3954,23 +4332,23 @@ zone2:
       '00':
         name: 'off'
         description: sets Late Night Off
-        models: set3
+        models: set7
       '01':
         name: low
         description: sets Late Night Low
-        models: set3
+        models: set7
       '02':
         name: high
         description: sets Late Night High
-        models: set3
+        models: set7
       UP:
         name: up
         description: sets Late Night State Wrap-Around Up
-        models: set3
+        models: set7
       QSTN:
         name: query
         description: gets The Late Night Level
-        models: set3
+        models: set7
   RAZ:
     name: re-eq-academy-filter
     description: Re-EQ/Academy Filter Command
@@ -3978,23 +4356,23 @@ zone2:
       '00':
         name: both-off
         description: sets Both Off
-        models: set3
+        models: set7
       '01':
         name: 'on'
         description: sets Re-EQ On
-        models: set3
+        models: set7
       '02':
         name: 'on'
         description: sets Academy On
-        models: set3
+        models: set7
       UP:
         name: up
         description: sets Re-EQ/Academy State Wrap-Around Up
-        models: set3
+        models: set7
       QSTN:
         name: query
         description: gets The Re-EQ/Academy State
-        models: set3
+        models: set7
 zone3:
   PW3:
     name: power
@@ -4003,15 +4381,15 @@ zone3:
       '00':
         name: standby
         description: sets Zone3 Standby
-        models: set4
+        models: set8
       '01':
         name: 'on'
         description: sets Zone3 On
-        models: set4
+        models: set8
       QSTN:
         name: query
         description: gets the Zone3 Power Status
-        models: set4
+        models: set8
   MT3:
     name: muting
     description: Zone3 Muting Command
@@ -4019,19 +4397,19 @@ zone3:
       '00':
         name: 'off'
         description: sets Zone3 Muting Off
-        models: set4
+        models: set8
       '01':
         name: 'on'
         description: sets Zone3 Muting On
-        models: set4
+        models: set8
       TG:
         name: toggle
         description: sets Zone3 Muting Wrap-Around
-        models: set4
+        models: set8
       QSTN:
         name: query
         description: gets the Zone3 Muting Status
-        models: set4
+        models: set8
   VL3:
     name: volume
     description: Zone3 Volume Command
@@ -4039,35 +4417,36 @@ zone3:
       ? - 0
         - 200
       : description: "Volume Level 0.0 \u2013 100.0 ( In hexadecimal representation)"
-        models: set4
+        models: set8
       ? - 0
         - 100
-      : description: "Volume Level 0 \u2013 100 ( In hexadecimal representation)"
-        models: set4
+      : name: vol-0-100
+        description: "Volume Level 0 \u2013 100 ( In hexadecimal representation)"
+        models: set8
       ? - 0
         - 80
       : description: "Volume Level 0 \u2013 80 ( In hexadecimal representation)"
-        models: set4
+        models: set8
       UP:
         name: level-up
         description: sets Volume Level Up
-        models: set4
+        models: set8
       DOWN:
         name: level-down
         description: sets Volume Level Down
-        models: set4
+        models: set8
       UP1:
         name: level-up-1db-step
         description: sets Volume Level Up 1dB Step
-        models: set4
+        models: set8
       DOWN1:
         name: level-down-1db-step
         description: sets Volume Level Down 1dB Step
-        models: set4
+        models: set8
       QSTN:
         name: query
         description: gets the Volume Level
-        models: set4
+        models: set8
   TN3:
     name: tone
     description: Zone3 Tone Command
@@ -4075,31 +4454,31 @@ zone3:
       B{xx}:
         name: b-xx
         description: Zone3 Bass (xx is "-A"..."00"..."+A"[-10...0...+10 1 step])
-        models: set4
+        models: set8
       T{xx}:
         name: t-xx
         description: Zone3 Treble (xx is "-A"..."00"..."+A"[-10...0...+10 1 step])
-        models: set4
+        models: set8
       BUP:
         name: bass-up
         description: sets Bass Up (1 Step)
-        models: set4
+        models: set8
       BDOWN:
         name: bass-down
         description: sets Bass Down (1 Step)
-        models: set4
+        models: set8
       TUP:
         name: treble-up
         description: sets Treble Up (1 Step)
-        models: set4
+        models: set8
       TDOWN:
         name: treble-down
         description: sets Treble Down (1 Step)
-        models: set4
+        models: set8
       QSTN:
         name: query
         description: gets Zone3 Tone ("BxxTxx")
-        models: set4
+        models: set8
   BL3:
     name: balance
     description: Zone3 Balance Command
@@ -4107,19 +4486,19 @@ zone3:
       '{xx}':
         name: xx
         description: Zone3 Balance (xx is "-A"..."00"..."+A"[L+10...0...R+10 1 step])
-        models: set4
+        models: set8
       UP:
         name: up
         description: sets Balance Up (to R 1 Step)
-        models: set4
+        models: set8
       DOWN:
         name: down
         description: sets Balance Down (to L 1 Step)
-        models: set4
+        models: set8
       QSTN:
         name: query
         description: gets Zone3 Balance
-        models: set4
+        models: set8
   SL3:
     name: selector
     description: ZONE3 Selector Command
@@ -4127,238 +4506,240 @@ zone3:
       '00':
         name: [video1, vcr, dvr, stb, dvr]
         description: sets VIDEO1, VCR/DVR, STB/DVR
-        models: set4
+        models: set8
       '01':
         name: [video2, cbl, sat]
         description: sets VIDEO2, CBL/SAT
-        models: set4
+        models: set8
       '02':
         name: [video3, game/tv, game, game1]
         description: sets VIDEO3, GAME/TV, GAME, GAME1
-        models: set4
+        models: set8
       '03':
         name: [video4, aux1]
         description: sets VIDEO4, AUX1(AUX)
-        models: set4
+        models: set8
       '04':
         name: [video5, aux2, game2]
         description: sets VIDEO5, AUX2, GAME2
-        models: set4
+        models: set8
       '05':
         name: [video6, pc]
         description: sets VIDEO6, PC
-        models: set4
+        models: set8
       '06':
         name: video7
         description: sets VIDEO7
-        models: set4
+        models: set8
       '07':
         name: [hidden1, extra1]
         description: sets Hidden1, EXTRA1
-        models: set4
+        models: set8
       08:
         name: [hidden2, extra2]
         description: sets Hidden2, EXTRA2
-        models: set4
+        models: set8
       09:
         name: [hidden3, extra3]
         description: sets Hidden3, EXTRA3
-        models: set4
+        models: set8
       '10':
         name: dvd
         description: sets DVD
-        models: set4
+        models: set8
       '11':
         name: strm-box
         description: sets STRM BOX
-        models: set4
+        models: set8
       '12':
         name: tv
         description: sets TV
-        models: set4
+        models: set8
       '20':
         name: tape
         description: sets TAPE(1)
-        models: set4
+        models: set8
       '21':
         name: tape2
         description: sets TAPE2
-        models: set4
+        models: set8
       '22':
         name: phono
         description: sets PHONO
-        models: set4
+        models: set8
       '23':
         name: [cd, tv/cd]
         description: sets CD, TV/CD
-        models: set4
+        models: set8
       '24':
         name: fm
         description: sets FM
-        models: set4
+        models: set8
       '25':
         name: am
         description: sets AM
-        models: set4
+        models: set8
       '26':
         name: tuner
         description: sets TUNER
-        models: set4
+        models: set8
       '27':
         name: [music-server, p4s, dlna]
         description: sets MUSIC SERVER, P4S, DLNA
-        models: set4
+        models: set8
       '28':
         name: [internet-radio, iradio-favorite]
         description: sets INTERNET RADIO, iRadio Favorite
-        models: set4
+        models: set8
       '29':
         name: [usb, usb]
         description: sets USB/USB(Front)
-        models: set4
+        models: set8
       2A:
         name: usb
         description: sets USB(Rear)
-        models: set4
+        models: set8
       2B:
         name: [network, net]
         description: sets NETWORK, NET
-        models: set4
+        models: set8
       2C:
         name: usb
         description: sets USB(toggle)
-        models: set4
+        models: set8
       2D:
         name: airplay
         description: sets Airplay
-        models: set4
+        models: set8
       2E:
         name: bluetooth
         description: sets Bluetooth
-        models: set4
+        models: set8
       '40':
         name: universal-port
         description: sets Universal PORT
-        models: set4
+        models: set8
       '30':
         name: multi-ch
         description: sets MULTI CH
-        models: set4
+        models: set8
       '31':
         name: xm
         description: sets XM
-        models: set4
+        models: set8
       '32':
         name: sirius
         description: sets SIRIUS
-        models: set4
+        models: set8
       '33':
         name: dab
         description: 'sets DAB '
-        models: set5
+        models: set9
       '80':
         name: source
         description: sets SOURCE
-        models: set4
+        models: set8
       UP:
         name: up
         description: sets Selector Position Wrap-Around Up
-        models: set4
+        models: set8
       DOWN:
         name: down
         description: sets Selector Position Wrap-Around Down
-        models: set4
+        models: set8
       QSTN:
         name: query
         description: gets The Selector Position
-        models: set4
+        models: set8
   TUN:
     name: tuning
     description: Tuning Command
     values:
       nnnnn:
+        name: freq-nnnnn
         description: sets Directly Tuning Frequency (FM nnn.nn MHz / AM nnnnn kHz)
-        models: set4
+        models: set8
       UP:
         name: up
         description: sets Tuning Frequency Wrap-Around Up
-        models: set4
+        models: set8
       DOWN:
         name: down
         description: sets Tuning Frequency Wrap-Around Down
-        models: set4
+        models: set8
       QSTN:
         name: query
         description: gets The Tuning Frequency
-        models: set4
+        models: set8
   TU3:
     name: tuning
     description: Tuning Command
     values:
       nnnnn:
+        name: freq-nnnnn
         description: sets Directly Tuning Frequency (FM nnn.nn MHz / AM nnnnn kHz
           / SR nnnnn ch)
-        models: set4
+        models: set8
       BAND:
         name: band
         description: Change BAND
-        models: set4
+        models: set8
       DIRECT:
         name: direct
         description: starts/restarts Direct Tuning Mode
-        models: set4
+        models: set8
       '0':
         name: 0-in-direct-mode
         description: sets 0 in Direct Tuning Mode
-        models: set4
+        models: set8
       '1':
         name: 1-in-direct-mode
         description: sets 1 in Direct Tuning Mode
-        models: set4
+        models: set8
       '2':
         name: 2-in-direct-mode
         description: sets 2 in Direct Tuning Mode
-        models: set4
+        models: set8
       '3':
         name: 3-in-direct-mode
         description: sets 3 in Direct Tuning Mode
-        models: set4
+        models: set8
       '4':
         name: 4-in-direct-mode
         description: sets 4 in Direct Tuning Mode
-        models: set4
+        models: set8
       '5':
         name: 5-in-direct-mode
         description: sets 5 in Direct Tuning Mode
-        models: set4
+        models: set8
       '6':
         name: 6-in-direct-mode
         description: sets 6 in Direct Tuning Mode
-        models: set4
+        models: set8
       '7':
         name: 7-in-direct-mode
         description: sets 7 in Direct Tuning Mode
-        models: set4
+        models: set8
       '8':
         name: 8-in-direct-mode
         description: sets 8 in Direct Tuning Mode
-        models: set4
+        models: set8
       '9':
         name: 9-in-direct-mode
         description: sets 9 in Direct Tuning Mode
-        models: set4
+        models: set8
       UP:
         name: up
         description: sets Tuning Frequency Wrap-Around Up
-        models: set4
+        models: set8
       DOWN:
         name: down
         description: sets Tuning Frequency Wrap-Around Down
-        models: set4
+        models: set8
       QSTN:
         name: query
         description: gets The Tuning Frequency
-        models: set4
+        models: set8
   PRS:
     name: preset
     description: Preset Command
@@ -4367,24 +4748,24 @@ zone3:
         - 40
       : name: no-1-40
         description: sets Preset No. 1 - 40 ( In hexadecimal representation)
-        models: set4
+        models: set8
       ? - 1
         - 30
       : name: no-1-30
         description: sets Preset No. 1 - 30 ( In hexadecimal representation)
-        models: set4
+        models: set8
       UP:
         name: up
         description: sets Preset No. Wrap-Around Up
-        models: set4
+        models: set8
       DOWN:
         name: down
         description: sets Preset No. Wrap-Around Down
-        models: set4
+        models: set8
       QSTN:
         name: query
         description: gets The Preset No.
-        models: set4
+        models: set8
   PR3:
     name: preset
     description: Preset Command
@@ -4393,24 +4774,24 @@ zone3:
         - 40
       : name: no-1-40
         description: sets Preset No. 1 - 40 ( In hexadecimal representation)
-        models: set4
+        models: set8
       ? - 1
         - 30
       : name: no-1-30
         description: sets Preset No. 1 - 30 ( In hexadecimal representation)
-        models: set4
+        models: set8
       UP:
         name: up
         description: sets Preset No. Wrap-Around Up
-        models: set4
+        models: set8
       DOWN:
         name: down
         description: sets Preset No. Wrap-Around Down
-        models: set4
+        models: set8
       QSTN:
         name: query
         description: gets The Preset No.
-        models: set4
+        models: set8
   NTC:
     name: net-tune-network
     description: Net-Tune/Network Operation Command(Net-Tune Model Only)
@@ -4418,23 +4799,23 @@ zone3:
       PLAYz:
         name: playz
         description: PLAY KEY
-        models: set4
+        models: set8
       STOPz:
         name: stopz
         description: STOP KEY
-        models: set4
+        models: set8
       PAUSEz:
         name: pausez
         description: PAUSE KEY
-        models: set4
+        models: set8
       TRUPz:
         name: trupz
         description: TRACK UP KEY
-        models: set4
+        models: set8
       TRDNz:
         name: trdnz
         description: TRACK DOWN KEY
-        models: set4
+        models: set8
   NT3:
     name: net-tune-network
     description: Net-Tune/Network Operation Command(Network Model Only)
@@ -4442,87 +4823,87 @@ zone3:
       PLAY:
         name: play
         description: PLAY KEY
-        models: set4
+        models: set8
       STOP:
         name: stop
         description: STOP KEY
-        models: set4
+        models: set8
       PAUSE:
         name: pause
         description: PAUSE KEY
-        models: set4
+        models: set8
       P/P:
         name: p-p
         description: PLAY / PAUSE KEY
-        models: set4
+        models: set8
       TRUP:
         name: trup
         description: TRACK UP KEY
-        models: set4
+        models: set8
       TRDN:
         name: trdn
         description: TRACK DOWN KEY
-        models: set4
+        models: set8
       CHUP:
         name: chup
         description: CH UP(for iRadio)
-        models: set4
+        models: set8
       CHDN:
         name: chdn
         description: CH DOWNP(for iRadio)
-        models: set4
+        models: set8
       FF:
         name: ff
         description: FF KEY (CONTINUOUS*) (for iPod 1wire)
-        models: set4
+        models: set8
       REW:
         name: rew
         description: REW KEY (CONTINUOUS*) (for iPod 1wire)
-        models: set4
+        models: set8
       REPEAT:
         name: repeat
         description: REPEAT KEY(for iPod 1wire)
-        models: set4
+        models: set8
       RANDOM:
         name: random
         description: RANDOM KEY(for iPod 1wire)
-        models: set4
+        models: set8
       REP/SHF:
         name: rep-shf
         description: REPEAT / SHUFFLE KEY
-        models: set4
+        models: set8
       DISPLAY:
         name: display
         description: DISPLAY KEY(for iPod 1wire)
-        models: set4
+        models: set8
       MEMORY:
         name: memory
         description: MEMORY KEY
-        models: set4
+        models: set8
       RIGHT:
         name: right
         description: RIGHT KEY(for iPod 1wire)
-        models: set4
+        models: set8
       LEFT:
         name: left
         description: LEFT KEY(for iPod 1wire)
-        models: set4
+        models: set8
       UP:
         name: up
         description: UP KEY(for iPod 1wire)
-        models: set4
+        models: set8
       DOWN:
         name: down
         description: DOWN KEY(for iPod 1wire)
-        models: set4
+        models: set8
       SELECT:
         name: select
         description: SELECT KEY(for iPod 1wire)
-        models: set4
+        models: set8
       RETURN:
         name: return
         description: RETURN KEY(for iPod 1wire)
-        models: set4
+        models: set8
   NP3:
     name: internet-radio-preset
     description: Internet Radio Preset Command (Network Model Only)
@@ -4531,7 +4912,7 @@ zone3:
         - 40
       : name: no-1-40
         description: sets Preset No. 1 - 40 ( In hexadecimal representation)
-        models: set4
+        models: set8
 zone4:
   PW4:
     name: power
@@ -4540,15 +4921,15 @@ zone4:
       '00':
         name: standby
         description: sets Zone4 Standby
-        models: set6
+        models: set10
       '01':
         name: 'on'
         description: sets Zone4 On
-        models: set6
+        models: set10
       QSTN:
         name: query
         description: gets the Zone4 Power Status
-        models: set6
+        models: set10
   MT4:
     name: muting
     description: Zone4 Muting Command
@@ -4556,43 +4937,44 @@ zone4:
       '00':
         name: 'off'
         description: sets Zone4 Muting Off
-        models: set6
+        models: set10
       '01':
         name: 'on'
         description: sets Zone4 Muting On
-        models: set6
+        models: set10
       TG:
         name: toggle
         description: sets Zone4 Muting Wrap-Around
-        models: set6
+        models: set10
       QSTN:
         name: query
         description: gets the Zone4 Muting Status
-        models: set6
+        models: set10
   VL4:
     name: volume
     description: Zone4 Volume Command
     values:
       ? - 0
         - 100
-      : description: "Volume Level 0 \u2013 100 ( In hexadecimal representation)"
-        models: set6
+      : name: vol-0-100
+        description: "Volume Level 0 \u2013 100 ( In hexadecimal representation)"
+        models: set10
       ? - 0
         - 80
       : description: "Volume Level 0 \u2013 80 ( In hexadecimal representation)"
-        models: set6
+        models: set10
       UP:
         name: level-up
         description: sets Volume Level Up
-        models: set6
+        models: set10
       DOWN:
         name: level-down
         description: sets Volume Level Down
-        models: set6
+        models: set10
       QSTN:
         name: query
         description: gets the Volume Level
-        models: set6
+        models: set10
   SL4:
     name: selector
     description: ZONE4 Selector Command
@@ -4600,225 +4982,227 @@ zone4:
       '00':
         name: [video1, vcr, dvr, stb, dvr]
         description: sets VIDEO1, VCR/DVR, STB/DVR
-        models: set6
+        models: set10
       '01':
         name: [video2, cbl, sat]
         description: sets VIDEO2, CBL/SAT
-        models: set6
+        models: set10
       '02':
         name: [video3, game/tv, game, game1]
         description: sets VIDEO3, GAME/TV, GAME, GAME1
-        models: set6
+        models: set10
       '03':
         name: [video4, aux1]
         description: sets VIDEO4, AUX1(AUX)
-        models: set6
+        models: set10
       '04':
         name: [video5, aux2, game2]
         description: sets VIDEO5, AUX2, GAME2
-        models: set6
+        models: set10
       '05':
         name: [video6, pc]
         description: sets VIDEO6, PC
-        models: set6
+        models: set10
       '06':
         name: video7
         description: sets VIDEO7
-        models: set6
+        models: set10
       '07':
         name: [hidden1, extra1]
         description: sets Hidden1, EXTRA1
-        models: set6
+        models: set10
       08:
         name: [hidden2, extra2]
         description: sets Hidden2, EXTRA2
-        models: set6
+        models: set10
       09:
         name: [hidden3, extra3]
         description: sets Hidden3, EXTRA3
-        models: set6
+        models: set10
       '10':
         name: [dvd, bd, dvd]
         description: sets DVD, BD/DVD
-        models: set6
+        models: set10
       '20':
         name: [tape-1, tv/tape]
         description: sets TAPE(1), TV/TAPE
-        models: set6
+        models: set10
       '21':
         name: tape2
         description: sets TAPE2
-        models: set6
+        models: set10
       '22':
         name: phono
         description: sets PHONO
-        models: set6
+        models: set10
       '23':
         name: [cd, tv/cd]
         description: sets CD, TV/CD
-        models: set6
+        models: set10
       '24':
         name: fm
         description: sets FM
-        models: set6
+        models: set10
       '25':
         name: am
         description: sets AM
-        models: set6
+        models: set10
       '26':
         name: tuner
         description: sets TUNER
-        models: set6
+        models: set10
       '27':
         name: [music-server, p4s, dlna]
         description: sets MUSIC SERVER, P4S, DLNA
-        models: set6
+        models: set10
       '28':
         name: [internet-radio, iradio-favorite]
         description: sets INTERNET RADIO, iRadio Favorite
-        models: set6
+        models: set10
       '29':
         name: [usb, usb]
         description: sets USB/USB(Front)
-        models: set6
+        models: set10
       2A:
         name: usb
         description: sets USB(Rear)
-        models: set6
+        models: set10
       2B:
         name: [network, net]
         description: sets NETWORK, NET
-        models: set6
+        models: set10
       2C:
         name: usb
         description: sets USB(toggle)
-        models: set6
+        models: set10
       2D:
         name: airplay
         description: sets Airplay
-        models: set6
+        models: set10
       2E:
         name: bluetooth
         description: sets Bluetooth
-        models: set6
+        models: set10
       '40':
         name: universal-port
         description: sets Universal PORT
-        models: set6
+        models: set10
       '30':
         name: multi-ch
         description: sets MULTI CH
-        models: set6
+        models: set10
       '31':
         name: xm
         description: sets XM
-        models: set6
+        models: set10
       '32':
         name: sirius
         description: sets SIRIUS
-        models: set6
+        models: set10
       '33':
         name: dab
         description: 'sets DAB '
-        models: set6
+        models: set10
       '80':
         name: source
         description: sets SOURCE
-        models: set6
+        models: set10
       UP:
         name: up
         description: sets Selector Position Wrap-Around Up
-        models: set6
+        models: set10
       DOWN:
         name: down
         description: sets Selector Position Wrap-Around Down
-        models: set6
+        models: set10
       QSTN:
         name: query
         description: gets The Selector Position
-        models: set6
+        models: set10
   TUN:
     name: tuning
     description: Tuning Command
     values:
       nnnnn:
+        name: freq-nnnnn,
         description: sets Directly Tuning Frequency (FM nnn.nn MHz / AM nnnnn kHz)
-        models: set6
+        models: set10
       UP:
         name: up
         description: sets Tuning Frequency Wrap-Around Up
-        models: set6
+        models: set10
       DOWN:
         name: down
         description: sets Tuning Frequency Wrap-Around Down
-        models: set6
+        models: set10
       QSTN:
         name: query
         description: gets The Tuning Frequency
-        models: set6
+        models: set10
   TU4:
     name: tuning
     description: Tuning Command
     values:
       nnnnn:
+        name: freq-nnnnn,
         description: sets Directly Tuning Frequency (FM nnn.nn MHz / AM nnnnn kHz)
-        models: set6
+        models: set10
       DIRECT:
         name: direct
         description: starts/restarts Direct Tuning Mode
-        models: set6
+        models: set10
       '0':
         name: 0-in-direct-mode
         description: sets 0 in Direct Tuning Mode
-        models: set6
+        models: set10
       '1':
         name: 1-in-direct-mode
         description: sets 1 in Direct Tuning Mode
-        models: set6
+        models: set10
       '2':
         name: 2-in-direct-mode
         description: sets 2 in Direct Tuning Mode
-        models: set6
+        models: set10
       '3':
         name: 3-in-direct-mode
         description: sets 3 in Direct Tuning Mode
-        models: set6
+        models: set10
       '4':
         name: 4-in-direct-mode
         description: sets 4 in Direct Tuning Mode
-        models: set6
+        models: set10
       '5':
         name: 5-in-direct-mode
         description: sets 5 in Direct Tuning Mode
-        models: set6
+        models: set10
       '6':
         name: 6-in-direct-mode
         description: sets 6 in Direct Tuning Mode
-        models: set6
+        models: set10
       '7':
         name: 7-in-direct-mode
         description: sets 7 in Direct Tuning Mode
-        models: set6
+        models: set10
       '8':
         name: 8-in-direct-mode
         description: sets 8 in Direct Tuning Mode
-        models: set6
+        models: set10
       '9':
         name: 9-in-direct-mode
         description: sets 9 in Direct Tuning Mode
-        models: set6
+        models: set10
       UP:
         name: up
         description: sets Tuning Frequency Wrap-Around Up
-        models: set6
+        models: set10
       DOWN:
         name: down
         description: sets Tuning Frequency Wrap-Around Down
-        models: set6
+        models: set10
       QSTN:
         name: query
         description: gets The Tuning Frequency
-        models: set6
+        models: set10
   PRS:
     name: preset
     description: Preset Command
@@ -4827,24 +5211,24 @@ zone4:
         - 40
       : name: no-1-40
         description: sets Preset No. 1 - 40 ( In hexadecimal representation)
-        models: set6
+        models: set10
       ? - 1
         - 30
       : name: no-1-30
         description: sets Preset No. 1 - 30 ( In hexadecimal representation)
-        models: set6
+        models: set10
       UP:
         name: up
         description: sets Preset No. Wrap-Around Up
-        models: set6
+        models: set10
       DOWN:
         name: down
         description: sets Preset No. Wrap-Around Down
-        models: set6
+        models: set10
       QSTN:
         name: query
         description: gets The Preset No.
-        models: set6
+        models: set10
   PR4:
     name: preset
     description: Preset Command
@@ -4853,24 +5237,24 @@ zone4:
         - 40
       : name: no-1-40
         description: sets Preset No. 1 - 40 ( In hexadecimal representation)
-        models: set6
+        models: set10
       ? - 1
         - 30
       : name: no-1-30
         description: sets Preset No. 1 - 30 ( In hexadecimal representation)
-        models: set6
+        models: set10
       UP:
         name: up
         description: sets Preset No. Wrap-Around Up
-        models: set6
+        models: set10
       DOWN:
         name: down
         description: sets Preset No. Wrap-Around Down
-        models: set6
+        models: set10
       QSTN:
         name: query
         description: gets The Preset No.
-        models: set6
+        models: set10
   NTC:
     name: net-tune-network
     description: Net-Tune/Network Operation Command(Net-Tune Model Only)
@@ -4878,23 +5262,23 @@ zone4:
       PLAYz:
         name: playz
         description: PLAY KEY
-        models: set6
+        models: set10
       STOPz:
         name: stopz
         description: STOP KEY
-        models: set6
+        models: set10
       PAUSEz:
         name: pausez
         description: PAUSE KEY
-        models: set6
+        models: set10
       TRUPz:
         name: trupz
         description: TRACK UP KEY
-        models: set6
+        models: set10
       TRDNz:
         name: trdnz
         description: TRACK DOWN KEY
-        models: set6
+        models: set10
   NT4:
     name: net-tune-network
     description: Net-Tune/Network Operation Command(Network Model Only)
@@ -4902,67 +5286,67 @@ zone4:
       PLAY:
         name: play
         description: PLAY KEY
-        models: set6
+        models: set10
       STOP:
         name: stop
         description: STOP KEY
-        models: set6
+        models: set10
       PAUSE:
         name: pause
         description: PAUSE KEY
-        models: set6
+        models: set10
       TRUP:
         name: trup
         description: TRACK UP KEY
-        models: set6
+        models: set10
       TRDN:
         name: trdn
         description: TRACK DOWN KEY
-        models: set6
+        models: set10
       FF:
         name: ff
         description: FF KEY (CONTINUOUS*) (for iPod 1wire)
-        models: set6
+        models: set10
       REW:
         name: rew
         description: REW KEY (CONTINUOUS*) (for iPod 1wire)
-        models: set6
+        models: set10
       REPEAT:
         name: repeat
         description: REPEAT KEY(for iPod 1wire)
-        models: set6
+        models: set10
       RANDOM:
         name: random
         description: RANDOM KEY(for iPod 1wire)
-        models: set6
+        models: set10
       DISPLAY:
         name: display
         description: DISPLAY KEY(for iPod 1wire)
-        models: set6
+        models: set10
       RIGHT:
         name: right
         description: RIGHT KEY(for iPod 1wire)
-        models: set6
+        models: set10
       LEFT:
         name: left
         description: LEFT KEY(for iPod 1wire)
-        models: set6
+        models: set10
       UP:
         name: up
         description: UP KEY(for iPod 1wire)
-        models: set6
+        models: set10
       DOWN:
         name: down
         description: DOWN KEY(for iPod 1wire)
-        models: set6
+        models: set10
       SELECT:
         name: select
         description: SELECT KEY(for iPod 1wire)
-        models: set6
+        models: set10
       RETURN:
         name: return
         description: RETURN KEY(for iPod 1wire)
-        models: set6
+        models: set10
   NP4:
     name: internet-radio-preset
     description: Internet Radio Preset Command (Network Model Only)
@@ -4971,7 +5355,7 @@ zone4:
         - 40
       : name: no-1-40
         description: sets Preset No. 1 - 40 ( In hexadecimal representation)
-        models: set6
+        models: set10
 dock:
   NTC:
     name: network-usb
@@ -5161,6 +5545,22 @@ dock:
         name: f2
         description: 'Negative Feed '
         models: set7
+  NBS:
+    name: bluetooth-setting
+    description: Bluetooth Setting Operation Command
+    values:
+      'OFF':
+        name: 'off'
+        description: sets Bluetooth Off
+        models: set1
+      'ON':
+        name: 'on'
+        description: sets Bluetooth On
+        models: set1
+      QSTN:
+        name: query
+        description: gets Bluetooth Setting
+        models: set1
   NBT:
     name: bluetooth-internal
     description: Bluetooth(Internal) Operation Command
@@ -5178,6 +5578,7 @@ dock:
     description: NET/USB Artist Name Info
     values:
       nnnnnnnnnn:
+        name: artist-name
         description: NET/USB Artist Name (variable-length, 64 Unicode letters [UTF-8
           encoded] max , for Network Control only)
         models: set1
@@ -5190,6 +5591,7 @@ dock:
     description: NET/USB Album Name Info
     values:
       nnnnnnn:
+        name: album-name
         description: NET/USB Album Name (variable-length, 64 Unicode letters [UTF-8
           encoded] max , for Network Control only)
         models: set1
@@ -5202,6 +5604,7 @@ dock:
     description: NET/USB Title Name
     values:
       nnnnnnnnnn:
+        name: title
         description: NET/USB Title Name (variable-length, 64 Unicode letters [UTF-8
           encoded] max , for Network Control only)
         models: set1
@@ -5277,11 +5680,13 @@ dock:
           x\": Time Seek is disable\nt -> Time Display \"1\": Elapsed Time/Total Time,\
           \ \"2\": Elapsed Time, \"x\": disable\nii-> Service icon\n ii : \"00\":Music\
           \ Server (DLNA), \"01\":My Favorite, \"02\":vTuner, \n      \"03\":SiriusXM,\
-          \ \"04\":Pandora,\n      \"05\":Rhapsody, \"06\":Last.fm, \"08\":Slacker,\
-          \ \"0A\":Spotify, \"0B\":AUPEO!,\n      \"0C\":radiko, \"0D\":e-onkyo, \"\
-          0E\":TuneIn, \"0F\":MP3tunes, \"10\":Simfy,\n      \"11\":Home Media, \"\
-          12\":Deezer, \"13\":iHeartRadio, \"18\":Airplay,\n      \"F0\": USB/USB(Front),\
-          \ \"F1: USB(Rear), \"F2\":Internet Radio\n      \"F3\":NET, \"F4\":Bluetooth"
+          \ \"04\":Pandora,\n      \"05\":Rhapsody, \"06\":Last.fm, \"07\":Napster,\
+          \ \"08\":Slacker, \"09\":Mediafly,\n      \"0A\":Spotify, \"0B\":AUPEO!,\n\
+          \      \"0C\":radiko, \"0D\":e-onkyo, \"0E\":TuneIn, \"0F\":MP3tunes, \"\
+          10\":Simfy,\n      \"11\":Home Media, \"12\":Deezer, \"13\":iHeartRadio,\
+          \ \"18\":Airplay,\n      \u201C1A\u201D: onkyo Music, \u201C1B\u201D:TIDAL,\
+          \ \u201C41\u201D:FireConnect,\n      \"F0\": USB/USB(Front), \"F1: USB(Rear),\
+          \ \"F2\":Internet Radio\n      \"F3\":NET, \"F4\":Bluetooth"
         models: set1
       QSTN:
         name: query
@@ -5345,6 +5750,7 @@ dock:
     description: NET/USB List Info
     values:
       tlpnnnnnnnnnn:
+        name: info
         description: "NET/USB List Info\nt ->Information Type (A : ASCII letter, C\
           \ : Cursor Info, U : Unicode letter)\nwhen t = A,\n  l ->Line Info (0-9\
           \ : 1st to 10th Line)\n  nnnnnnnnn:Listed data (variable-length, 64 ASCII\
@@ -5471,6 +5877,7 @@ dock:
     description: NET Service(for Network Control Only)
     values:
       "ssiaaaa\u2026aaaabbbb\u2026bbbb":
+        name: service-id
         description: "select Network Service directly\nss -> Network Serveice\n 00:Music\
           \ Server (DLNA), 01:Favorite, 02:vTuner, 03:SiriusXM, 04:Pandora, 05:Rhapsody,\
           \ 06:Last.fm,\n 07:Napster, 08:Slacker, 09:Mediafly, 0A:Spotify, 0B:AUPEO!,\
@@ -5494,6 +5901,7 @@ dock:
           \ character set)\n 0D: URL"
         models: set1
       nnnnnnnnn:
+        name: input
         description: 'set Keyboard Input letter
 
           "nnnnnnnn" is variable-length, 128 Unicode letters [UTF-8 encoded] max'
@@ -5503,6 +5911,7 @@ dock:
     description: NET Popup Message(for Network Control Only)
     values:
       "xaaa\u2026aaaybbb\u2026bbb":
+        name: popup
         description: "x -> Popup Display Type\n 'T': Popup text is top\n 'B': Popup\
           \ text is bottom\n 'L': Popup text is list format\n\naaa...aaa -> Popup\
           \ Title, Massage\n when x = 'T' or 'B'\n    Top Title [0x00] Popup Title\
@@ -5520,6 +5929,7 @@ dock:
     description: NET/USB List Title Info(for Network Control Only)
     values:
       '{xx}uycccciiiillrraabbssnnn...nnn':
+        name: title-info
         description: "NET/USB List Title Info\nxx : Service Type\n 00 : DLNA, 01 :\
           \ Favorite, 02 : vTuner, 03 : SiriusXM, 04 : Pandora, 05 : Rhapsody, 06\
           \ : Last.fm,\n 07 : Napster, 08 : Slacker, 09 : Mediafly, 0A : Spotify,\
@@ -5625,6 +6035,7 @@ dock:
     description: Receiver Information (for Network Control Only)
     values:
       "<\u2026>":
+        name: xml
         description: "<\u2026>: XML Data <?xml\u2026>"
         models: set1
       QSTN:
@@ -5691,7 +6102,8 @@ dock:
     values:
       ? - 1
         - 40
-      : description: Remove Item from Favorite List ( In hexadecimal representation)
+      : name: fav-no-1-40
+        description: Remove Item from Favorite List ( In hexadecimal representation)
         models: set1
   NSD:
     name: net-usb-music-server-dlna-search-list
@@ -5718,6 +6130,7 @@ dock:
     description: Airplay Album Name Info (Airplay Model Only)
     values:
       nnnnnnn:
+        name: album-name
         description: NET/USB Album Name (variable-length, 64 Unicode letters [UTF-8
           encoded] max , for Network Control only)
         models: set1
@@ -5730,6 +6143,7 @@ dock:
     description: Airplay Title Name (Airplay Model Only)
     values:
       nnnnnnnnnn:
+        name: title
         description: NET/USB Title Name (variable-length, 64 Unicode letters [UTF-8
           encoded] max , for Network Control only)
         models: set1
@@ -5781,14 +6195,22 @@ modelsets:
   - DHC-80.3
   - DHC-80.6
   - DHC-9.9
+  - DRC-R1
   - DRX-2
+  - DRX-2.1
   - DRX-3
+  - DRX-3.1
   - DRX-4
+  - DRX-4.1
   - DRX-5
+  - DRX-5.1
+  - DRX-7
+  - DRX-R1
   - DTC-7
   - DTC-9.1
   - DTC-9.4
   - DTC-9.8
+  - DTM-7
   - DTR-10.5
   - DTR-20.1
   - DTR-20.2
@@ -5874,6 +6296,7 @@ modelsets:
   - HT-RC560(Ether)
   - HT-RC660
   - NR-365(Ether)
+  - PR-RZ5100
   - PR-SC5507
   - PR-SC5508
   - PR-SC5509
@@ -5883,6 +6306,7 @@ modelsets:
   - RDC-7
   - RDC-7(Ver2.0)
   - RDC-7.1
+  - TX-8270(Ether)
   - TX-DS787
   - TX-DS797
   - TX-DS898
@@ -5904,6 +6328,7 @@ modelsets:
   - TX-NR3010
   - TX-NR3030
   - TX-NR414(Ether)
+  - TX-NR474(Ether)
   - TX-NR5000
   - TX-NR5007
   - TX-NR5008
@@ -5915,6 +6340,9 @@ modelsets:
   - TX-NR535(Ether)
   - TX-NR545(Ether)
   - TX-NR555(Ether)
+  - TX-NR575(Ether)
+  - TX-NR575DAB(Ether)
+  - TX-NR575E(Ether)
   - TX-NR579(Ether)
   - TX-NR609(Ether)
   - TX-NR616
@@ -5922,6 +6350,8 @@ modelsets:
   - TX-NR636
   - TX-NR646(Ether)
   - TX-NR656(Ether)
+  - TX-NR676(Ether)
+  - TX-NR676E(Ether)
   - TX-NR708
   - TX-NR709
   - TX-NR717(Ether)
@@ -5929,6 +6359,7 @@ modelsets:
   - TX-NR737(Ether)
   - TX-NR747(Ether)
   - TX-NR757
+  - TX-NR777
   - TX-NR807
   - TX-NR808
   - TX-NR809
@@ -5940,10 +6371,15 @@ modelsets:
   - TX-NR905
   - TX-NR906
   - TX-NR929
+  - TX-RZ1100
+  - TX-RZ3100
   - TX-RZ610
+  - TX-RZ620
   - TX-RZ710
+  - TX-RZ720
   - TX-RZ800
   - TX-RZ810
+  - TX-RZ820
   - TX-RZ900
   - TX-SA706
   - TX-SA706X
@@ -5964,6 +6400,39 @@ modelsets:
   - TX-SR875
   - TX-SR876
   set2:
+  - DRC-R1
+  - DRX-2
+  - DRX-2.1
+  - DRX-3
+  - DRX-3.1
+  - DRX-4
+  - DRX-4.1
+  - DRX-5
+  - DRX-5.1
+  - DRX-7
+  - DRX-R1
+  - DTM-7
+  - PR-RZ5100
+  - TX-8270(Ether)
+  - TX-NR474(Ether)
+  - TX-NR555(Ether)
+  - TX-NR575(Ether)
+  - TX-NR575DAB(Ether)
+  - TX-NR575E(Ether)
+  - TX-NR656(Ether)
+  - TX-NR676(Ether)
+  - TX-NR676E(Ether)
+  - TX-NR757
+  - TX-NR777
+  - TX-RZ1100
+  - TX-RZ3100
+  - TX-RZ610
+  - TX-RZ620
+  - TX-RZ710
+  - TX-RZ720
+  - TX-RZ810
+  - TX-RZ820
+  set3:
   - /515AE(Ether)
   - /616AE(Ether)
   - /818AE
@@ -5973,10 +6442,18 @@ modelsets:
   - DHC-80.2
   - DHC-80.3
   - DHC-80.6
+  - DRC-R1
   - DRX-2
+  - DRX-2.1
   - DRX-3
+  - DRX-3.1
   - DRX-4
+  - DRX-4.1
   - DRX-5
+  - DRX-5.1
+  - DRX-7
+  - DRX-R1
+  - DTM-7
   - DTR-20.2
   - DTR-20.3
   - DTR-20.4
@@ -6014,9 +6491,11 @@ modelsets:
   - HT-RC560(Ether)
   - HT-RC660
   - NR-365(Ether)
+  - PR-RZ5100
   - PR-SC5508
   - PR-SC5509
   - PR-SC5530
+  - TX-8270(Ether)
   - TX-NR1008
   - TX-NR1009
   - TX-NR1010
@@ -6026,6 +6505,7 @@ modelsets:
   - TX-NR3010
   - TX-NR3030
   - TX-NR414(Ether)
+  - TX-NR474(Ether)
   - TX-NR5008
   - TX-NR5009
   - TX-NR5010
@@ -6035,6 +6515,9 @@ modelsets:
   - TX-NR535(Ether)
   - TX-NR545(Ether)
   - TX-NR555(Ether)
+  - TX-NR575(Ether)
+  - TX-NR575DAB(Ether)
+  - TX-NR575E(Ether)
   - TX-NR579(Ether)
   - TX-NR609(Ether)
   - TX-NR616
@@ -6042,6 +6525,8 @@ modelsets:
   - TX-NR636
   - TX-NR646(Ether)
   - TX-NR656(Ether)
+  - TX-NR676(Ether)
+  - TX-NR676E(Ether)
   - TX-NR708
   - TX-NR709
   - TX-NR717(Ether)
@@ -6049,18 +6534,115 @@ modelsets:
   - TX-NR737(Ether)
   - TX-NR747(Ether)
   - TX-NR757
+  - TX-NR777
   - TX-NR808
   - TX-NR809
   - TX-NR818
   - TX-NR828(Ether)
   - TX-NR838(Ether)
   - TX-NR929
+  - TX-RZ1100
+  - TX-RZ3100
   - TX-RZ610
+  - TX-RZ620
   - TX-RZ710
+  - TX-RZ720
   - TX-RZ800
   - TX-RZ810
+  - TX-RZ820
   - TX-RZ900
-  set3:
+  set4:
+  - DRX-2.1
+  - DRX-3.1
+  - DRX-4.1
+  - DRX-5.1
+  - DTM-7
+  - TX-8270(Ether)
+  - TX-NR474(Ether)
+  - TX-NR575(Ether)
+  - TX-NR575DAB(Ether)
+  - TX-NR575E(Ether)
+  - TX-NR676(Ether)
+  - TX-NR676E(Ether)
+  - TX-NR777
+  - TX-RZ620
+  - TX-RZ720
+  - TX-RZ820
+  set5:
+  - DTC-9.8
+  - DTR-10.5
+  - DTR-4.6
+  - DTR-4.9
+  - DTR-5.6
+  - DTR-5.8
+  - DTR-5.9
+  - DTR-6.6
+  - DTR-6.8
+  - DTR-6.9
+  - DTR-7.6
+  - DTR-7.7
+  - DTR-7.8
+  - DTR-8.8
+  - DTX-5.8
+  - DTX-5.9
+  - DTX-7.7
+  - DTX-7.8
+  - DTX-8.8
+  - ETX-NA1000
+  - PR-SC885
+  - RDC-7.1
+  - TX-NA905
+  - TX-NR1000
+  - TX-NR5000
+  - TX-NR905
+  - TX-SA706
+  - TX-SA805
+  - TX-SA875
+  - TX-SR702
+  - TX-SR703
+  - TX-SR705
+  - TX-SR706
+  - TX-SR803
+  - TX-SR804
+  - TX-SR805
+  - TX-SR875
+  set6:
+  - DRC-R1
+  - DRX-2
+  - DRX-2.1
+  - DRX-3
+  - DRX-3.1
+  - DRX-4
+  - DRX-4.1
+  - DRX-5
+  - DRX-5.1
+  - DRX-7
+  - DRX-R1
+  - DTM-7
+  - DTR-9.1
+  - PR-RZ5100
+  - RDC-7
+  - TX-8270(Ether)
+  - TX-DS989
+  - TX-NR474(Ether)
+  - TX-NR555(Ether)
+  - TX-NR575(Ether)
+  - TX-NR575DAB(Ether)
+  - TX-NR575E(Ether)
+  - TX-NR656(Ether)
+  - TX-NR676(Ether)
+  - TX-NR676E(Ether)
+  - TX-NR757
+  - TX-NR777
+  - TX-RZ1100
+  - TX-RZ3100
+  - TX-RZ610
+  - TX-RZ620
+  - TX-RZ710
+  - TX-RZ720
+  - TX-RZ810
+  - TX-RZ820
+  set7:
   - /515AE(Ether)
   - /616AE(Ether)
   - /818AE
@@ -6073,14 +6655,22 @@ modelsets:
   - DHC-80.3
   - DHC-80.6
   - DHC-9.9
+  - DRC-R1
   - DRX-2
+  - DRX-2.1
   - DRX-3
+  - DRX-3.1
   - DRX-4
+  - DRX-4.1
   - DRX-5
+  - DRX-5.1
+  - DRX-7
+  - DRX-R1
   - DTC-7
   - DTC-9.1
   - DTC-9.4
   - DTC-9.8
+  - DTM-7
   - DTR-10.5
   - DTR-20.1
   - DTR-20.2
@@ -6165,6 +6755,7 @@ modelsets:
   - HT-RC550(Ether)
   - HT-RC560(Ether)
   - HT-RC660
+  - PR-RZ5100
   - PR-SC5507
   - PR-SC5508
   - PR-SC5509
@@ -6174,6 +6765,7 @@ modelsets:
   - RDC-7
   - RDC-7(Ver2.0)
   - RDC-7.1
+  - TX-8270(Ether)
   - TX-DS787
   - TX-DS797
   - TX-DS898
@@ -6206,6 +6798,9 @@ modelsets:
   - TX-NR535(Ether)
   - TX-NR545(Ether)
   - TX-NR555(Ether)
+  - TX-NR575(Ether)
+  - TX-NR575DAB(Ether)
+  - TX-NR575E(Ether)
   - TX-NR579(Ether)
   - TX-NR609(Ether)
   - TX-NR616
@@ -6213,6 +6808,8 @@ modelsets:
   - TX-NR636
   - TX-NR646(Ether)
   - TX-NR656(Ether)
+  - TX-NR676(Ether)
+  - TX-NR676E(Ether)
   - TX-NR708
   - TX-NR709
   - TX-NR717(Ether)
@@ -6220,6 +6817,7 @@ modelsets:
   - TX-NR737(Ether)
   - TX-NR747(Ether)
   - TX-NR757
+  - TX-NR777
   - TX-NR807
   - TX-NR808
   - TX-NR809
@@ -6231,10 +6829,15 @@ modelsets:
   - TX-NR905
   - TX-NR906
   - TX-NR929
+  - TX-RZ1100
+  - TX-RZ3100
   - TX-RZ610
+  - TX-RZ620
   - TX-RZ710
+  - TX-RZ720
   - TX-RZ800
   - TX-RZ810
+  - TX-RZ820
   - TX-RZ900
   - TX-SA706
   - TX-SA805
@@ -6253,7 +6856,7 @@ modelsets:
   - TX-SR806
   - TX-SR875
   - TX-SR876
-  set4:
+  set8:
   - /616AE(Ether)
   - /818AE
   - DHC-60.5
@@ -6263,7 +6866,11 @@ modelsets:
   - DHC-80.3
   - DHC-80.6
   - DHC-9.9
+  - DRC-R1
   - DRX-5
+  - DRX-5.1
+  - DRX-7
+  - DRX-R1
   - DTC-9.8
   - DTR-10.5
   - DTR-30.4
@@ -6297,6 +6904,7 @@ modelsets:
   - DTX-8.9
   - DTX-9.9
   - ETX-NA1000
+  - PR-RZ5100
   - PR-SC5507
   - PR-SC5508
   - PR-SC5509
@@ -6336,8 +6944,11 @@ modelsets:
   - TX-NR905
   - TX-NR906
   - TX-NR929
+  - TX-RZ1100
+  - TX-RZ3100
   - TX-RZ800
   - TX-RZ810
+  - TX-RZ820
   - TX-RZ900
   - TX-SA805
   - TX-SA806X
@@ -6346,13 +6957,17 @@ modelsets:
   - TX-SR805
   - TX-SR875
   - TX-SR876
-  set5:
+  set9:
   - /616AE(Ether)
   - /818AE
   - DHC-60.5
   - DHC-60.7
   - DHC-80.6
+  - DRC-R1
   - DRX-5
+  - DRX-5.1
+  - DRX-7
+  - DRX-R1
   - DTR-30.4
   - DTR-40.4
   - DTR-40.5
@@ -6366,6 +6981,7 @@ modelsets:
   - DTR-60.7
   - DTR-70.4
   - DTR-70.6
+  - PR-RZ5100
   - PR-SC5509
   - PR-SC5530
   - TX-NR1010
@@ -6381,10 +6997,13 @@ modelsets:
   - TX-NR828(Ether)
   - TX-NR838(Ether)
   - TX-NR929
+  - TX-RZ1100
+  - TX-RZ3100
   - TX-RZ800
   - TX-RZ810
+  - TX-RZ820
   - TX-RZ900
-  set6:
+  set10:
   - DTR-70.1
   - DTR-70.2
   - DTR-70.3
@@ -6392,7 +7011,7 @@ modelsets:
   - DTR-80.1
   - DTR-80.2
   - DTR-80.3
-  set7:
+  set11:
   - /515AE(Ether)
   - /616AE(Ether)
   - /818AE
@@ -6400,10 +7019,18 @@ modelsets:
   - DHC-60.7
   - DHC-80.3
   - DHC-80.6
+  - DRC-R1
   - DRX-2
+  - DRX-2.1
   - DRX-3
+  - DRX-3.1
   - DRX-4
+  - DRX-4.1
   - DRX-5
+  - DRX-5.1
+  - DRX-7
+  - DRX-R1
+  - DTM-7
   - DTR-20.3
   - DTR-20.4
   - DTR-20.7
@@ -6435,8 +7062,10 @@ modelsets:
   - HT-RC560(Ether)
   - HT-RC660
   - NR-365(Ether)
+  - PR-RZ5100
   - PR-SC5509
   - PR-SC5530
+  - TX-8270(Ether)
   - TX-NR1009
   - TX-NR1010
   - TX-NR1030
@@ -6444,6 +7073,7 @@ modelsets:
   - TX-NR3010
   - TX-NR3030
   - TX-NR414(Ether)
+  - TX-NR474(Ether)
   - TX-NR5009
   - TX-NR5010
   - TX-NR515
@@ -6451,6 +7081,9 @@ modelsets:
   - TX-NR535(Ether)
   - TX-NR545(Ether)
   - TX-NR555(Ether)
+  - TX-NR575(Ether)
+  - TX-NR575DAB(Ether)
+  - TX-NR575E(Ether)
   - TX-NR579(Ether)
   - TX-NR609(Ether)
   - TX-NR616
@@ -6458,20 +7091,28 @@ modelsets:
   - TX-NR636
   - TX-NR646(Ether)
   - TX-NR656(Ether)
+  - TX-NR676(Ether)
+  - TX-NR676E(Ether)
   - TX-NR709
   - TX-NR717(Ether)
   - TX-NR727(Ether)
   - TX-NR737(Ether)
   - TX-NR747(Ether)
   - TX-NR757
+  - TX-NR777
   - TX-NR809
   - TX-NR818
   - TX-NR828(Ether)
   - TX-NR838(Ether)
   - TX-NR929
+  - TX-RZ1100
+  - TX-RZ3100
   - TX-RZ610
+  - TX-RZ620
   - TX-RZ710
+  - TX-RZ720
   - TX-RZ800
   - TX-RZ810
+  - TX-RZ820
   - TX-RZ900
 
