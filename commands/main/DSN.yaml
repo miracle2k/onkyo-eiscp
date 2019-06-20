@@ -1,0 +1,47 @@
+description: DAB Station Name
+name: dab-station-name
+values:
+  QSTN:
+    description: gets Station Name
+    models: &id001
+    - DRC-R1
+    - DRX-2
+    - DRX-2.1
+    - DRX-3
+    - DRX-3.1
+    - DRX-4
+    - DRX-4.1
+    - DRX-5
+    - DRX-5.1
+    - DRX-7
+    - DRX-R1
+    - DTM-7
+    - PR-RZ5100
+    - TX-8270(Ether)
+    - TX-NR474(Ether)
+    - TX-NR555(Ether)
+    - TX-NR575(Ether)
+    - TX-NR575DAB(Ether)
+    - TX-NR575E(Ether)
+    - TX-NR656(Ether)
+    - TX-NR676(Ether)
+    - TX-NR676E(Ether)
+    - TX-NR757
+    - TX-NR777
+    - TX-RZ1100
+    - TX-RZ3100
+    - TX-RZ610
+    - TX-RZ620
+    - TX-RZ710
+    - TX-RZ720
+    - TX-RZ810
+    - TX-RZ820
+    name: query
+  "xx\u2026xx":
+    description: "xx\u2026xx   : DAB Station Name (UTF-8)\n\u4E0B\u8A18\u6587\u5B57\
+      \u306F\u7279\u6B8A\u30B3\u30FC\u30C9\u3067\u9001\u4FE1\u3059\u308B\n0x02  \uFF1A\
+      \ \u2190\n0x03  \uFF1A \u2191\n0x04  \uFF1A \u2192\n0x05  \uFF1A \u2193\n0x06\
+      \  \uFF1A \u2551\n\u4E0A\u8A18\u4EE5\u5916\u306E0x00~0x1F\u30010x80~0xA0\u306F\
+      \u30B9\u30DA\u30FC\u30B9\u8868\u793A\u3068\u3059\u308B"
+    models: *id001
+    name: station-name

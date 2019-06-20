@@ -28,3 +28,4 @@ values:
     - 100
   : description: "Volume Level 0 \u2013 100 ( In hexadecimal representation)"
     models: *id001
+    name: vol-0-100

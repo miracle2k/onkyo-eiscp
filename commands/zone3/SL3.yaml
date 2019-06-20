@@ -13,7 +13,11 @@ values:
     - DHC-80.3
     - DHC-80.6
     - DHC-9.9
+    - DRC-R1
     - DRX-5
+    - DRX-5.1
+    - DRX-7
+    - DRX-R1
     - DTC-9.8
     - DTR-10.5
     - DTR-30.4
@@ -47,6 +51,7 @@ values:
     - DTX-8.9
     - DTX-9.9
     - ETX-NA1000
+    - PR-RZ5100
     - PR-SC5507
     - PR-SC5508
     - PR-SC5509
@@ -86,8 +91,11 @@ values:
     - TX-NR905
     - TX-NR906
     - TX-NR929
+    - TX-RZ1100
+    - TX-RZ3100
     - TX-RZ800
     - TX-RZ810
+    - TX-RZ820
     - TX-RZ900
     - TX-SA805
     - TX-SA806X
@@ -261,7 +269,11 @@ values:
     - DHC-60.5
     - DHC-60.7
     - DHC-80.6
+    - DRC-R1
     - DRX-5
+    - DRX-5.1
+    - DRX-7
+    - DRX-R1
     - DTR-30.4
     - DTR-40.4
     - DTR-40.5
@@ -275,6 +287,7 @@ values:
     - DTR-60.7
     - DTR-70.4
     - DTR-70.6
+    - PR-RZ5100
     - PR-SC5509
     - PR-SC5530
     - TX-NR1010
@@ -290,8 +303,11 @@ values:
     - TX-NR828(Ether)
     - TX-NR838(Ether)
     - TX-NR929
+    - TX-RZ1100
+    - TX-RZ3100
     - TX-RZ800
     - TX-RZ810
+    - TX-RZ820
     - TX-RZ900
     name: dab
   '40':

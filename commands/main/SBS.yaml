@@ -1,0 +1,35 @@
+description: S.BASS
+name: s-bass
+values:
+  '00':
+    description: sets S.BASS Off
+    models: &id001
+    - DRX-2.1
+    - DRX-3.1
+    - DRX-4.1
+    - DRX-5.1
+    - DTM-7
+    - TX-8270(Ether)
+    - TX-NR474(Ether)
+    - TX-NR575(Ether)
+    - TX-NR575DAB(Ether)
+    - TX-NR575E(Ether)
+    - TX-NR676(Ether)
+    - TX-NR676E(Ether)
+    - TX-NR777
+    - TX-RZ620
+    - TX-RZ720
+    - TX-RZ820
+    name: 'off'
+  '01':
+    description: sets S.BASS On
+    models: *id001
+    name: 'on'
+  QSTN:
+    description: gets The S.BASS State
+    models: *id001
+    name: query
+  UP:
+    description: sets S.BASS Wrap-Around Up
+    models: *id001
+    name: toggle

@@ -13,7 +13,11 @@ values:
     - DHC-80.3
     - DHC-80.6
     - DHC-9.9
+    - DRC-R1
     - DRX-5
+    - DRX-5.1
+    - DRX-7
+    - DRX-R1
     - DTC-9.8
     - DTR-10.5
     - DTR-30.4
@@ -47,6 +51,7 @@ values:
     - DTX-8.9
     - DTX-9.9
     - ETX-NA1000
+    - PR-RZ5100
     - PR-SC5507
     - PR-SC5508
     - PR-SC5509
@@ -86,8 +91,11 @@ values:
     - TX-NR905
     - TX-NR906
     - TX-NR929
+    - TX-RZ1100
+    - TX-RZ3100
     - TX-RZ800
     - TX-RZ810
+    - TX-RZ820
     - TX-RZ900
     - TX-SA805
     - TX-SA806X
@@ -121,6 +129,7 @@ values:
     - 100
   : description: "Volume Level 0 \u2013 100 ( In hexadecimal representation)"
     models: *id001
+    name: vol-0-100
   ? - 0
     - 200
   : description: "Volume Level 0.0 \u2013 100.0 ( In hexadecimal representation)"

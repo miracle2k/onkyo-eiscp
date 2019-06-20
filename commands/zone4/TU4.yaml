@@ -67,3 +67,4 @@ values:
   nnnnn:
     description: sets Directly Tuning Frequency (FM nnn.nn MHz / AM nnnnn kHz)
     models: *id001
+    name: freq-nnnnn,

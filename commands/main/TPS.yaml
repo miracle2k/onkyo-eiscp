@@ -16,14 +16,22 @@ values:
     - DHC-80.3
     - DHC-80.6
     - DHC-9.9
+    - DRC-R1
     - DRX-2
+    - DRX-2.1
     - DRX-3
+    - DRX-3.1
     - DRX-4
+    - DRX-4.1
     - DRX-5
+    - DRX-5.1
+    - DRX-7
+    - DRX-R1
     - DTC-7
     - DTC-9.1
     - DTC-9.4
     - DTC-9.8
+    - DTM-7
     - DTR-10.5
     - DTR-20.1
     - DTR-20.2
@@ -109,6 +117,7 @@ values:
     - HT-RC560(Ether)
     - HT-RC660
     - NR-365(Ether)
+    - PR-RZ5100
     - PR-SC5507
     - PR-SC5508
     - PR-SC5509
@@ -118,6 +127,7 @@ values:
     - RDC-7
     - RDC-7(Ver2.0)
     - RDC-7.1
+    - TX-8270(Ether)
     - TX-DS787
     - TX-DS797
     - TX-DS898
@@ -139,6 +149,7 @@ values:
     - TX-NR3010
     - TX-NR3030
     - TX-NR414(Ether)
+    - TX-NR474(Ether)
     - TX-NR5000
     - TX-NR5007
     - TX-NR5008
@@ -150,6 +161,9 @@ values:
     - TX-NR535(Ether)
     - TX-NR545(Ether)
     - TX-NR555(Ether)
+    - TX-NR575(Ether)
+    - TX-NR575DAB(Ether)
+    - TX-NR575E(Ether)
     - TX-NR579(Ether)
     - TX-NR609(Ether)
     - TX-NR616
@@ -157,6 +171,8 @@ values:
     - TX-NR636
     - TX-NR646(Ether)
     - TX-NR656(Ether)
+    - TX-NR676(Ether)
+    - TX-NR676E(Ether)
     - TX-NR708
     - TX-NR709
     - TX-NR717(Ether)
@@ -164,6 +180,7 @@ values:
     - TX-NR737(Ether)
     - TX-NR747(Ether)
     - TX-NR757
+    - TX-NR777
     - TX-NR807
     - TX-NR808
     - TX-NR809
@@ -175,10 +192,15 @@ values:
     - TX-NR905
     - TX-NR906
     - TX-NR929
+    - TX-RZ1100
+    - TX-RZ3100
     - TX-RZ610
+    - TX-RZ620
     - TX-RZ710
+    - TX-RZ720
     - TX-RZ800
     - TX-RZ810
+    - TX-RZ820
     - TX-RZ900
     - TX-SA706
     - TX-SA706X
@@ -198,7 +220,8 @@ values:
     - TX-SR806
     - TX-SR875
     - TX-SR876
-    name: enter
+    name: finish
   "\u201C\u201D":
     description: "Start TP Scan (When Don\u2019t Have Parameter)"
     models: *id001
+    name: start
