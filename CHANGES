@@ -1,3 +1,6 @@
+1.2.7 (2019-10-04)
+    - Fix setting volume for Pioneer models (prairiesnpr).
+
 1.2.6 (2019-06-16)
     - Updated to protocol 1.38
 
