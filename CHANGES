@@ -1,3 +1,6 @@
+1.2.8 (2019-11-09)
+    - Added HDMI-CEC TV control support via CTV command. See 'onkyo --help-commands main ctv' for possible values.
+
 1.2.7 (2019-10-04)
     - Fix setting volume for Pioneer models (prairiesnpr).
 

@@ -3703,6 +3703,146 @@ main:
         name: query
         description: gets Station Name
         models: set2
+  CTV:
+    name: ctv
+    description: Control TV over HDMI-CEC
+    values:
+      POWER:
+        name: power
+        description: Toggle Power State
+        models: set1
+      PWRON:
+        name: power-on
+        description: Power On
+        models: set1
+      PWROFF:
+        name: power-off
+        description: Standby
+        models: set1
+      CHUP:
+        name: chup
+        description: CH Up
+        models: set1
+      CHDN:
+        name: chdown
+        description: CH Down
+        models: set1
+      VLUP:
+        name: volume-up
+        description: Volume Up
+        models: set1
+      VLDN:
+        name: volume-down
+        description: Volume Down
+        models: set1
+      MUTE:
+        name: mute
+        description: Muting
+        models: set1
+      DISP:
+        name: display
+        description: Display
+        models: set1
+      INPUT:
+        name: input
+        description: Input
+        models: set1
+      '1':
+        name: '1'
+        description: 1 command
+        models: set1
+      '2':
+        name: '2'
+        description: 2 command
+        models: set1
+      '3':
+        name: '3'
+        description: 3 command
+        models: set1
+      '4':
+        name: '4'
+        description: 4 command
+        models: set1
+      '5':
+        name: '5'
+        description: 5 command
+        models: set1
+      '6':
+        name: '6'
+        description: 6 command
+        models: set1
+      '7':
+        name: '7'
+        description: 7 command
+        models: set1
+      '8':
+        name: '8'
+        description: 8 command
+        models: set1
+      '9':
+        name: '9'
+        description: 9 command
+        models: set1
+      '0':
+        name: '0'
+        description: 0 command
+        models: set1
+      CLEAR:
+        name: clear
+        description: Clear
+        models: set1
+      SETUP:
+        name: setup
+        description: Setup
+        models: set1
+      GUIDE:
+        name: guide
+        description: Guide / Top Menu
+        models: set1
+      PREV:
+        name: chprev
+        description: Previous
+        models: set1
+      UP:
+        name: cursor-up
+        description: Cursor Up
+        models: set1
+      DOWN:
+        name: cursor-down
+        description: Cursor Down
+        models: set1
+      LEFT:
+        name: cursor-left
+        description: Cursor Left
+        models: set1
+      RIGHT:
+        name: cursor-right
+        description: Cursor Right
+        models: set1
+      ENTER:
+        name: enter
+        description: Enter
+        models: set1
+      RETURN:
+        name: return
+        description: Return
+        models: set1
+      A:
+        name: a
+        description: A for CEC US:R,EU:R,JP:B
+        models: set1
+      B:
+        name: b
+        description: B for CEC US:G,EU:G,JP:R
+        models: set1
+      C:
+        name: c
+        description: C for CEC US:B,EU:Y,JP:G
+        models: set1
+      D:
+        name: d
+        description: D for CEC US:Y,EU:B,JP:Y
+        models: set1
 zone2:
   ZPW:
     name: power

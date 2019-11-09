@@ -261,6 +261,11 @@ def filter_for_message(getter_func, msg):
         # It seems ISCP commands are always three characters.
         if candidate and candidate[:3] == msg[:3]:
             return candidate
+
+        # exception for HDMI-CEC commands (CTV) since they don't provide any response/confirmation
+        if "CTV" in msg[:3]:
+            return msg
+        
         # The protocol docs claim that a response  should arrive
         # within *50ms or the communication has failed*. In my tests,
         # however, the interval needed to be at least 200ms before
