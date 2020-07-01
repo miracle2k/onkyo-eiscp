@@ -477,7 +477,7 @@ COMMANDS = OrderedDict([('main', OrderedDict([('PWR', {'values': OrderedDict([('
     ('UP', {'name': 'up',
      'description': 'sets HDMI Audio Out Wrap-Around Up'}),
     ('QSTN', {'name': 'query', 'description': 'gets HDMI Audio Out'})]),
-   'name': 'hdmi-audio-out',
+   'name': 'hdmi-audio-out-sub',
    'description': 'HDMI Audio Out (Sub)'}),
   ('CEC', {'values': OrderedDict([('00', {'name': 'off',
      'description': 'sets Off'}),
