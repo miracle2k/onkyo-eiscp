@@ -1,3 +1,6 @@
+1.2.8 (2020-06-30)
+    - Differentiate between the two hdmi-audio-outs (main was getting stomped out)
+
 1.2.7 (2019-10-04)
     - Fix setting volume for Pioneer models (prairiesnpr).
 
