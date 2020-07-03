@@ -12,7 +12,7 @@ f.close()
 
 setup(
     name='onkyo-eiscp',
-    version='1.2.8',
+    version='1.2.7',
     url='https://github.com/miracle2k/onkyo-eiscp',
     license='MIT',
     author='Michael Elsdörfer',
