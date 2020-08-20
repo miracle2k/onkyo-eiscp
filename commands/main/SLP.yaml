@@ -1,8 +1,9 @@
 description: Sleep Set Command
 name: sleep-set
 values:
-  "\u201C01\u201D-\u201C5A\u201D":
-    description: sets Sleep Time 1 - 90min ( In hexadecimal representation)
+  ? - 1
+    - 90
+  : description: sets Sleep Time 1 - 90min ( In hexadecimal representation)
     models: &id001
     - /515AE(Ether)
     - /616AE(Ether)
@@ -221,15 +222,15 @@ values:
     - TX-SR875
     - TX-SR876
     name: time-1-90min
-  "\u201COFF\u201D":
+  "OFF":
     description: sets Sleep Time Off
     models: *id001
     name: time-off
-  "\u201CQSTN\u201D":
+  "QSTN":
     description: gets The Sleep Time
     models: *id001
     name: qstn
-  "\u201CUP\u201D":
+  "UP":
     description: sets Sleep Time Wrap-Around UP
     models: *id001
     name: up

@@ -458,7 +458,7 @@ values:
     description: sets Selector Position Wrap-Around Up
     models: *id001
     name: up
-  "\u201C26\u201D":
+  "26":
     description: sets TUNER
     models: *id001
     name: tuner

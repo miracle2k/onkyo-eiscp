@@ -1,8 +1,9 @@
 description: PTY Scan Command (RDS Model Only)
 name: pty-scan
 values:
-  "\u201C01\u201D-\u201C1D\u201D":
-    description: "sets PTY No \u201C1 - 29\u201D ( In hexadecimal representation)"
+  ? - 1
+    - 29
+  : description: "sets PTY No \u201C1 - 29\u201D ( In hexadecimal representation)"
     models: &id001
     - /515AE(Ether)
     - /616AE(Ether)
@@ -221,7 +222,7 @@ values:
     - TX-SR875
     - TX-SR876
     name: no-1-29
-  "\u201CENTER\u201D":
+  "ENTER":
     description: Finish PTY Scan
     models: *id001
     name: enter

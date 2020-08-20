@@ -1,7 +1,7 @@
 description: TP Scan Command (RDS Model Only)
 name: tp-scan
 values:
-  "\u201CENTER\u201D":
+  "ENTER":
     description: Finish TP Scan
     models: &id001
     - /515AE(Ether)
@@ -221,7 +221,7 @@ values:
     - TX-SR875
     - TX-SR876
     name: finish
-  "\u201C\u201D":
+  "":
     description: "Start TP Scan (When Don\u2019t Have Parameter)"
     models: *id001
     name: start

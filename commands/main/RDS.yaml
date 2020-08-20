@@ -1,7 +1,7 @@
 description: RDS Information Command (RDS Model Only)
 name: rds-information
 values:
-  "\u201C00\u201D":
+  "00":
     description: Display RT Information
     models: &id001
     - /515AE(Ether)
@@ -221,15 +221,15 @@ values:
     - TX-SR875
     - TX-SR876
     name: '00'
-  "\u201C01\u201D":
+  "01":
     description: Display PTY Information
     models: *id001
     name: '01'
-  "\u201C02\u201D":
+  "02":
     description: Display TP Information
     models: *id001
     name: '02'
-  "\u201CUP\u201D":
+  "UP":
     description: Display RDS Information Wrap-Around Change
     models: *id001
     name: up

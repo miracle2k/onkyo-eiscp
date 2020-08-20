@@ -231,11 +231,11 @@ values:
   : description: sets Subwoofer 2 Level -15dB - 0dB - +12dB
     models: *id001
     name: 15db-0db-12db
-  "\u201CDOWN\u201D":
+  "DOWN":
     description: "LEVEL \u2013 KEY"
     models: *id001
     name: down
-  "\u201CUP\u201D":
+  "UP":
     description: LEVEL + Key
     models: *id001
     name: up
