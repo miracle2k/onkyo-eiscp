@@ -222,7 +222,7 @@ values:
     - TX-SR875
     - TX-SR876
     name: no-1-29
-  "ENTER":
+  ENTER:
     description: Finish PTY Scan
     models: *id001
     name: enter

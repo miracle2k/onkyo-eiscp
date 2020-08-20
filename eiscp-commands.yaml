@@ -483,15 +483,15 @@ main:
       : name: time-1-90min
         description: sets Sleep Time 1 - 90min ( In hexadecimal representation)
         models: set1
-      "OFF":
+      'OFF':
         name: time-off
         description: sets Sleep Time Off
         models: set1
-      "UP":
+      UP:
         name: up
         description: sets Sleep Time Wrap-Around UP
         models: set1
-      "QSTN":
+      QSTN:
         name: qstn
         description: gets The Sleep Time
         models: set1
@@ -499,7 +499,7 @@ main:
     name: speaker-level-calibration
     description: Speaker Level Calibration Command
     values:
-      "TEST":
+      TEST:
         name: test
         description: TEST Key
         models: set1
@@ -507,15 +507,15 @@ main:
         name: test-tone-off
         description: sets TEST TONE OFF
         models: set1
-      "CHSEL":
+      CHSEL:
         name: chsel
         description: CH SEL Key
         models: set1
-      "UP":
+      UP:
         name: up
         description: LEVEL + Key
         models: set1
-      "DOWN":
+      DOWN:
         name: down
         description: "LEVEL \u2013 KEY"
         models: set1
@@ -533,11 +533,11 @@ main:
       : name: 15db-0db-12db
         description: sets Subwoofer Level -15dB - 0dB - +12dB
         models: set1
-      "UP":
+      UP:
         name: up
         description: LEVEL + Key
         models: set1
-      "DOWN":
+      DOWN:
         name: down
         description: "LEVEL \u2013 KEY"
         models: set1
@@ -559,11 +559,11 @@ main:
       : name: 15db-0db-12db
         description: sets Subwoofer 2 Level -15dB - 0dB - +12dB
         models: set1
-      "UP":
+      UP:
         name: up
         description: LEVEL + Key
         models: set1
-      "DOWN":
+      DOWN:
         name: down
         description: "LEVEL \u2013 KEY"
         models: set1
@@ -585,11 +585,11 @@ main:
       : name: 12db-0db-12db
         description: sets Center Level -12dB - 0dB - +12dB
         models: set1
-      "UP":
+      UP:
         name: up
         description: LEVEL + Key
         models: set1
-      "DOWN":
+      DOWN:
         name: down
         description: "LEVEL \u2013 KEY"
         models: set1
@@ -918,7 +918,7 @@ main:
         name: am
         description: sets AM
         models: set1
-      "26":
+      '26':
         name: tuner
         description: sets TUNER
         models: set1
@@ -3247,19 +3247,19 @@ main:
     name: rds-information
     description: RDS Information Command (RDS Model Only)
     values:
-      "00":
+      '00':
         name: '00'
         description: Display RT Information
         models: set1
-      "01":
+      '01':
         name: '01'
         description: Display PTY Information
         models: set1
-      "02":
+      '02':
         name: '02'
         description: Display TP Information
         models: set1
-      "UP":
+      UP:
         name: up
         description: Display RDS Information Wrap-Around Change
         models: set1
@@ -3272,7 +3272,7 @@ main:
       : name: no-1-29
         description: "sets PTY No \u201C1 - 29\u201D ( In hexadecimal representation)"
         models: set1
-      "ENTER":
+      ENTER:
         name: enter
         description: Finish PTY Scan
         models: set1
@@ -3284,7 +3284,7 @@ main:
         name: start
         description: "Start TP Scan (When Don\u2019t Have Parameter)"
         models: set1
-      "ENTER":
+      ENTER:
         name: finish
         description: Finish TP Scan
         models: set1

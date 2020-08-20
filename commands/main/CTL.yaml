@@ -231,11 +231,11 @@ values:
   : description: sets Center Level -12dB - 0dB - +12dB
     models: *id001
     name: 12db-0db-12db
-  "DOWN":
+  DOWN:
     description: "LEVEL \u2013 KEY"
     models: *id001
     name: down
-  "UP":
+  UP:
     description: LEVEL + Key
     models: *id001
     name: up

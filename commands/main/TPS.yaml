@@ -1,7 +1,7 @@
 description: TP Scan Command (RDS Model Only)
 name: tp-scan
 values:
-  "ENTER":
+  ENTER:
     description: Finish TP Scan
     models: &id001
     - /515AE(Ether)
