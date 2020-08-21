@@ -166,9 +166,9 @@ def import_sheet(groupname, sheet, modelsets):
                 range = value
             else:
                 # Parse the value - sometimes ranges are given, split those first
-                range = re.split(ur'(?<=[\u201d"”“])-(?=[\u201d"”“])', value)
+                range = re.split(ur'(?<=[\u201c\u201d"”“])-(?=[\u201c\u201d"”“])', value)
                 # Then, remove the quotes
-                validate = lambda s: re.match(ur'^[\u201d”"”“](.*?)["”]$', s)
+                validate = lambda s: re.match(ur'^[\u201c\u201d”"”“](.*?)["”]$', s)
 
                 range = [validate(r).groups()[0] for r in range]
 
