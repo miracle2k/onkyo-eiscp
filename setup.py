@@ -19,7 +19,7 @@ setup(
     author_email='michael@elsdoerfer.com',
     description='Control Onkyo receivers over ethernet.',
     long_description=long_description,
-    packages = find_packages(),
+    packages = find_packages(exclude=('tests*',)),
     entry_points="""[console_scripts]\nonkyo = eiscp.script:run\n""",
     install_requires=['docopt>=0.4.1', 'netifaces'],
     platforms='any',
