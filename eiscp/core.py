@@ -205,25 +205,28 @@ def command_to_iscp(command, arguments=None, zone=None):
     # (setting tuning frequency). In some cases, we might imagine
     # providing the user an API with multiple arguments (TODO: not
     # currently supported).
-    argument = arguments[0]
+    if type(arguments) == str:
+        argument = arguments[0]
+    else:
+        argument = arguments
 
-    # 1. Consider if there is a alias, e.g. level-up for UP.
-    try:
-        value = commands.VALUE_MAPPINGS[group][prefix][argument]
-    except KeyError:
-        # 2. See if we can match a range or pattern
-        for possible_arg in commands.VALUE_MAPPINGS[group][prefix]:
-            if argument.isdigit():
-                if isinstance(possible_arg, ValueRange):
-                    if int(argument) in possible_arg:
-                        # We need to send the format "FF", hex() gives us 0xff
-                        value = hex(int(argument))[2:].zfill(2).upper()
-                        break
+        # 1. Consider if there is a alias, e.g. level-up for UP.
+        try:
+            value = commands.VALUE_MAPPINGS[group][prefix][argument]
+        except KeyError:
+            # 2. See if we can match a range or pattern
+            for possible_arg in commands.VALUE_MAPPINGS[group][prefix]:
+                if type(argument) == int or (type(argument) == str and argument.isdigit() is True):
+                    if isinstance(possible_arg, ValueRange):
+                        if int(argument) in possible_arg:
+                            # We need to send the format "FF", hex() gives us 0xff
+                            value = hex(int(argument))[2:].zfill(2).upper()
+                            break
 
-            # TODO: patterns not yet supported
-        else:
-            raise ValueError('"{}" is not a valid argument for command '
-                             '"{}" in zone "{}"'.format(argument, command, zone))
+                # TODO: patterns not yet supported
+                else:
+                    raise ValueError('"{}" is not a valid argument for command '
+                                 '"{}" in zone "{}"'.format(argument, command, zone))
 
     return '{}{}'.format(prefix, value)
 

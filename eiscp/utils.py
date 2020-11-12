@@ -10,7 +10,7 @@ class ValueRange(object):
         self.start = start
         self.end = end
 
-        self._range = tuple(range(start, end))
+        self._range = tuple(range(start, end + 1))
 
     def __contains__(self, value):
         return value in self._range
