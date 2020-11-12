@@ -36,6 +36,7 @@ Examples:
 import sys
 import os
 import docopt
+import re
 
 from .core import eISCP, command_to_iscp, iscp_to_command
 from . import commands
@@ -116,13 +117,14 @@ def main(argv=sys.argv):
 
     # Execute commands
     model_names = [r.model_name for r in receivers]
+    regex = re.compile('^[A-Z]+[\+\-]*([0-9]*[A-Z]*)*$')
     for receiver in receivers:
         with receiver:
             name = receiver.model_name
             if model_names.count(receiver.model_name) > 1:
                 name += '@' + receiver.host
             for command in to_execute:
-                raw = command.isupper() and command.isalnum()
+                raw = bool(regex.search(command))
                 log = Log(name, options, raw)
                 log.log_command(command)
                 if raw:
