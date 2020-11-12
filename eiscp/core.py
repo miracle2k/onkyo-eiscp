@@ -221,6 +221,13 @@ def command_to_iscp(command, arguments=None, zone=None):
                         if int(argument) in possible_arg:
                             # We need to send the format "FF", hex() gives us 0xff
                             value = hex(int(argument))[2:].zfill(2).upper()
+                            if prefix == 'SWL':
+                                if value == '00':
+                                    value = '0' + value
+                                elif value[0] != 'X':
+                                    value = '+' + value
+                                elif value[0] == 'X':
+                                    value = '-' + value[1:]
                             break
 
                 # TODO: patterns not yet supported
