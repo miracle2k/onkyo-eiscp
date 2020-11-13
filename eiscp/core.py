@@ -205,35 +205,37 @@ def command_to_iscp(command, arguments=None, zone=None):
     # (setting tuning frequency). In some cases, we might imagine
     # providing the user an API with multiple arguments (TODO: not
     # currently supported).
-    if type(arguments) == str:
+    if type(arguments) is list:
         argument = arguments[0]
     else:
         argument = arguments
 
         # 1. Consider if there is a alias, e.g. level-up for UP.
-        try:
-            value = commands.VALUE_MAPPINGS[group][prefix][argument]
-        except KeyError:
-            # 2. See if we can match a range or pattern
-            for possible_arg in commands.VALUE_MAPPINGS[group][prefix]:
-                if type(argument) == int or (type(argument) == str and argument.isdigit() is True):
-                    if isinstance(possible_arg, ValueRange):
-                        if int(argument) in possible_arg:
-                            # We need to send the format "FF", hex() gives us 0xff
-                            value = hex(int(argument))[2:].zfill(2).upper()
-                            if prefix == 'SWL':
-                                if value == '00':
-                                    value = '0' + value
-                                elif value[0] != 'X':
-                                    value = '+' + value
-                                elif value[0] == 'X':
-                                    value = '-' + value[1:]
-                            break
+    try:
+        value = commands.VALUE_MAPPINGS[group][prefix][argument]
+    except KeyError:
+        # 2. See if we can match a range or pattern
+        for possible_arg in commands.VALUE_MAPPINGS[group][prefix]:
+            if type(argument) is int or (type(argument) is str and argument.lstrip("-").isdigit() is True):
+                if isinstance(possible_arg, ValueRange):
+                    if int(argument) in possible_arg:
+                        # We need to send the format "FF", hex() gives us 0xff
+                        value = hex(int(argument))[2:].zfill(2).upper()
+                        if prefix == 'SWL':
+                            if value == '00':
+                                value = '0' + value
+                            elif value[0] != 'X':
+                                value = '+' + value
+                            elif value[0] == 'X':
+                                if len(value) == 2:
+                                    value = '-' + '0' + value[1:]
+                                value = '-' + value[1:]
+                        break
 
-                # TODO: patterns not yet supported
-                else:
-                    raise ValueError('"{}" is not a valid argument for command '
-                                 '"{}" in zone "{}"'.format(argument, command, zone))
+            # TODO: patterns not yet supported
+            else:
+                raise ValueError('"{}" is not a valid argument for command '
+                                '"{}" in zone "{}"'.format(argument, command, zone))
 
     return '{}{}'.format(prefix, value)
 
