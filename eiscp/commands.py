@@ -697,7 +697,7 @@ COMMANDS = OrderedDict([('main', OrderedDict([('PWR', {'values': OrderedDict([('
      'description': 'sets Listening Mode Wrap-Around Up'}),
     ('SURR', {'name': 'surr',
      'description': 'sets Listening Mode Wrap-Around Up'}),
-    ('STEREO', {'name': 'stereo',
+    ('STEREO', {'name': 'ster',
      'description': 'sets Listening Mode Wrap-Around Up'}),
     ('QSTN', {'name': 'query', 'description': 'gets The Listening Mode'})]),
    'name': 'listening-mode',

@@ -604,7 +604,7 @@ values:
   STEREO:
     description: sets Listening Mode Wrap-Around Up
     models: *id001
-    name: stereo
+    name: ster
   SURR:
     description: sets Listening Mode Wrap-Around Up
     models: *id001

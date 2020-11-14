@@ -1868,7 +1868,7 @@ main:
         description: sets Listening Mode Wrap-Around Up
         models: set1
       STEREO:
-        name: stereo
+        name: ster
         description: sets Listening Mode Wrap-Around Up
         models: set1
       QSTN:
