@@ -1283,7 +1283,7 @@ main:
         description: gets HDMI Audio Out
         models: set1
   HAS:
-    name: hdmi-audio-out
+    name: hdmi-audio-out-sub
     description: HDMI Audio Out (Sub)
     values:
       '00':
