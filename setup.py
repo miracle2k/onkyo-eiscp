@@ -21,7 +21,7 @@ setup(
     long_description=long_description,
     packages = find_packages(exclude=('tests*',)),
     entry_points="""[console_scripts]\nonkyo = eiscp.script:run\n""",
-    install_requires=['docopt>=0.4.1', 'netifaces'],
+    install_requires=['docopt>=0.4.1', 'netifaces', 'xmltodict>=0.12.0'],
     platforms='any',
     classifiers=[
         'Topic :: System :: Networking',

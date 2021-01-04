@@ -14,3 +14,19 @@ class ValueRange(object):
 
     def __contains__(self, value):
         return value in self._range
+
+
+def format_nri_list(data):
+    """Return NRI lists as dict with names or ids as the key."""
+    if not data:
+        return None
+    info = {}
+    for item in data:
+        if item.get("name") is not None:
+            key = item.pop("name")
+        elif item.get("id") is not None:
+            key = item.pop("id")
+        else:
+            return None
+        info[key] = item
+    return info

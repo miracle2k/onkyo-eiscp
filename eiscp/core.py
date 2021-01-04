@@ -3,6 +3,8 @@ import struct
 import time
 import socket, select
 import threading
+import xmltodict
+import json
 try:
     import queue as queue
 except ImportError:
@@ -11,7 +13,7 @@ import netifaces
 from collections import namedtuple
 
 from . import commands
-from .utils import ValueRange
+from .utils import ValueRange, format_nri_list
 
 
 class ISCPMessage(object):
@@ -368,6 +370,7 @@ class eISCP(object):
         self.host = host
         self.port = port
         self._info = None
+        self._nri = None
 
         self.command_socket = None
 
@@ -413,6 +416,61 @@ class eISCP(object):
     @info.setter
     def info(self, value):
         self._info = value
+
+    @property
+    def nri(self):
+        if self._nri:
+            return self._nri
+        return self.get_nri()
+
+    @property
+    def net_services(self):
+        data = self.nri.get('netservicelist').get('netservice')
+        return format_nri_list(data)
+
+    @property
+    def zones(self):
+        data = self.nri.get('zonelist').get('zone')
+        return format_nri_list(data)
+
+    @property
+    def controls(self):
+        data = self.nri.get('controllist').get('control')
+        return format_nri_list(data)
+
+    @property
+    def functions(self):
+        data = self.nri.get('functionlist').get('function')
+        return format_nri_list(data)
+
+    @property
+    def selectors(self):
+        data = self.nri.get('selectorlist').get('selector')
+        info = format_nri_list(data)
+        # Remove Source selector
+        if info.get("Source") is not None:
+            info.pop("Source")
+        return info
+
+    @property
+    def presets(self):
+        info = {}
+        data = self.nri.get('presetlist').get('preset')
+        for item in data:
+            if item.get("id") is not None:
+                key = item.pop("id")
+                info[key] = item
+        return info
+
+    @property
+    def tuners(self):
+        info = {}
+        data = self.nri.get('tuners').get('tuner')
+        for item in data:
+            if item.get("band") is not None:
+                key = item.pop("band")
+                info[key] = item
+        return info
 
     def _ensure_socket_connected(self):
         if self.command_socket is None:
@@ -505,6 +563,17 @@ class eISCP(object):
     def power_off(self):
         """Turn the receiver power off."""
         return self.command('power', 'off')
+
+    def get_nri(self):
+        """Return NRI info as dict."""
+        data = self.command("dock.receiver-information=query")[1]
+        if data:
+            data = xmltodict.parse(data, attr_prefix="")
+            data = data.get("response").get("device")
+            # Cast OrderedDict to dict
+            data = json.loads(json.dumps(data))
+            self._nri = data
+        return data
 
 
 class Receiver(eISCP):
