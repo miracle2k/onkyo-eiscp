@@ -184,7 +184,7 @@ def command_to_iscp(command, arguments=None, zone=None):
             parts = [norm(c) for c in re.split(command_sep, command)]
             if len(parts) >= 3:
                 zone, command = parts[:2]
-                arguments = parts[3:]
+                arguments = parts[2:]
             elif len(parts) == 2:
                 zone = default_zone
                 command = parts[0]
