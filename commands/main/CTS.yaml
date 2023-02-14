@@ -1,5 +1,5 @@
-description: Cener Spread for Dolby Surround
-name: cener-spread-for-dolby-surround
+description: Center Spread for Dolby Surround
+name: center-spread-for-dolby-surround
 values:
   '00':
     description: sets Center Spread Off

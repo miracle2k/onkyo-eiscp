@@ -2537,8 +2537,8 @@ main:
         description: gets The Dialog Enhancement State
         models: set1
   CTS:
-    name: cener-spread-for-dolby-surround
-    description: Cener Spread for Dolby Surround
+    name: center-spread-for-dolby-surround
+    description: Center Spread for Dolby Surround
     values:
       '00':
         name: center-off
