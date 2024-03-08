@@ -512,6 +512,10 @@ class eISCP(object):
         ready = select.select([self.command_socket], [], [], timeout or 0)
         if ready[0]:
             header_bytes = self.command_socket.recv(16)
+            if len(header_bytes) == 0:
+                # We have very likely been disconnected
+                eISCP.disconnect(self)
+                return None
             header = eISCPPacket.parse_header(header_bytes)
             body = b''
             while len(body) < header.data_size:
