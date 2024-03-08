@@ -11,13 +11,13 @@ long_description = f.read().strip()
 f.close()
 
 setup(
-    name='onkyo-eiscp',
-    version='1.2.8',
-    url='https://github.com/miracle2k/onkyo-eiscp',
+    name='dannytrigo-onkyo-eiscp',
+    version='1.2.9',
+    url='https://github.com/dannytrigo/onkyo-eiscp',
     license='MIT',
     author='Michael Elsdörfer',
     author_email='michael@elsdoerfer.com',
-    description='Control Onkyo receivers over ethernet.',
+    description='Control Onkyo receivers over ethernet. (dannytrigo fork for bugfix)',
     long_description=long_description,
     packages = find_packages(exclude=('tests*',)),
     entry_points="""[console_scripts]\nonkyo = eiscp.script:run\n""",
