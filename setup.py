@@ -12,7 +12,7 @@ f.close()
 
 setup(
     name='dannytrigo-onkyo-eiscp',
-    version='1.2.9',
+    version='1.2.10',
     url='https://github.com/dannytrigo/onkyo-eiscp',
     license='MIT',
     author='Michael Elsdörfer',

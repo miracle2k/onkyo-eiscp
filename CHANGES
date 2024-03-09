@@ -1,4 +1,7 @@
-1.2.9 (2024-02-07)
+1.2.10 (2024-03-09)
+    - Retrieve zone from decoded commands
+
+1.2.9 (2024-03-07)
     - Fix disconnected socket in async API
 
 1.2.8 (2019-11-09)
