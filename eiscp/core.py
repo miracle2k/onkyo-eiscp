@@ -242,27 +242,27 @@ def command_to_iscp(command, arguments=None, zone=None):
     return '{}{}'.format(prefix, value)
 
 
-def iscp_to_command(iscp_message):
-    for zone, zone_cmds in commands.COMMANDS.items():
-        # For now, ISCP commands are always three characters, which
-        # makes this easy.
-        command, args = iscp_message[:3], iscp_message[3:]
-        if command in zone_cmds:
-            if args in zone_cmds[command]['values']:
-                return zone_cmds[command]['name'], \
-                       zone_cmds[command]['values'][args]['name']
-            else:
-                match = re.match('[+-]?[0-9a-f]+$', args, re.IGNORECASE)
-                if match:
-                    return zone_cmds[command]['name'], \
-                             int(args, 16)
+def iscp_to_command(iscp_message, with_zone=False):
+    def __iscp_to_command(iscp_message):
+        for zone, zone_cmds in commands.COMMANDS.items():
+            # For now, ISCP commands are always three characters, which
+            # makes this easy.
+            command, args = iscp_message[:3], iscp_message[3:]
+            if command in zone_cmds:
+                if args in zone_cmds[command]['values']:
+                    return zone, zone_cmds[command]['name'], \
+                           zone_cmds[command]['values'][args]['name']
                 else:
-                    return zone_cmds[command]['name'], args
-
-    else:
-        raise ValueError(
-            'Cannot convert ISCP message to command: {}'.format(iscp_message))
-
+                    match = re.match('[+-]?[0-9a-f]+$', args, re.IGNORECASE)
+                    if match:
+                        return zone, zone_cmds[command]['name'], int(args, 16)
+                    else:
+                        return zone, zone_cmds[command]['name'], args
+        else:
+            raise ValueError(
+                'Cannot convert ISCP message to command: {}'.format(iscp_message))
+    zone, ret_cmd, args = __iscp_to_command(iscp_message)
+    return (zone, ret_cmd, args) if with_zone else (ret_cmd, args)
 
 def filter_for_message(getter_func, msg):
     """Helper that calls ``getter_func`` until a matching message
