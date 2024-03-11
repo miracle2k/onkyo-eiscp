@@ -1,3 +1,6 @@
+1.2.11 (2024-03-11)
+    - Add a message receive buffer to avoid issues when receiving large messages
+
 1.2.10 (2024-03-09)
     - Retrieve zone from decoded commands
 
