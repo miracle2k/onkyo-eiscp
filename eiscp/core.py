@@ -15,6 +15,8 @@ from collections import namedtuple
 from . import commands
 from .utils import ValueRange, format_nri_list
 
+BUFFER_SIZE = 64 * 1024
+
 
 class ISCPMessage(object):
     """Deals with formatting and parsing data wrapped in an ISCP
@@ -304,10 +306,42 @@ def parse_info(data):
     ''', response.strip(), re.VERBOSE).groupdict()
     return info
 
+class MessageBuffer:
+    """A receive buffer for eISCP packets to avoid partial receipt"""
+
+    def __init__(self, buffer_size):
+        self.buffer_size = buffer_size
+        self.buffer = b''
+
+    def reset(self):
+        """Reset the buffer"""
+        self.buffer = b''
+
+    @property
+    def available(self):
+        """Bytes remaining in the buffer"""
+        return self.buffer_size - len(self.buffer)
+
+    def recv(self, data: bytes):
+        """Add received bytes to the buffer"""
+        self.buffer += data
+
+    def get_message(self):
+        """Return a message if one is available in the buffer, otherwise return None"""
+        if len(self.buffer) >= 16:
+            header = eISCPPacket.parse_header(self.buffer[:16])
+            if len(self.buffer) >= header.data_size + 16:
+                packet = ISCPMessage.parse(self.buffer[16:header.data_size + 16].decode())
+                # Remove the processed message from the remaining buffer
+                self.buffer = self.buffer[16 + header.data_size:]
+                return packet
+        return None
+
+
 class eISCP(object):
     """Implements the eISCP interface to Onkyo receivers.
 
-    This uses a blocking interface. The remote end will regularily
+    This uses a blocking interface. The remote end will regularly
     send unsolicited status updates. You need to manually call
     ``get_message`` to query those.
 
@@ -371,6 +405,7 @@ class eISCP(object):
         self.port = port
         self._info = None
         self._nri = None
+        self._message_buffer = MessageBuffer(BUFFER_SIZE)
 
         self.command_socket = None
 
@@ -478,6 +513,7 @@ class eISCP(object):
             self.command_socket.settimeout(self.CONNECT_TIMEOUT)
             self.command_socket.connect((self.host, self.port))
             self.command_socket.setblocking(0)
+            self._message_buffer.reset()
 
     def disconnect(self):
         try:
@@ -509,17 +545,20 @@ class eISCP(object):
         """
         self._ensure_socket_connected()
 
+        # There might already be another message in the buffer
+        msg = self._message_buffer.get_message()
+        if msg:
+            return msg
+
         ready = select.select([self.command_socket], [], [], timeout or 0)
         if ready[0]:
-            header_bytes = self.command_socket.recv(16)
-            header = eISCPPacket.parse_header(header_bytes)
-            body = b''
-            while len(body) < header.data_size:
-                ready = select.select([self.command_socket], [], [], timeout or 0)
-                if not ready[0]:
-                    return None
-                body += self.command_socket.recv(header.data_size - len(body))
-            return ISCPMessage.parse(body.decode())
+            data = self.command_socket.recv(self._message_buffer.available)
+            self._message_buffer.recv(data)
+            if len(data) == 0:
+                # We have very likely been disconnected
+                eISCP.disconnect(self)
+                return None
+            return self._message_buffer.get_message()
 
     def raw(self, iscp_message):
         """Send a low-level ISCP message, like ``MVL50``, and wait
