@@ -1,3 +1,4 @@
+import logging
 import re
 import struct
 import time
@@ -16,6 +17,7 @@ from . import commands
 from .utils import ValueRange, format_nri_list
 
 BUFFER_SIZE = 64 * 1024
+_LOGGER = logging.getLogger(__name__)
 
 
 class ISCPMessage(object):
@@ -509,14 +511,22 @@ class eISCP(object):
 
     def _ensure_socket_connected(self):
         if self.command_socket is None:
-            self.command_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.command_socket.settimeout(self.CONNECT_TIMEOUT)
-            self.command_socket.connect((self.host, self.port))
-            self.command_socket.setblocking(0)
-            self._message_buffer.reset()
+            _LOGGER.info(f"Connecting to {self.host}:{self.port}")
+            try:
+                self.command_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                self.command_socket.settimeout(self.CONNECT_TIMEOUT)
+                self.command_socket.connect((self.host, self.port))
+                self.command_socket.setblocking(0)
+                self._message_buffer.reset()
+                _LOGGER.debug(f"Connected")
+            except OSError as error:
+                _LOGGER.error("Failed to connect", error)
+                self.disconnect()
+                raise error
 
     def disconnect(self):
         try:
+            _LOGGER.info("Closed command socket")
             self.command_socket.close()
         except:
             pass
@@ -552,13 +562,20 @@ class eISCP(object):
 
         ready = select.select([self.command_socket], [], [], timeout or 0)
         if ready[0]:
-            data = self.command_socket.recv(self._message_buffer.available)
-            self._message_buffer.recv(data)
-            if len(data) == 0:
-                # We have very likely been disconnected
+            try:
+                data = self.command_socket.recv(self._message_buffer.available)
+                self._message_buffer.recv(data)
+                if len(data) == 0:
+                    _LOGGER.error(f"Received no data on socket. Disconnecting")
+                    # We have very likely been disconnected
+                    eISCP.disconnect(self)
+                    return None
+                _LOGGER.info(f"Received {len(data)} bytes")
+                return self._message_buffer.get_message()
+            except OSError as error:
+                _LOGGER.error("Disconnected from receiver", error)
                 eISCP.disconnect(self)
-                return None
-            return self._message_buffer.get_message()
+        return None
 
     def raw(self, iscp_message):
         """Send a low-level ISCP message, like ``MVL50``, and wait
